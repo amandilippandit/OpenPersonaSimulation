@@ -8,15 +8,15 @@ import pytest
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, "..")
 sys.path.insert(0, "../../")
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 
 from testing_utils import *
 
-import tinytroupe.control as control
-from tinytroupe.agent import TinyPerson
-from tinytroupe.control import Simulation
-from tinytroupe.examples import create_oscar_the_architect
-from tinytroupe.factory import TinyPersonFactory
+import openpersona.control as control
+from openpersona.agent import Persona
+from openpersona.control import Simulation
+from openpersona.examples import create_oscar_the_architect
+from openpersona.factory import PersonaFactory
 
 
 @pytest.mark.core
@@ -30,7 +30,7 @@ def test_generate_person(setup):
     A vice-president of one of the largest brazillian banks. Has a degree in engineering and an MBA in finance.
     """
 
-    banker_factory = TinyPersonFactory(context=bank_spec)
+    banker_factory = PersonaFactory(context=bank_spec)
     banker = banker_factory.generate_person(banker_spec)
     minibio = banker.minibio()
 
@@ -44,26 +44,26 @@ def test_generate_person_with_different_temperatures(setup):
     Note: This test only runs for models that contain 'gpt-4' in their name,
     as other models (like gpt-5-mini) don't support custom temperatures.
     """
-    import tinytroupe
+    import openpersona
 
     # Get current model name and skip if not a gpt-4 model
-    model_name = tinytroupe.config_manager.get("model").lower()
+    model_name = openpersona.config_manager.get("model").lower()
     if "gpt-4" not in model_name:
         pytest.skip(
-            f"Model '{tinytroupe.config_manager.get('model')}' does not support custom temperatures - test only runs for gpt-4 models"
+            f"Model '{openpersona.config_manager.get('model')}' does not support custom temperatures - test only runs for gpt-4 models"
         )
 
     context = "A technology startup focused on AI innovations."
 
     # Test with low temperature
-    factory = TinyPersonFactory(context=context)
+    factory = PersonaFactory(context=context)
     person_low_temp = factory.generate_person("A software engineer", temperature=0.1)
 
     assert person_low_temp is not None
     assert person_low_temp.name is not None
 
     # Test with high temperature using a fresh factory
-    factory2 = TinyPersonFactory(context=context)
+    factory2 = PersonaFactory(context=context)
     person_high_temp = factory2.generate_person("A software engineer", temperature=1.9)
 
     assert person_high_temp is not None
@@ -80,7 +80,7 @@ def test_generate_person_with_post_processing(setup):
         agent.define("consultant_level", "senior")
         agent.define("certification", "PMP")
 
-    factory = TinyPersonFactory(context=context)
+    factory = PersonaFactory(context=context)
     consultant = factory.generate_person(
         "A management consultant", post_processing_func=add_consultant_trait
     )
@@ -96,7 +96,7 @@ def test_generate_people(setup):
         "A uniform random representative sample of people from the American population."
     )
 
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description=sampling_space_description,
         total_population_size=50,
         context=general_context,
@@ -129,7 +129,7 @@ def test_generate_people_2(setup):
     general_context = "We are performing some market research, and in that examining the whole of the American population."
     sampling_space_description = "A uniform random representative sample of people from the American population. All people must have American nationality."
 
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description=sampling_space_description,
         total_population_size=10,
         context=general_context,
@@ -164,7 +164,7 @@ def test_generate_people_with_different_particularities(setup):
         "A representative sample of urban professionals and residents."
     )
 
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description=sampling_space_description,
         total_population_size=30,
         context=context,
@@ -201,7 +201,7 @@ def test_generate_people_with_post_processing(setup):
         agent.define("institution", "Research Institute")
         agent.define("security_clearance", "Level 2")
 
-    factory = TinyPersonFactory(context=context)
+    factory = PersonaFactory(context=context)
     researchers = factory.generate_people(
         3,
         agent_particularities="Academic researchers",
@@ -233,7 +233,7 @@ def test_create_factory_from_demography_file(setup):
         temp_file_path = f.name
 
     try:
-        factory = TinyPersonFactory.create_factory_from_demography(
+        factory = PersonaFactory.create_factory_from_demography(
             temp_file_path, population_size=15
         )
         people = factory.generate_people(5, verbose=True)
@@ -260,7 +260,7 @@ def test_create_factory_from_demography_dict(setup):
         },
     }
 
-    factory = TinyPersonFactory.create_factory_from_demography(
+    factory = PersonaFactory.create_factory_from_demography(
         demography_data, population_size=12, context="Canadian professionals"
     )
     people = factory.generate_people(4, verbose=True)
@@ -275,7 +275,7 @@ def test_multiple_factories_sequentially(setup):
     # First factory for investment firm
     investment_context = "InvesTastic is a financial services firm that specializes in providing highly customized investment advice."
 
-    investment_factory = TinyPersonFactory(context=investment_context)
+    investment_factory = PersonaFactory(context=investment_context)
     analysts = investment_factory.generate_people(
         2, agent_particularities="Financial analysts specialized in different sectors."
     )
@@ -283,7 +283,7 @@ def test_multiple_factories_sequentially(setup):
     # Second factory for travel industry
     travel_context = "A travel company focused on luxury vacation packages."
 
-    travel_factory = TinyPersonFactory(context=travel_context)
+    travel_factory = PersonaFactory(context=travel_context)
     agents = travel_factory.generate_people(
         2, agent_particularities="Travel agents and customer service representatives."
     )
@@ -291,7 +291,7 @@ def test_multiple_factories_sequentially(setup):
     # Third factory for market research
     research_context = "Market research company examining consumer behavior."
 
-    research_factory = TinyPersonFactory(context=research_context)
+    research_factory = PersonaFactory(context=research_context)
     participants = research_factory.generate_people(
         3, agent_particularities="Diverse consumers from different demographics."
     )
@@ -312,20 +312,20 @@ def test_multiple_factories_same_context_different_particularities(setup):
     context = "A large university with diverse academic departments."
 
     # Faculty factory
-    faculty_factory = TinyPersonFactory(context=context)
+    faculty_factory = PersonaFactory(context=context)
     faculty = faculty_factory.generate_people(
         2,
         agent_particularities="University professors from different academic disciplines.",
     )
 
     # Student factory
-    student_factory = TinyPersonFactory(context=context)
+    student_factory = PersonaFactory(context=context)
     students = student_factory.generate_people(
         3, agent_particularities="Graduate and undergraduate students."
     )
 
     # Staff factory
-    staff_factory = TinyPersonFactory(context=context)
+    staff_factory = PersonaFactory(context=context)
     staff = staff_factory.generate_people(
         2, agent_particularities="Administrative and support staff."
     )
@@ -364,7 +364,7 @@ def test_factory_with_sampling_plan_initialization(setup):
     """
     context = "Professional market research study."
 
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description=sampling_space_description,
         total_population_size=20,
         context=context,
@@ -389,7 +389,7 @@ def test_factory_with_sampling_plan_initialization(setup):
 
 def test_factory_population_size_constraints(setup):
     """Test population size constraints and error handling."""
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description="Small sample of 5 people",
         total_population_size=5,
         context="Limited population test",
@@ -414,9 +414,9 @@ def test_factory_name_uniqueness_across_factories(setup):
     context2 = "Financial services firm in New York."
     context3 = "Healthcare organization in Boston."
 
-    factory1 = TinyPersonFactory(context=context1)
-    factory2 = TinyPersonFactory(context=context2)
-    factory3 = TinyPersonFactory(context=context3)
+    factory1 = PersonaFactory(context=context1)
+    factory2 = PersonaFactory(context=context2)
+    factory3 = PersonaFactory(context=context3)
 
     people1 = factory1.generate_people(
         3, agent_particularities="Software engineers and designers."
@@ -443,7 +443,7 @@ def test_factory_pipeline_with_set_in_sampling_dimensions(setup, caplog):
     valid JSON, but occasionally it emits Python set-literal syntax instead of
     JSON arrays — e.g. ``{"Engineer", "Teacher"}`` rather than
     ``["Engineer", "Teacher"]``.  Because ``extract_json()`` in
-    ``tinytroupe/utils/llm.py`` falls back to ``ast.literal_eval`` when
+    ``openpersona/utils/llm.py`` falls back to ``ast.literal_eval`` when
     ``json.loads`` fails, these set literals are silently parsed into real
     Python ``set`` objects and embedded in the returned dictionary.
 
@@ -475,19 +475,19 @@ def test_factory_pipeline_with_set_in_sampling_dimensions(setup, caplog):
         ],
     }
 
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description="Brazilian professionals",
         total_population_size=5,
         context="Market research in Brazil",
     )
 
-    tinytroupe_logger = logging.getLogger("tinytroupe")
-    original_level = tinytroupe_logger.level
-    tinytroupe_logger.setLevel(logging.DEBUG)
+    openpersona_logger = logging.getLogger("openpersona")
+    original_level = openpersona_logger.level
+    openpersona_logger.setLevel(logging.DEBUG)
     try:
-        with caplog.at_level(logging.DEBUG, logger="tinytroupe"):
+        with caplog.at_level(logging.DEBUG, logger="openpersona"):
             with patch.object(
-                TinyPersonFactory,
+                PersonaFactory,
                 "_compute_sampling_dimensions",
                 return_value=mock_dimensions,
             ):
@@ -506,7 +506,7 @@ def test_factory_pipeline_with_set_in_sampling_dimensions(setup, caplog):
             for record in caplog.records
         ), "Expected 'Sampling dimensions:' debug message was never logged — _safe_json_dumps may have crashed on sets"
     finally:
-        tinytroupe_logger.setLevel(original_level)
+        openpersona_logger.setLevel(original_level)
 
 
 @pytest.mark.core
@@ -514,14 +514,14 @@ def test_factory_error_handling(setup):
     """Test error handling in factory operations."""
     # Test invalid demography input
     with pytest.raises(ValueError, match="must be either a string or a dictionary"):
-        TinyPersonFactory.create_factory_from_demography(123, population_size=10)
+        PersonaFactory.create_factory_from_demography(123, population_size=10)
 
     # Test missing population size in demography factory
     with pytest.raises(ValueError, match="population_size must be specified"):
-        TinyPersonFactory.create_factory_from_demography({}, population_size=None)
+        PersonaFactory.create_factory_from_demography({}, population_size=None)
 
     # Test requesting more people than population size
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description="Very small sample",
         total_population_size=3,
         context="Error test",
@@ -536,19 +536,19 @@ def test_factory_error_handling(setup):
 def test_factory_complex_market_research_scenario(setup):
     """Test complex scenario similar to travel market research notebook."""
     # Create multiple factories for different market segments
-    singles_factory = TinyPersonFactory(
+    singles_factory = PersonaFactory(
         sampling_space_description="Single adults aged 25-45 from various backgrounds",
         total_population_size=20,
         context="Travel market research for singles segment",
     )
 
-    families_factory = TinyPersonFactory(
+    families_factory = PersonaFactory(
         sampling_space_description="Married couples with children from diverse backgrounds",
         total_population_size=20,
         context="Travel market research for families segment",
     )
 
-    couples_factory = TinyPersonFactory(
+    couples_factory = PersonaFactory(
         sampling_space_description="Married or dating couples without children",
         total_population_size=20,
         context="Travel market research for couples segment",
@@ -584,25 +584,25 @@ def test_factory_complex_market_research_scenario(setup):
 def test_large_scale_generation_multiple_industries(setup):
     """Test generating large numbers of people (100 per factory) across multiple industry factories."""
     # Create factories for different industries
-    tech_factory = TinyPersonFactory(
+    tech_factory = PersonaFactory(
         sampling_space_description="Technology professionals including software engineers, data scientists, product managers, and UX designers from diverse backgrounds",
         total_population_size=110,  # Slightly more than target to allow for some variation
         context="Large tech company workforce analysis",
     )
 
-    healthcare_factory = TinyPersonFactory(
+    healthcare_factory = PersonaFactory(
         sampling_space_description="Healthcare professionals including doctors, nurses, administrators, and support staff from various specialties",
         total_population_size=110,
         context="Hospital and healthcare system staffing research",
     )
 
-    finance_factory = TinyPersonFactory(
+    finance_factory = PersonaFactory(
         sampling_space_description="Financial services professionals including analysts, advisors, managers, and support roles from banking and investment",
         total_population_size=110,
         context="Financial services industry workforce study",
     )
 
-    education_factory = TinyPersonFactory(
+    education_factory = PersonaFactory(
         sampling_space_description="Education professionals including teachers, administrators, researchers, and support staff from K-12 and higher education",
         total_population_size=110,
         context="Education sector demographic analysis",
@@ -663,19 +663,19 @@ def test_large_scale_generation_multiple_industries(setup):
 def test_large_scale_generation_geographic_regions(setup):
     """Test generating large numbers of people across different geographic regions."""
     # Create factories for different geographic regions
-    usa_factory = TinyPersonFactory(
+    usa_factory = PersonaFactory(
         sampling_space_description="Diverse American population from all 50 states, various ages, ethnicities, professions, and socioeconomic backgrounds",
         total_population_size=105,
         context="US national demographic survey",
     )
 
-    europe_factory = TinyPersonFactory(
+    europe_factory = PersonaFactory(
         sampling_space_description="European population from major EU countries including UK, Germany, France, Italy, Spain with diverse cultural and professional backgrounds",
         total_population_size=105,
         context="European market research study",
     )
 
-    asia_factory = TinyPersonFactory(
+    asia_factory = PersonaFactory(
         sampling_space_description="Asian population from major countries including China, India, Japan, South Korea, Southeast Asia with diverse backgrounds",
         total_population_size=105,
         context="Asian Pacific consumer behavior study",
@@ -762,7 +762,7 @@ def test_large_scale_generation_geographic_regions(setup):
 def test_large_scale_generation_performance_and_consistency(setup):
     """Test performance and consistency of large-scale generation across multiple runs."""
     # Create a factory with a well-defined sampling space
-    factory = TinyPersonFactory(
+    factory = PersonaFactory(
         sampling_space_description="Professional working adults aged 25-65 from diverse industries, educational backgrounds, and income levels in urban areas",
         total_population_size=120,
         context="Large-scale urban professional demographic study",

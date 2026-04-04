@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.experimentation.randomization API documentation</title>
+<title>openpersona.experimentation.randomization API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.experimentation.randomization</code></h1>
+<h1 class="title">Module <code>openpersona.experimentation.randomization</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -28,7 +28,7 @@
 </summary>
 <pre><code class="python">import random
 import pandas as pd
-from tinytroupe.agent import TinyPerson
+from openpersona.agent import Persona
 
 class ABRandomizer():
 
@@ -141,7 +141,7 @@ class ABRandomizer():
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.experimentation.randomization.ABRandomizer"><code class="flex name class">
+<dt id="openpersona.experimentation.randomization.ABRandomizer"><code class="flex name class">
 <span>class <span class="ident">ABRandomizer</span></span>
 <span>(</span><span>real_name_1='control', real_name_2='treatment', blind_name_a='A', blind_name_b='B', passtrough_name=[], random_seed=42)</span>
 </code></dt>
@@ -274,7 +274,7 @@ returned as-is.</dd>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.experimentation.randomization.ABRandomizer.derandomize"><code class="name flex">
+<dt id="openpersona.experimentation.randomization.ABRandomizer.derandomize"><code class="name flex">
 <span>def <span class="ident">derandomize</span></span>(<span>self, i, a, b)</span>
 </code></dt>
 <dd>
@@ -309,7 +309,7 @@ returned as-is.</dd>
         raise Exception(f&#34;No randomization found for item {i}&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.experimentation.randomization.ABRandomizer.derandomize_name"><code class="name flex">
+<dt id="openpersona.experimentation.randomization.ABRandomizer.derandomize_name"><code class="name flex">
 <span>def <span class="ident">derandomize_name</span></span>(<span>self, i, blind_name)</span>
 </code></dt>
 <dd>
@@ -360,7 +360,7 @@ returned as-is.</dd>
         raise Exception(f&#34;No randomization found for item {i}&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.experimentation.randomization.ABRandomizer.randomize"><code class="name flex">
+<dt id="openpersona.experimentation.randomization.ABRandomizer.randomize"><code class="name flex">
 <span>def <span class="ident">randomize</span></span>(<span>self, i, a, b)</span>
 </code></dt>
 <dd>
@@ -414,17 +414,17 @@ de-randomize later.</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.experimentation" href="index.html">tinytroupe.experimentation</a></code></li>
+<li><code><a title="openpersona.experimentation" href="index.html">openpersona.experimentation</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.experimentation.randomization.ABRandomizer" href="#tinytroupe.experimentation.randomization.ABRandomizer">ABRandomizer</a></code></h4>
+<h4><code><a title="openpersona.experimentation.randomization.ABRandomizer" href="#openpersona.experimentation.randomization.ABRandomizer">ABRandomizer</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.experimentation.randomization.ABRandomizer.derandomize" href="#tinytroupe.experimentation.randomization.ABRandomizer.derandomize">derandomize</a></code></li>
-<li><code><a title="tinytroupe.experimentation.randomization.ABRandomizer.derandomize_name" href="#tinytroupe.experimentation.randomization.ABRandomizer.derandomize_name">derandomize_name</a></code></li>
-<li><code><a title="tinytroupe.experimentation.randomization.ABRandomizer.randomize" href="#tinytroupe.experimentation.randomization.ABRandomizer.randomize">randomize</a></code></li>
+<li><code><a title="openpersona.experimentation.randomization.ABRandomizer.derandomize" href="#openpersona.experimentation.randomization.ABRandomizer.derandomize">derandomize</a></code></li>
+<li><code><a title="openpersona.experimentation.randomization.ABRandomizer.derandomize_name" href="#openpersona.experimentation.randomization.ABRandomizer.derandomize_name">derandomize_name</a></code></li>
+<li><code><a title="openpersona.experimentation.randomization.ABRandomizer.randomize" href="#openpersona.experimentation.randomization.ABRandomizer.randomize">randomize</a></code></li>
 </ul>
 </li>
 </ul>

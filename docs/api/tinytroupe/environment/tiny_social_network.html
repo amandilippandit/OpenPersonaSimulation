@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.environment.tiny_social_network API documentation</title>
+<title>openpersona.environment.social_network API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,33 +19,33 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.environment.tiny_social_network</code></h1>
+<h1 class="title">Module <code>openpersona.environment.social_network</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from tinytroupe.environment.tiny_world import TinyWorld
-from tinytroupe.environment import logger
+<pre><code class="python">from openpersona.environment.world import World
+from openpersona.environment import logger
 
 import copy
 from datetime import datetime, timedelta
 
-from tinytroupe.agent import *
-from tinytroupe.control import transactional
+from openpersona.agent import *
+from openpersona.control import transactional
  
 from rich.console import Console
 
 from typing import Any, TypeVar, Union
-AgentOrWorld = Union[&#34;TinyPerson&#34;, &#34;TinyWorld&#34;]
+AgentOrWorld = Union[&#34;Persona&#34;, &#34;World&#34;]
 
 
-class TinySocialNetwork(TinyWorld):
+class SocialNetwork(World):
 
     def __init__(self, name, broadcast_if_no_target=True):
         &#34;&#34;&#34;
-        Create a new TinySocialNetwork environment.
+        Create a new SocialNetwork environment.
 
         Args:
             name (str): The name of the environment.
@@ -63,8 +63,8 @@ class TinySocialNetwork(TinyWorld):
         Adds a relation between two agents.
         
         Args:
-            agent_1 (TinyPerson): The first agent.
-            agent_2 (TinyPerson): The second agent.
+            agent_1 (Persona): The first agent.
+            agent_2 (Persona): The second agent.
             name (str): The name of the relation.
         &#34;&#34;&#34;
 
@@ -108,13 +108,13 @@ class TinySocialNetwork(TinyWorld):
         super()._step()
     
     @transactional()
-    def _handle_reach_out(self, source_agent: TinyPerson, content: str, target: str):
+    def _handle_reach_out(self, source_agent: Persona, content: str, target: str):
         &#34;&#34;&#34;
         Handles the REACH_OUT action. This social network implementation only allows
         REACH_OUT to succeed if the target agent is in the same relation as the source agent.
 
         Args:
-            source_agent (TinyPerson): The agent that issued the REACH_OUT action.
+            source_agent (Persona): The agent that issued the REACH_OUT action.
             content (str): The content of the message.
             target (str): The target of the message.
         &#34;&#34;&#34;
@@ -133,15 +133,15 @@ class TinySocialNetwork(TinyWorld):
     # Utilities and conveniences
     #######################################################################
 
-    def is_in_relation_with(self, agent_1:TinyPerson, agent_2:TinyPerson, relation_name=None) -&gt; bool:
+    def is_in_relation_with(self, agent_1:Persona, agent_2:Persona, relation_name=None) -&gt; bool:
         &#34;&#34;&#34;
         Checks if two agents are in a relation. If the relation name is given, check that
         the agents are in that relation. If no relation name is given, check that the agents
         are in any relation. Relations are undirected, so the order of the agents does not matter.
 
         Args:
-            agent_1 (TinyPerson): The first agent.
-            agent_2 (TinyPerson): The second agent.
+            agent_1 (Persona): The first agent.
+            agent_2 (Persona): The second agent.
             relation_name (str): The name of the relation to check, or None to check any relation.
 
         Returns:
@@ -169,13 +169,13 @@ class TinySocialNetwork(TinyWorld):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.environment.tiny_social_network.TinySocialNetwork"><code class="flex name class">
-<span>class <span class="ident">TinySocialNetwork</span></span>
+<dt id="openpersona.environment.social_network.SocialNetwork"><code class="flex name class">
+<span>class <span class="ident">SocialNetwork</span></span>
 <span>(</span><span>name, broadcast_if_no_target=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class for environments.</p>
-<p>Create a new TinySocialNetwork environment.</p>
+<p>Create a new SocialNetwork environment.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
@@ -188,11 +188,11 @@ if the target of an action is not found.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TinySocialNetwork(TinyWorld):
+<pre><code class="python">class SocialNetwork(World):
 
     def __init__(self, name, broadcast_if_no_target=True):
         &#34;&#34;&#34;
-        Create a new TinySocialNetwork environment.
+        Create a new SocialNetwork environment.
 
         Args:
             name (str): The name of the environment.
@@ -210,8 +210,8 @@ if the target of an action is not found.</dd>
         Adds a relation between two agents.
         
         Args:
-            agent_1 (TinyPerson): The first agent.
-            agent_2 (TinyPerson): The second agent.
+            agent_1 (Persona): The first agent.
+            agent_2 (Persona): The second agent.
             name (str): The name of the relation.
         &#34;&#34;&#34;
 
@@ -255,13 +255,13 @@ if the target of an action is not found.</dd>
         super()._step()
     
     @transactional()
-    def _handle_reach_out(self, source_agent: TinyPerson, content: str, target: str):
+    def _handle_reach_out(self, source_agent: Persona, content: str, target: str):
         &#34;&#34;&#34;
         Handles the REACH_OUT action. This social network implementation only allows
         REACH_OUT to succeed if the target agent is in the same relation as the source agent.
 
         Args:
-            source_agent (TinyPerson): The agent that issued the REACH_OUT action.
+            source_agent (Persona): The agent that issued the REACH_OUT action.
             content (str): The content of the message.
             target (str): The target of the message.
         &#34;&#34;&#34;
@@ -280,15 +280,15 @@ if the target of an action is not found.</dd>
     # Utilities and conveniences
     #######################################################################
 
-    def is_in_relation_with(self, agent_1:TinyPerson, agent_2:TinyPerson, relation_name=None) -&gt; bool:
+    def is_in_relation_with(self, agent_1:Persona, agent_2:Persona, relation_name=None) -&gt; bool:
         &#34;&#34;&#34;
         Checks if two agents are in a relation. If the relation name is given, check that
         the agents are in that relation. If no relation name is given, check that the agents
         are in any relation. Relations are undirected, so the order of the agents does not matter.
 
         Args:
-            agent_1 (TinyPerson): The first agent.
-            agent_2 (TinyPerson): The second agent.
+            agent_1 (Persona): The first agent.
+            agent_2 (Persona): The second agent.
             relation_name (str): The name of the relation to check, or None to check any relation.
 
         Returns:
@@ -308,11 +308,11 @@ if the target of an action is not found.</dd>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.environment.tiny_world.TinyWorld" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a></li>
+<li><a title="openpersona.environment.world.World" href="world.html#openpersona.environment.world.World">World</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.environment.tiny_social_network.TinySocialNetwork.add_relation"><code class="name flex">
+<dt id="openpersona.environment.social_network.SocialNetwork.add_relation"><code class="name flex">
 <span>def <span class="ident">add_relation</span></span>(<span>*args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -336,8 +336,8 @@ if the target of an action is not found.</dd>
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_social_network.TinySocialNetwork.is_in_relation_with"><code class="name flex">
-<span>def <span class="ident">is_in_relation_with</span></span>(<span>self, agent_1: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, agent_2: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, relation_name=None) ‑> bool</span>
+<dt id="openpersona.environment.social_network.SocialNetwork.is_in_relation_with"><code class="name flex">
+<span>def <span class="ident">is_in_relation_with</span></span>(<span>self, agent_1: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, agent_2: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, relation_name=None) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if two agents are in a relation. If the relation name is given, check that
@@ -345,9 +345,9 @@ the agents are in that relation. If no relation name is given, check that the ag
 are in any relation. Relations are undirected, so the order of the agents does not matter.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>agent_1</code></strong> :&ensp;<code>TinyPerson</code></dt>
+<dt><strong><code>agent_1</code></strong> :&ensp;<code>Persona</code></dt>
 <dd>The first agent.</dd>
-<dt><strong><code>agent_2</code></strong> :&ensp;<code>TinyPerson</code></dt>
+<dt><strong><code>agent_2</code></strong> :&ensp;<code>Persona</code></dt>
 <dd>The second agent.</dd>
 <dt><strong><code>relation_name</code></strong> :&ensp;<code>str</code></dt>
 <dd>The name of the relation to check, or None to check any relation.</dd>
@@ -361,15 +361,15 @@ are in any relation. Relations are undirected, so the order of the agents does n
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def is_in_relation_with(self, agent_1:TinyPerson, agent_2:TinyPerson, relation_name=None) -&gt; bool:
+<pre><code class="python">def is_in_relation_with(self, agent_1:Persona, agent_2:Persona, relation_name=None) -&gt; bool:
     &#34;&#34;&#34;
     Checks if two agents are in a relation. If the relation name is given, check that
     the agents are in that relation. If no relation name is given, check that the agents
     are in any relation. Relations are undirected, so the order of the agents does not matter.
 
     Args:
-        agent_1 (TinyPerson): The first agent.
-        agent_2 (TinyPerson): The second agent.
+        agent_1 (Persona): The first agent.
+        agent_2 (Persona): The second agent.
         relation_name (str): The name of the relation to check, or None to check any relation.
 
     Returns:
@@ -391,41 +391,41 @@ are in any relation. Relations are undirected, so the order of the agents does n
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.environment.tiny_world.TinyWorld" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a></b></code>:
+<li><code><b><a title="openpersona.environment.world.World" href="world.html#openpersona.environment.world.World">World</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_agent" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.add_agent">add_agent</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_agents" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.add_agents">add_agents</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_environment" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.add_environment">add_environment</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_intervention" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.add_intervention">add_intervention</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.clear_communications_buffer" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.clear_communications_buffer">clear_communications_buffer</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.clear_environments" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.clear_environments">clear_environments</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.decode_complete_state" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.decode_complete_state">decode_complete_state</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.encode_complete_state" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.encode_complete_state">encode_complete_state</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_agent_by_name" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.get_agent_by_name">get_agent_by_name</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_cost_stats" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.get_cost_stats">get_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_environment_by_name" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.get_environment_by_name">get_environment_by_name</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_global_cost_stats" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.get_global_cost_stats">get_global_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.make_everyone_accessible" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.make_everyone_accessible">make_everyone_accessible</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pop_and_display_latest_communications" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.pop_and_display_latest_communications">pop_and_display_latest_communications</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pp_current_interactions" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.pp_current_interactions">pp_current_interactions</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pretty_current_interactions" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.pretty_current_interactions">pretty_current_interactions</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pretty_print_cost_stats" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.pretty_print_cost_stats">pretty_print_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pretty_print_global_cost_stats" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.pretty_print_global_cost_stats">pretty_print_global_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.remove_agent" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.remove_agent">remove_agent</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.remove_all_agents" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.remove_all_agents">remove_all_agents</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_days" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.run_days">run_days</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_hours" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.run_hours">run_hours</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_minutes" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.run_minutes">run_minutes</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_months" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.run_months">run_months</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_weeks" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.run_weeks">run_weeks</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_years" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.run_years">run_years</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.set_simulation_for_free_environments" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.set_simulation_for_free_environments">set_simulation_for_free_environments</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_days" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.skip_days">skip_days</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_hours" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.skip_hours">skip_hours</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_minutes" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.skip_minutes">skip_minutes</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_months" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.skip_months">skip_months</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_weeks" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.skip_weeks">skip_weeks</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_years" href="tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld.skip_years">skip_years</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_agent" href="world.html#openpersona.environment.world.World.add_agent">add_agent</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_agents" href="world.html#openpersona.environment.world.World.add_agents">add_agents</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_environment" href="world.html#openpersona.environment.world.World.add_environment">add_environment</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_intervention" href="world.html#openpersona.environment.world.World.add_intervention">add_intervention</a></code></li>
+<li><code><a title="openpersona.environment.world.World.clear_communications_buffer" href="world.html#openpersona.environment.world.World.clear_communications_buffer">clear_communications_buffer</a></code></li>
+<li><code><a title="openpersona.environment.world.World.clear_environments" href="world.html#openpersona.environment.world.World.clear_environments">clear_environments</a></code></li>
+<li><code><a title="openpersona.environment.world.World.decode_complete_state" href="world.html#openpersona.environment.world.World.decode_complete_state">decode_complete_state</a></code></li>
+<li><code><a title="openpersona.environment.world.World.encode_complete_state" href="world.html#openpersona.environment.world.World.encode_complete_state">encode_complete_state</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_agent_by_name" href="world.html#openpersona.environment.world.World.get_agent_by_name">get_agent_by_name</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_cost_stats" href="world.html#openpersona.environment.world.World.get_cost_stats">get_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_environment_by_name" href="world.html#openpersona.environment.world.World.get_environment_by_name">get_environment_by_name</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_global_cost_stats" href="world.html#openpersona.environment.world.World.get_global_cost_stats">get_global_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.make_everyone_accessible" href="world.html#openpersona.environment.world.World.make_everyone_accessible">make_everyone_accessible</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pop_and_display_latest_communications" href="world.html#openpersona.environment.world.World.pop_and_display_latest_communications">pop_and_display_latest_communications</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pp_current_interactions" href="world.html#openpersona.environment.world.World.pp_current_interactions">pp_current_interactions</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pretty_current_interactions" href="world.html#openpersona.environment.world.World.pretty_current_interactions">pretty_current_interactions</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pretty_print_cost_stats" href="world.html#openpersona.environment.world.World.pretty_print_cost_stats">pretty_print_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pretty_print_global_cost_stats" href="world.html#openpersona.environment.world.World.pretty_print_global_cost_stats">pretty_print_global_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.remove_agent" href="world.html#openpersona.environment.world.World.remove_agent">remove_agent</a></code></li>
+<li><code><a title="openpersona.environment.world.World.remove_all_agents" href="world.html#openpersona.environment.world.World.remove_all_agents">remove_all_agents</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_days" href="world.html#openpersona.environment.world.World.run_days">run_days</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_hours" href="world.html#openpersona.environment.world.World.run_hours">run_hours</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_minutes" href="world.html#openpersona.environment.world.World.run_minutes">run_minutes</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_months" href="world.html#openpersona.environment.world.World.run_months">run_months</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_weeks" href="world.html#openpersona.environment.world.World.run_weeks">run_weeks</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_years" href="world.html#openpersona.environment.world.World.run_years">run_years</a></code></li>
+<li><code><a title="openpersona.environment.world.World.set_simulation_for_free_environments" href="world.html#openpersona.environment.world.World.set_simulation_for_free_environments">set_simulation_for_free_environments</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_days" href="world.html#openpersona.environment.world.World.skip_days">skip_days</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_hours" href="world.html#openpersona.environment.world.World.skip_hours">skip_hours</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_minutes" href="world.html#openpersona.environment.world.World.skip_minutes">skip_minutes</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_months" href="world.html#openpersona.environment.world.World.skip_months">skip_months</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_weeks" href="world.html#openpersona.environment.world.World.skip_weeks">skip_weeks</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_years" href="world.html#openpersona.environment.world.World.skip_years">skip_years</a></code></li>
 </ul>
 </li>
 </ul>
@@ -441,16 +441,16 @@ are in any relation. Relations are undirected, so the order of the agents does n
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.environment" href="index.html">tinytroupe.environment</a></code></li>
+<li><code><a title="openpersona.environment" href="index.html">openpersona.environment</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.environment.tiny_social_network.TinySocialNetwork" href="#tinytroupe.environment.tiny_social_network.TinySocialNetwork">TinySocialNetwork</a></code></h4>
+<h4><code><a title="openpersona.environment.social_network.SocialNetwork" href="#openpersona.environment.social_network.SocialNetwork">SocialNetwork</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.environment.tiny_social_network.TinySocialNetwork.add_relation" href="#tinytroupe.environment.tiny_social_network.TinySocialNetwork.add_relation">add_relation</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_social_network.TinySocialNetwork.is_in_relation_with" href="#tinytroupe.environment.tiny_social_network.TinySocialNetwork.is_in_relation_with">is_in_relation_with</a></code></li>
+<li><code><a title="openpersona.environment.social_network.SocialNetwork.add_relation" href="#openpersona.environment.social_network.SocialNetwork.add_relation">add_relation</a></code></li>
+<li><code><a title="openpersona.environment.social_network.SocialNetwork.is_in_relation_with" href="#openpersona.environment.social_network.SocialNetwork.is_in_relation_with">is_in_relation_with</a></code></li>
 </ul>
 </li>
 </ul>

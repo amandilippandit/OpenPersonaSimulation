@@ -3,7 +3,7 @@ import time
 
 import pytest
 
-from tinytroupe.utils.concurrency import monitor_threads
+from openpersona.utils.concurrency import monitor_threads
 
 ##########################
 # Global testing options
@@ -70,8 +70,8 @@ def pytest_configure(config):
     This runs after CLI options are parsed but before test collection.
     """
     import os
-    from tinytroupe.clients import force_api_cache
-    from tinytroupe import config_manager
+    from openpersona.clients import force_api_cache
+    from openpersona import config_manager
     
     global refresh_cache, use_cache
     refresh_cache = config.getoption("refresh_cache", default=False)

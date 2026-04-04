@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.environment.tiny_world API documentation</title>
+<title>openpersona.environment.world API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.environment.tiny_world</code></h1>
+<h1 class="title">Module <code>openpersona.environment.world</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -35,17 +35,17 @@ from typing import Any, TypeVar, Union
 
 from rich.console import Console
 
-import tinytroupe.control as control
-from tinytroupe import config_manager, utils
-from tinytroupe.agent import *
-from tinytroupe.control import transactional
-from tinytroupe.environment import logger
-from tinytroupe.utils import name_or_empty, pretty_datetime
+import openpersona.control as control
+from openpersona import config_manager, utils
+from openpersona.agent import *
+from openpersona.control import transactional
+from openpersona.environment import logger
+from openpersona.utils import name_or_empty, pretty_datetime
 
-AgentOrWorld = Union[&#34;TinyPerson&#34;, &#34;TinyWorld&#34;]
+AgentOrWorld = Union[&#34;Persona&#34;, &#34;World&#34;]
 
 
-class TinyWorld:
+class World:
     &#34;&#34;&#34;
     Base class for environments.
     &#34;&#34;&#34;
@@ -82,7 +82,7 @@ class TinyWorld:
         if name is not None:
             self.name = name
         else:
-            self.name = f&#34;TinyWorld {utils.fresh_id(self.__class__.__name__)}&#34;
+            self.name = f&#34;World {utils.fresh_id(self.__class__.__name__)}&#34;
 
         self.current_datetime = initial_datetime
         self.broadcast_if_no_target = broadcast_if_no_target
@@ -107,7 +107,7 @@ class TinyWorld:
         self._simulation_steps = 0
 
         # add the environment to the list of all environments
-        TinyWorld.add_environment(self)
+        World.add_environment(self)
 
         self.add_agents(agents)
 
@@ -140,7 +140,7 @@ class TinyWorld:
         for intervention in self._interventions:
             should_apply_intervention = intervention.check_precondition()
             if should_apply_intervention:
-                if TinyWorld.communication_display:
+                if World.communication_display:
                     self._display_intervention_communication(intervention)
                 intervention.apply_effect()
 
@@ -255,7 +255,7 @@ class TinyWorld:
                 f&#34;[{self.name}] Running world simulation step {i+1} of {steps}.&#34;
             )
 
-            if TinyWorld.communication_display:
+            if World.communication_display:
                 self._display_step_communication(
                     cur_step=i + 1,
                     total_steps=steps,
@@ -441,12 +441,12 @@ class TinyWorld:
 
         return self  # for chaining
 
-    def add_agent(self, agent: TinyPerson):
+    def add_agent(self, agent: Persona):
         &#34;&#34;&#34;
         Adds an agent to the environment. The agent must have a unique name within the environment.
 
         Args:
-            agent (TinyPerson): The agent to add to the environment.
+            agent (Persona): The agent to add to the environment.
         Raises:
             ValueError: If the agent name is not unique within the environment.
         &#34;&#34;&#34;
@@ -470,12 +470,12 @@ class TinyWorld:
 
         return self  # for chaining
 
-    def remove_agent(self, agent: TinyPerson):
+    def remove_agent(self, agent: Persona):
         &#34;&#34;&#34;
         Removes an agent from the environment.
 
         Args:
-            agent (TinyPerson): The agent to remove from the environment.
+            agent (Persona): The agent to remove from the environment.
         &#34;&#34;&#34;
         logger.debug(f&#34;Removing agent {agent.name} from the environment.&#34;)
         self.agents.remove(agent)
@@ -493,7 +493,7 @@ class TinyWorld:
 
         return self  # for chaining
 
-    def get_agent_by_name(self, name: str) -&gt; TinyPerson:
+    def get_agent_by_name(self, name: str) -&gt; Persona:
         &#34;&#34;&#34;
         Returns the agent with the specified name. If no agent with that name exists in the environment,
         returns None.
@@ -502,7 +502,7 @@ class TinyWorld:
             name (str): The name of the agent to return.
 
         Returns:
-            TinyPerson: The agent with the specified name.
+            Persona: The agent with the specified name.
         &#34;&#34;&#34;
         if name in self.name_to_agent:
             return self.name_to_agent[name]
@@ -528,12 +528,12 @@ class TinyWorld:
     # because they have effects beyond the agent itself.
     #######################################################################
     @transactional()
-    def _handle_actions(self, source: TinyPerson, actions: list):
+    def _handle_actions(self, source: Persona, actions: list):
         &#34;&#34;&#34;
         Handles the actions issued by the agents.
 
         Args:
-            source (TinyPerson): The agent that issued the actions.
+            source (Persona): The agent that issued the actions.
             actions (list): A list of actions issued by the agents. Each action is actually a
               JSON specification.
 
@@ -554,13 +554,13 @@ class TinyWorld:
                 self._handle_talk(source, content, target)
 
     @transactional()
-    def _handle_reach_out(self, source_agent: TinyPerson, content: str, target: str):
+    def _handle_reach_out(self, source_agent: Persona, content: str, target: str):
         &#34;&#34;&#34;
         Handles the REACH_OUT action. This default implementation always allows REACH_OUT to succeed.
         Subclasses might override this method to implement different policies.
 
         Args:
-            source_agent (TinyPerson): The agent that issued the REACH_OUT action.
+            source_agent (Persona): The agent that issued the REACH_OUT action.
             content (str): The content of the message.
             target (str): The target of the message.
         &#34;&#34;&#34;
@@ -587,12 +587,12 @@ class TinyWorld:
             )
 
     @transactional()
-    def _handle_talk(self, source_agent: TinyPerson, content: str, target: str):
+    def _handle_talk(self, source_agent: Persona, content: str, target: str):
         &#34;&#34;&#34;
         Handles the TALK action by delivering the specified content to the specified target.
 
         Args:
-            source_agent (TinyPerson): The agent that issued the TALK action.
+            source_agent (Persona): The agent that issued the TALK action.
             content (str): The content of the message.
             target (str, optional): The target of the message.
         &#34;&#34;&#34;
@@ -837,7 +837,7 @@ class TinyWorld:
         self._displayed_communications_buffer = []
 
     def __repr__(self):
-        return f&#34;TinyWorld(name=&#39;{self.name}&#39;)&#34;
+        return f&#34;World(name=&#39;{self.name}&#39;)&#34;
 
     def _pretty_step(self, cur_step, total_steps, timedelta_per_step=None):
         rendering = f&#34;{self.name} step {cur_step} of {total_steps}&#34;
@@ -850,7 +850,7 @@ class TinyWorld:
         indent = &#34;          &gt; &#34;
         justification = textwrap.fill(
             intervention.precondition_justification(),
-            width=TinyPerson.PP_TEXT_WIDTH,
+            width=Persona.PP_TEXT_WIDTH,
             initial_indent=indent,
             subsequent_indent=indent,
         )
@@ -959,7 +959,7 @@ class TinyWorld:
         for agent_state in state[&#34;agents&#34;]:
             try:
                 try:
-                    agent = TinyPerson.get_agent_by_name(agent_state[&#34;name&#34;])
+                    agent = Persona.get_agent_by_name(agent_state[&#34;name&#34;])
                 except Exception as e:
                     raise ValueError(
                         f&#34;Could not find agent {agent_state[&#39;name&#39;]} for environment {self.name}.&#34;
@@ -990,12 +990,12 @@ class TinyWorld:
         Adds an environment to the list of all environments. Environment names must be unique,
         so if an environment with the same name already exists, an error is raised.
         &#34;&#34;&#34;
-        if environment.name in TinyWorld.all_environments:
+        if environment.name in World.all_environments:
             raise ValueError(
                 f&#34;Environment names must be unique, but &#39;{environment.name}&#39; is already defined.&#34;
             )
         else:
-            TinyWorld.all_environments[environment.name] = environment
+            World.all_environments[environment.name] = environment
 
     @staticmethod
     def set_simulation_for_free_environments(simulation):
@@ -1003,7 +1003,7 @@ class TinyWorld:
         Sets the simulation if it is None. This allows free environments to be captured by specific simulation scopes
         if desired.
         &#34;&#34;&#34;
-        for environment in TinyWorld.all_environments.values():
+        for environment in World.all_environments.values():
             if environment.simulation_id is None:
                 simulation.add_environment(environment)
 
@@ -1017,10 +1017,10 @@ class TinyWorld:
             name (str): The name of the environment to return.
 
         Returns:
-            TinyWorld: The environment with the specified name.
+            World: The environment with the specified name.
         &#34;&#34;&#34;
-        if name in TinyWorld.all_environments:
-            return TinyWorld.all_environments[name]
+        if name in World.all_environments:
+            return World.all_environments[name]
         else:
             return None
     @staticmethod
@@ -1028,7 +1028,7 @@ class TinyWorld:
         &#34;&#34;&#34;
         Clears the list of all environments.
         &#34;&#34;&#34;
-        TinyWorld.all_environments = {}
+        World.all_environments = {}
 
     #######################################################################
     # Cost statistics methods
@@ -1045,7 +1045,7 @@ class TinyWorld:
                 - per_step: Average resources per simulation step
                 - per_agent_per_step: Average resources per agent per step
         &#34;&#34;&#34;
-        from tinytroupe.clients import client
+        from openpersona.clients import client
 
         base_stats = client().get_cost_stats()
         num_agents = len(self.agents)
@@ -1160,16 +1160,16 @@ class TinyWorld:
                 - total_environments: Number of environments
                 - per_environment: Average resources per environment
         &#34;&#34;&#34;
-        from tinytroupe.clients import client
+        from openpersona.clients import client
 
         base_stats = client().get_cost_stats()
         total_agents = sum(
-            len(env.agents) for env in TinyWorld.all_environments.values()
+            len(env.agents) for env in World.all_environments.values()
         )
         total_steps = sum(
-            env._simulation_steps for env in TinyWorld.all_environments.values()
+            env._simulation_steps for env in World.all_environments.values()
         )
-        num_environments = len(TinyWorld.all_environments)
+        num_environments = len(World.all_environments)
 
         result = {
             &#34;base_stats&#34;: base_stats,
@@ -1197,7 +1197,7 @@ class TinyWorld:
         &#34;&#34;&#34;
         Pretty prints global cost statistics across all environments.
         &#34;&#34;&#34;
-        stats = TinyWorld.get_global_cost_stats()
+        stats = World.get_global_cost_stats()
 
         print(&#34;\n&#34; + &#34;=&#34; * 70)
         print(&#34;GLOBAL COST STATISTICS (ALL ENVIRONMENTS)&#34;)
@@ -1237,8 +1237,8 @@ class TinyWorld:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld"><code class="flex name class">
-<span>class <span class="ident">TinyWorld</span></span>
+<dt id="openpersona.environment.world.World"><code class="flex name class">
+<span>class <span class="ident">World</span></span>
 <span>(</span><span>name: str = None, agents=[], initial_datetime=datetime.datetime(2026, 1, 14, 15, 46, 23, 967551), interventions=[], broadcast_if_no_target=True, max_additional_targets_to_display=3)</span>
 </code></dt>
 <dd>
@@ -1265,7 +1265,7 @@ all additional targets are displayed.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TinyWorld:
+<pre><code class="python">class World:
     &#34;&#34;&#34;
     Base class for environments.
     &#34;&#34;&#34;
@@ -1302,7 +1302,7 @@ all additional targets are displayed.</dd>
         if name is not None:
             self.name = name
         else:
-            self.name = f&#34;TinyWorld {utils.fresh_id(self.__class__.__name__)}&#34;
+            self.name = f&#34;World {utils.fresh_id(self.__class__.__name__)}&#34;
 
         self.current_datetime = initial_datetime
         self.broadcast_if_no_target = broadcast_if_no_target
@@ -1327,7 +1327,7 @@ all additional targets are displayed.</dd>
         self._simulation_steps = 0
 
         # add the environment to the list of all environments
-        TinyWorld.add_environment(self)
+        World.add_environment(self)
 
         self.add_agents(agents)
 
@@ -1360,7 +1360,7 @@ all additional targets are displayed.</dd>
         for intervention in self._interventions:
             should_apply_intervention = intervention.check_precondition()
             if should_apply_intervention:
-                if TinyWorld.communication_display:
+                if World.communication_display:
                     self._display_intervention_communication(intervention)
                 intervention.apply_effect()
 
@@ -1475,7 +1475,7 @@ all additional targets are displayed.</dd>
                 f&#34;[{self.name}] Running world simulation step {i+1} of {steps}.&#34;
             )
 
-            if TinyWorld.communication_display:
+            if World.communication_display:
                 self._display_step_communication(
                     cur_step=i + 1,
                     total_steps=steps,
@@ -1661,12 +1661,12 @@ all additional targets are displayed.</dd>
 
         return self  # for chaining
 
-    def add_agent(self, agent: TinyPerson):
+    def add_agent(self, agent: Persona):
         &#34;&#34;&#34;
         Adds an agent to the environment. The agent must have a unique name within the environment.
 
         Args:
-            agent (TinyPerson): The agent to add to the environment.
+            agent (Persona): The agent to add to the environment.
         Raises:
             ValueError: If the agent name is not unique within the environment.
         &#34;&#34;&#34;
@@ -1690,12 +1690,12 @@ all additional targets are displayed.</dd>
 
         return self  # for chaining
 
-    def remove_agent(self, agent: TinyPerson):
+    def remove_agent(self, agent: Persona):
         &#34;&#34;&#34;
         Removes an agent from the environment.
 
         Args:
-            agent (TinyPerson): The agent to remove from the environment.
+            agent (Persona): The agent to remove from the environment.
         &#34;&#34;&#34;
         logger.debug(f&#34;Removing agent {agent.name} from the environment.&#34;)
         self.agents.remove(agent)
@@ -1713,7 +1713,7 @@ all additional targets are displayed.</dd>
 
         return self  # for chaining
 
-    def get_agent_by_name(self, name: str) -&gt; TinyPerson:
+    def get_agent_by_name(self, name: str) -&gt; Persona:
         &#34;&#34;&#34;
         Returns the agent with the specified name. If no agent with that name exists in the environment,
         returns None.
@@ -1722,7 +1722,7 @@ all additional targets are displayed.</dd>
             name (str): The name of the agent to return.
 
         Returns:
-            TinyPerson: The agent with the specified name.
+            Persona: The agent with the specified name.
         &#34;&#34;&#34;
         if name in self.name_to_agent:
             return self.name_to_agent[name]
@@ -1748,12 +1748,12 @@ all additional targets are displayed.</dd>
     # because they have effects beyond the agent itself.
     #######################################################################
     @transactional()
-    def _handle_actions(self, source: TinyPerson, actions: list):
+    def _handle_actions(self, source: Persona, actions: list):
         &#34;&#34;&#34;
         Handles the actions issued by the agents.
 
         Args:
-            source (TinyPerson): The agent that issued the actions.
+            source (Persona): The agent that issued the actions.
             actions (list): A list of actions issued by the agents. Each action is actually a
               JSON specification.
 
@@ -1774,13 +1774,13 @@ all additional targets are displayed.</dd>
                 self._handle_talk(source, content, target)
 
     @transactional()
-    def _handle_reach_out(self, source_agent: TinyPerson, content: str, target: str):
+    def _handle_reach_out(self, source_agent: Persona, content: str, target: str):
         &#34;&#34;&#34;
         Handles the REACH_OUT action. This default implementation always allows REACH_OUT to succeed.
         Subclasses might override this method to implement different policies.
 
         Args:
-            source_agent (TinyPerson): The agent that issued the REACH_OUT action.
+            source_agent (Persona): The agent that issued the REACH_OUT action.
             content (str): The content of the message.
             target (str): The target of the message.
         &#34;&#34;&#34;
@@ -1807,12 +1807,12 @@ all additional targets are displayed.</dd>
             )
 
     @transactional()
-    def _handle_talk(self, source_agent: TinyPerson, content: str, target: str):
+    def _handle_talk(self, source_agent: Persona, content: str, target: str):
         &#34;&#34;&#34;
         Handles the TALK action by delivering the specified content to the specified target.
 
         Args:
-            source_agent (TinyPerson): The agent that issued the TALK action.
+            source_agent (Persona): The agent that issued the TALK action.
             content (str): The content of the message.
             target (str, optional): The target of the message.
         &#34;&#34;&#34;
@@ -2057,7 +2057,7 @@ all additional targets are displayed.</dd>
         self._displayed_communications_buffer = []
 
     def __repr__(self):
-        return f&#34;TinyWorld(name=&#39;{self.name}&#39;)&#34;
+        return f&#34;World(name=&#39;{self.name}&#39;)&#34;
 
     def _pretty_step(self, cur_step, total_steps, timedelta_per_step=None):
         rendering = f&#34;{self.name} step {cur_step} of {total_steps}&#34;
@@ -2070,7 +2070,7 @@ all additional targets are displayed.</dd>
         indent = &#34;          &gt; &#34;
         justification = textwrap.fill(
             intervention.precondition_justification(),
-            width=TinyPerson.PP_TEXT_WIDTH,
+            width=Persona.PP_TEXT_WIDTH,
             initial_indent=indent,
             subsequent_indent=indent,
         )
@@ -2179,7 +2179,7 @@ all additional targets are displayed.</dd>
         for agent_state in state[&#34;agents&#34;]:
             try:
                 try:
-                    agent = TinyPerson.get_agent_by_name(agent_state[&#34;name&#34;])
+                    agent = Persona.get_agent_by_name(agent_state[&#34;name&#34;])
                 except Exception as e:
                     raise ValueError(
                         f&#34;Could not find agent {agent_state[&#39;name&#39;]} for environment {self.name}.&#34;
@@ -2210,12 +2210,12 @@ all additional targets are displayed.</dd>
         Adds an environment to the list of all environments. Environment names must be unique,
         so if an environment with the same name already exists, an error is raised.
         &#34;&#34;&#34;
-        if environment.name in TinyWorld.all_environments:
+        if environment.name in World.all_environments:
             raise ValueError(
                 f&#34;Environment names must be unique, but &#39;{environment.name}&#39; is already defined.&#34;
             )
         else:
-            TinyWorld.all_environments[environment.name] = environment
+            World.all_environments[environment.name] = environment
 
     @staticmethod
     def set_simulation_for_free_environments(simulation):
@@ -2223,7 +2223,7 @@ all additional targets are displayed.</dd>
         Sets the simulation if it is None. This allows free environments to be captured by specific simulation scopes
         if desired.
         &#34;&#34;&#34;
-        for environment in TinyWorld.all_environments.values():
+        for environment in World.all_environments.values():
             if environment.simulation_id is None:
                 simulation.add_environment(environment)
 
@@ -2237,10 +2237,10 @@ all additional targets are displayed.</dd>
             name (str): The name of the environment to return.
 
         Returns:
-            TinyWorld: The environment with the specified name.
+            World: The environment with the specified name.
         &#34;&#34;&#34;
-        if name in TinyWorld.all_environments:
-            return TinyWorld.all_environments[name]
+        if name in World.all_environments:
+            return World.all_environments[name]
         else:
             return None
     @staticmethod
@@ -2248,7 +2248,7 @@ all additional targets are displayed.</dd>
         &#34;&#34;&#34;
         Clears the list of all environments.
         &#34;&#34;&#34;
-        TinyWorld.all_environments = {}
+        World.all_environments = {}
 
     #######################################################################
     # Cost statistics methods
@@ -2265,7 +2265,7 @@ all additional targets are displayed.</dd>
                 - per_step: Average resources per simulation step
                 - per_agent_per_step: Average resources per agent per step
         &#34;&#34;&#34;
-        from tinytroupe.clients import client
+        from openpersona.clients import client
 
         base_stats = client().get_cost_stats()
         num_agents = len(self.agents)
@@ -2380,16 +2380,16 @@ all additional targets are displayed.</dd>
                 - total_environments: Number of environments
                 - per_environment: Average resources per environment
         &#34;&#34;&#34;
-        from tinytroupe.clients import client
+        from openpersona.clients import client
 
         base_stats = client().get_cost_stats()
         total_agents = sum(
-            len(env.agents) for env in TinyWorld.all_environments.values()
+            len(env.agents) for env in World.all_environments.values()
         )
         total_steps = sum(
-            env._simulation_steps for env in TinyWorld.all_environments.values()
+            env._simulation_steps for env in World.all_environments.values()
         )
-        num_environments = len(TinyWorld.all_environments)
+        num_environments = len(World.all_environments)
 
         result = {
             &#34;base_stats&#34;: base_stats,
@@ -2417,7 +2417,7 @@ all additional targets are displayed.</dd>
         &#34;&#34;&#34;
         Pretty prints global cost statistics across all environments.
         &#34;&#34;&#34;
-        stats = TinyWorld.get_global_cost_stats()
+        stats = World.get_global_cost_stats()
 
         print(&#34;\n&#34; + &#34;=&#34; * 70)
         print(&#34;GLOBAL COST STATISTICS (ALL ENVIRONMENTS)&#34;)
@@ -2449,22 +2449,22 @@ all additional targets are displayed.</dd>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.environment.tiny_social_network.TinySocialNetwork" href="tiny_social_network.html#tinytroupe.environment.tiny_social_network.TinySocialNetwork">TinySocialNetwork</a></li>
+<li><a title="openpersona.environment.social_network.SocialNetwork" href="social_network.html#openpersona.environment.social_network.SocialNetwork">SocialNetwork</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.all_environments"><code class="name">var <span class="ident">all_environments</span></code></dt>
+<dt id="openpersona.environment.world.World.all_environments"><code class="name">var <span class="ident">all_environments</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.communication_display"><code class="name">var <span class="ident">communication_display</span></code></dt>
+<dt id="openpersona.environment.world.World.communication_display"><code class="name">var <span class="ident">communication_display</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.add_environment"><code class="name flex">
+<dt id="openpersona.environment.world.World.add_environment"><code class="name flex">
 <span>def <span class="ident">add_environment</span></span>(<span>environment)</span>
 </code></dt>
 <dd>
@@ -2480,15 +2480,15 @@ def add_environment(environment):
     Adds an environment to the list of all environments. Environment names must be unique,
     so if an environment with the same name already exists, an error is raised.
     &#34;&#34;&#34;
-    if environment.name in TinyWorld.all_environments:
+    if environment.name in World.all_environments:
         raise ValueError(
             f&#34;Environment names must be unique, but &#39;{environment.name}&#39; is already defined.&#34;
         )
     else:
-        TinyWorld.all_environments[environment.name] = environment</code></pre>
+        World.all_environments[environment.name] = environment</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.clear_environments"><code class="name flex">
+<dt id="openpersona.environment.world.World.clear_environments"><code class="name flex">
 <span>def <span class="ident">clear_environments</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -2502,10 +2502,10 @@ def clear_environments():
     &#34;&#34;&#34;
     Clears the list of all environments.
     &#34;&#34;&#34;
-    TinyWorld.all_environments = {}</code></pre>
+    World.all_environments = {}</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.get_environment_by_name"><code class="name flex">
+<dt id="openpersona.environment.world.World.get_environment_by_name"><code class="name flex">
 <span>def <span class="ident">get_environment_by_name</span></span>(<span>name: str)</span>
 </code></dt>
 <dd>
@@ -2518,7 +2518,7 @@ returns None.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="tinytroupe.environment.tiny_world.TinyWorld" href="#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a></code></dt>
+<dt><code><a title="openpersona.environment.world.World" href="#openpersona.environment.world.World">World</a></code></dt>
 <dd>The environment with the specified name.</dd>
 </dl></div>
 <details class="source">
@@ -2535,15 +2535,15 @@ def get_environment_by_name(name: str):
         name (str): The name of the environment to return.
 
     Returns:
-        TinyWorld: The environment with the specified name.
+        World: The environment with the specified name.
     &#34;&#34;&#34;
-    if name in TinyWorld.all_environments:
-        return TinyWorld.all_environments[name]
+    if name in World.all_environments:
+        return World.all_environments[name]
     else:
         return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.get_global_cost_stats"><code class="name flex">
+<dt id="openpersona.environment.world.World.get_global_cost_stats"><code class="name flex">
 <span>def <span class="ident">get_global_cost_stats</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -2575,16 +2575,16 @@ def get_global_cost_stats():
             - total_environments: Number of environments
             - per_environment: Average resources per environment
     &#34;&#34;&#34;
-    from tinytroupe.clients import client
+    from openpersona.clients import client
 
     base_stats = client().get_cost_stats()
     total_agents = sum(
-        len(env.agents) for env in TinyWorld.all_environments.values()
+        len(env.agents) for env in World.all_environments.values()
     )
     total_steps = sum(
-        env._simulation_steps for env in TinyWorld.all_environments.values()
+        env._simulation_steps for env in World.all_environments.values()
     )
-    num_environments = len(TinyWorld.all_environments)
+    num_environments = len(World.all_environments)
 
     result = {
         &#34;base_stats&#34;: base_stats,
@@ -2608,7 +2608,7 @@ def get_global_cost_stats():
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.pretty_print_global_cost_stats"><code class="name flex">
+<dt id="openpersona.environment.world.World.pretty_print_global_cost_stats"><code class="name flex">
 <span>def <span class="ident">pretty_print_global_cost_stats</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -2622,7 +2622,7 @@ def pretty_print_global_cost_stats():
     &#34;&#34;&#34;
     Pretty prints global cost statistics across all environments.
     &#34;&#34;&#34;
-    stats = TinyWorld.get_global_cost_stats()
+    stats = World.get_global_cost_stats()
 
     print(&#34;\n&#34; + &#34;=&#34; * 70)
     print(&#34;GLOBAL COST STATISTICS (ALL ENVIRONMENTS)&#34;)
@@ -2653,7 +2653,7 @@ def pretty_print_global_cost_stats():
     print(&#34;=&#34; * 70 + &#34;\n&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.set_simulation_for_free_environments"><code class="name flex">
+<dt id="openpersona.environment.world.World.set_simulation_for_free_environments"><code class="name flex">
 <span>def <span class="ident">set_simulation_for_free_environments</span></span>(<span>simulation)</span>
 </code></dt>
 <dd>
@@ -2669,7 +2669,7 @@ def set_simulation_for_free_environments(simulation):
     Sets the simulation if it is None. This allows free environments to be captured by specific simulation scopes
     if desired.
     &#34;&#34;&#34;
-    for environment in TinyWorld.all_environments.values():
+    for environment in World.all_environments.values():
         if environment.simulation_id is None:
             simulation.add_environment(environment)</code></pre>
 </details>
@@ -2677,14 +2677,14 @@ def set_simulation_for_free_environments(simulation):
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.add_agent"><code class="name flex">
-<span>def <span class="ident">add_agent</span></span>(<span>self, agent: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>)</span>
+<dt id="openpersona.environment.world.World.add_agent"><code class="name flex">
+<span>def <span class="ident">add_agent</span></span>(<span>self, agent: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds an agent to the environment. The agent must have a unique name within the environment.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>agent</code></strong> :&ensp;<code>TinyPerson</code></dt>
+<dt><strong><code>agent</code></strong> :&ensp;<code>Persona</code></dt>
 <dd>The agent to add to the environment.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
@@ -2696,12 +2696,12 @@ def set_simulation_for_free_environments(simulation):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_agent(self, agent: TinyPerson):
+<pre><code class="python">def add_agent(self, agent: Persona):
     &#34;&#34;&#34;
     Adds an agent to the environment. The agent must have a unique name within the environment.
 
     Args:
-        agent (TinyPerson): The agent to add to the environment.
+        agent (Persona): The agent to add to the environment.
     Raises:
         ValueError: If the agent name is not unique within the environment.
     &#34;&#34;&#34;
@@ -2726,7 +2726,7 @@ def set_simulation_for_free_environments(simulation):
     return self  # for chaining</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.add_agents"><code class="name flex">
+<dt id="openpersona.environment.world.World.add_agents"><code class="name flex">
 <span>def <span class="ident">add_agents</span></span>(<span>self, agents: list)</span>
 </code></dt>
 <dd>
@@ -2753,7 +2753,7 @@ def set_simulation_for_free_environments(simulation):
     return self  # for chaining</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.add_intervention"><code class="name flex">
+<dt id="openpersona.environment.world.World.add_intervention"><code class="name flex">
 <span>def <span class="ident">add_intervention</span></span>(<span>self, intervention)</span>
 </code></dt>
 <dd>
@@ -2777,7 +2777,7 @@ def set_simulation_for_free_environments(simulation):
     self._interventions.append(intervention)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.broadcast"><code class="name flex">
+<dt id="openpersona.environment.world.World.broadcast"><code class="name flex">
 <span>def <span class="ident">broadcast</span></span>(<span>*args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -2801,7 +2801,7 @@ def set_simulation_for_free_environments(simulation):
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.broadcast_context_change"><code class="name flex">
+<dt id="openpersona.environment.world.World.broadcast_context_change"><code class="name flex">
 <span>def <span class="ident">broadcast_context_change</span></span>(<span>*args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -2825,7 +2825,7 @@ def set_simulation_for_free_environments(simulation):
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.broadcast_internal_goal"><code class="name flex">
+<dt id="openpersona.environment.world.World.broadcast_internal_goal"><code class="name flex">
 <span>def <span class="ident">broadcast_internal_goal</span></span>(<span>*args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -2849,7 +2849,7 @@ def set_simulation_for_free_environments(simulation):
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.broadcast_thought"><code class="name flex">
+<dt id="openpersona.environment.world.World.broadcast_thought"><code class="name flex">
 <span>def <span class="ident">broadcast_thought</span></span>(<span>*args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -2873,7 +2873,7 @@ def set_simulation_for_free_environments(simulation):
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.clear_communications_buffer"><code class="name flex">
+<dt id="openpersona.environment.world.World.clear_communications_buffer"><code class="name flex">
 <span>def <span class="ident">clear_communications_buffer</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2889,7 +2889,7 @@ def set_simulation_for_free_environments(simulation):
     self._displayed_communications_buffer = []</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.decode_complete_state"><code class="name flex">
+<dt id="openpersona.environment.world.World.decode_complete_state"><code class="name flex">
 <span>def <span class="ident">decode_complete_state</span></span>(<span>self, state: dict)</span>
 </code></dt>
 <dd>
@@ -2927,7 +2927,7 @@ def set_simulation_for_free_environments(simulation):
     for agent_state in state[&#34;agents&#34;]:
         try:
             try:
-                agent = TinyPerson.get_agent_by_name(agent_state[&#34;name&#34;])
+                agent = Persona.get_agent_by_name(agent_state[&#34;name&#34;])
             except Exception as e:
                 raise ValueError(
                     f&#34;Could not find agent {agent_state[&#39;name&#39;]} for environment {self.name}.&#34;
@@ -2953,7 +2953,7 @@ def set_simulation_for_free_environments(simulation):
     return self</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.encode_complete_state"><code class="name flex">
+<dt id="openpersona.environment.world.World.encode_complete_state"><code class="name flex">
 <span>def <span class="ident">encode_complete_state</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
@@ -2994,8 +2994,8 @@ def set_simulation_for_free_environments(simulation):
     return state</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.get_agent_by_name"><code class="name flex">
-<span>def <span class="ident">get_agent_by_name</span></span>(<span>self, name: str) ‑> <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a></span>
+<dt id="openpersona.environment.world.World.get_agent_by_name"><code class="name flex">
+<span>def <span class="ident">get_agent_by_name</span></span>(<span>self, name: str) ‑> <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns the agent with the specified name. If no agent with that name exists in the environment,
@@ -3007,14 +3007,14 @@ returns None.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>TinyPerson</code></dt>
+<dt><code>Persona</code></dt>
 <dd>The agent with the specified name.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_agent_by_name(self, name: str) -&gt; TinyPerson:
+<pre><code class="python">def get_agent_by_name(self, name: str) -&gt; Persona:
     &#34;&#34;&#34;
     Returns the agent with the specified name. If no agent with that name exists in the environment,
     returns None.
@@ -3023,7 +3023,7 @@ returns None.</p>
         name (str): The name of the agent to return.
 
     Returns:
-        TinyPerson: The agent with the specified name.
+        Persona: The agent with the specified name.
     &#34;&#34;&#34;
     if name in self.name_to_agent:
         return self.name_to_agent[name]
@@ -3031,7 +3031,7 @@ returns None.</p>
         return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.get_cost_stats"><code class="name flex">
+<dt id="openpersona.environment.world.World.get_cost_stats"><code class="name flex">
 <span>def <span class="ident">get_cost_stats</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3060,7 +3060,7 @@ returns None.</p>
             - per_step: Average resources per simulation step
             - per_agent_per_step: Average resources per agent per step
     &#34;&#34;&#34;
-    from tinytroupe.clients import client
+    from openpersona.clients import client
 
     base_stats = client().get_cost_stats()
     num_agents = len(self.agents)
@@ -3112,7 +3112,7 @@ returns None.</p>
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.make_everyone_accessible"><code class="name flex">
+<dt id="openpersona.environment.world.World.make_everyone_accessible"><code class="name flex">
 <span>def <span class="ident">make_everyone_accessible</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3131,7 +3131,7 @@ returns None.</p>
                 agent_1.make_agent_accessible(agent_2)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.pop_and_display_latest_communications"><code class="name flex">
+<dt id="openpersona.environment.world.World.pop_and_display_latest_communications"><code class="name flex">
 <span>def <span class="ident">pop_and_display_latest_communications</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3153,7 +3153,7 @@ returns None.</p>
     return communications</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.pp_current_interactions"><code class="name flex">
+<dt id="openpersona.environment.world.World.pp_current_interactions"><code class="name flex">
 <span>def <span class="ident">pp_current_interactions</span></span>(<span>self, simplified=True, skip_system=True)</span>
 </code></dt>
 <dd>
@@ -3173,7 +3173,7 @@ returns None.</p>
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.pretty_current_interactions"><code class="name flex">
+<dt id="openpersona.environment.world.World.pretty_current_interactions"><code class="name flex">
 <span>def <span class="ident">pretty_current_interactions</span></span>(<span>self, simplified=True, skip_system=True, max_content_length=None, first_n=None, last_n=None, include_omission_info: bool = True)</span>
 </code></dt>
 <dd>
@@ -3219,7 +3219,7 @@ def pretty_current_interactions(
     return &#34;\n&#34;.join(agent_contents)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.pretty_print_cost_stats"><code class="name flex">
+<dt id="openpersona.environment.world.World.pretty_print_cost_stats"><code class="name flex">
 <span>def <span class="ident">pretty_print_cost_stats</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3280,26 +3280,26 @@ def pretty_current_interactions(
     print(&#34;=&#34; * 70 + &#34;\n&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.remove_agent"><code class="name flex">
-<span>def <span class="ident">remove_agent</span></span>(<span>self, agent: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>)</span>
+<dt id="openpersona.environment.world.World.remove_agent"><code class="name flex">
+<span>def <span class="ident">remove_agent</span></span>(<span>self, agent: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Removes an agent from the environment.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>agent</code></strong> :&ensp;<code>TinyPerson</code></dt>
+<dt><strong><code>agent</code></strong> :&ensp;<code>Persona</code></dt>
 <dd>The agent to remove from the environment.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def remove_agent(self, agent: TinyPerson):
+<pre><code class="python">def remove_agent(self, agent: Persona):
     &#34;&#34;&#34;
     Removes an agent from the environment.
 
     Args:
-        agent (TinyPerson): The agent to remove from the environment.
+        agent (Persona): The agent to remove from the environment.
     &#34;&#34;&#34;
     logger.debug(f&#34;Removing agent {agent.name} from the environment.&#34;)
     self.agents.remove(agent)
@@ -3308,7 +3308,7 @@ def pretty_current_interactions(
     return self  # for chaining</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.remove_all_agents"><code class="name flex">
+<dt id="openpersona.environment.world.World.remove_all_agents"><code class="name flex">
 <span>def <span class="ident">remove_all_agents</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3328,7 +3328,7 @@ def pretty_current_interactions(
     return self  # for chaining</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.run"><code class="name flex">
+<dt id="openpersona.environment.world.World.run"><code class="name flex">
 <span>def <span class="ident">run</span></span>(<span>*args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -3352,7 +3352,7 @@ def pretty_current_interactions(
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.run_days"><code class="name flex">
+<dt id="openpersona.environment.world.World.run_days"><code class="name flex">
 <span>def <span class="ident">run_days</span></span>(<span>self, days: int, randomize_agents_order=True, parallelize=None)</span>
 </code></dt>
 <dd>
@@ -3382,7 +3382,7 @@ def run_days(self, days: int, randomize_agents_order=True, parallelize=None):
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.run_hours"><code class="name flex">
+<dt id="openpersona.environment.world.World.run_hours"><code class="name flex">
 <span>def <span class="ident">run_hours</span></span>(<span>self, hours: int, randomize_agents_order=True, parallelize=None)</span>
 </code></dt>
 <dd>
@@ -3412,7 +3412,7 @@ def run_hours(self, hours: int, randomize_agents_order=True, parallelize=None):
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.run_minutes"><code class="name flex">
+<dt id="openpersona.environment.world.World.run_minutes"><code class="name flex">
 <span>def <span class="ident">run_minutes</span></span>(<span>self, minutes: int, randomize_agents_order=True, parallelize=None)</span>
 </code></dt>
 <dd>
@@ -3442,7 +3442,7 @@ def run_minutes(self, minutes: int, randomize_agents_order=True, parallelize=Non
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.run_months"><code class="name flex">
+<dt id="openpersona.environment.world.World.run_months"><code class="name flex">
 <span>def <span class="ident">run_months</span></span>(<span>self, months: int, randomize_agents_order=True, parallelize=None)</span>
 </code></dt>
 <dd>
@@ -3475,7 +3475,7 @@ def run_months(self, months: int, randomize_agents_order=True, parallelize=None)
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.run_weeks"><code class="name flex">
+<dt id="openpersona.environment.world.World.run_weeks"><code class="name flex">
 <span>def <span class="ident">run_weeks</span></span>(<span>self, weeks: int, randomize_agents_order=True, parallelize=None)</span>
 </code></dt>
 <dd>
@@ -3508,7 +3508,7 @@ def run_weeks(self, weeks: int, randomize_agents_order=True, parallelize=None):
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.run_years"><code class="name flex">
+<dt id="openpersona.environment.world.World.run_years"><code class="name flex">
 <span>def <span class="ident">run_years</span></span>(<span>self, years: int, randomize_agents_order=True, parallelize=None)</span>
 </code></dt>
 <dd>
@@ -3541,7 +3541,7 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.skip"><code class="name flex">
+<dt id="openpersona.environment.world.World.skip"><code class="name flex">
 <span>def <span class="ident">skip</span></span>(<span>*args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -3565,7 +3565,7 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.skip_days"><code class="name flex">
+<dt id="openpersona.environment.world.World.skip_days"><code class="name flex">
 <span>def <span class="ident">skip_days</span></span>(<span>self, days: int)</span>
 </code></dt>
 <dd>
@@ -3589,7 +3589,7 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
     self.skip(steps=days, timedelta_per_step=timedelta(days=1))</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.skip_hours"><code class="name flex">
+<dt id="openpersona.environment.world.World.skip_hours"><code class="name flex">
 <span>def <span class="ident">skip_hours</span></span>(<span>self, hours: int)</span>
 </code></dt>
 <dd>
@@ -3613,7 +3613,7 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
     self.skip(steps=hours, timedelta_per_step=timedelta(hours=1))</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.skip_minutes"><code class="name flex">
+<dt id="openpersona.environment.world.World.skip_minutes"><code class="name flex">
 <span>def <span class="ident">skip_minutes</span></span>(<span>self, minutes: int)</span>
 </code></dt>
 <dd>
@@ -3637,7 +3637,7 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
     self.skip(steps=minutes, timedelta_per_step=timedelta(minutes=1))</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.skip_months"><code class="name flex">
+<dt id="openpersona.environment.world.World.skip_months"><code class="name flex">
 <span>def <span class="ident">skip_months</span></span>(<span>self, months: int)</span>
 </code></dt>
 <dd>
@@ -3661,7 +3661,7 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
     self.skip(steps=months, timedelta_per_step=timedelta(weeks=4))</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.skip_weeks"><code class="name flex">
+<dt id="openpersona.environment.world.World.skip_weeks"><code class="name flex">
 <span>def <span class="ident">skip_weeks</span></span>(<span>self, weeks: int)</span>
 </code></dt>
 <dd>
@@ -3685,7 +3685,7 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
     self.skip(steps=weeks, timedelta_per_step=timedelta(weeks=1))</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.environment.tiny_world.TinyWorld.skip_years"><code class="name flex">
+<dt id="openpersona.environment.world.World.skip_years"><code class="name flex">
 <span>def <span class="ident">skip_years</span></span>(<span>self, years: int)</span>
 </code></dt>
 <dd>
@@ -3722,55 +3722,55 @@ def run_years(self, years: int, randomize_agents_order=True, parallelize=None):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.environment" href="index.html">tinytroupe.environment</a></code></li>
+<li><code><a title="openpersona.environment" href="index.html">openpersona.environment</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.environment.tiny_world.TinyWorld" href="#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a></code></h4>
+<h4><code><a title="openpersona.environment.world.World" href="#openpersona.environment.world.World">World</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_agent" href="#tinytroupe.environment.tiny_world.TinyWorld.add_agent">add_agent</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_agents" href="#tinytroupe.environment.tiny_world.TinyWorld.add_agents">add_agents</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_environment" href="#tinytroupe.environment.tiny_world.TinyWorld.add_environment">add_environment</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.add_intervention" href="#tinytroupe.environment.tiny_world.TinyWorld.add_intervention">add_intervention</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.all_environments" href="#tinytroupe.environment.tiny_world.TinyWorld.all_environments">all_environments</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.broadcast" href="#tinytroupe.environment.tiny_world.TinyWorld.broadcast">broadcast</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.broadcast_context_change" href="#tinytroupe.environment.tiny_world.TinyWorld.broadcast_context_change">broadcast_context_change</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.broadcast_internal_goal" href="#tinytroupe.environment.tiny_world.TinyWorld.broadcast_internal_goal">broadcast_internal_goal</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.broadcast_thought" href="#tinytroupe.environment.tiny_world.TinyWorld.broadcast_thought">broadcast_thought</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.clear_communications_buffer" href="#tinytroupe.environment.tiny_world.TinyWorld.clear_communications_buffer">clear_communications_buffer</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.clear_environments" href="#tinytroupe.environment.tiny_world.TinyWorld.clear_environments">clear_environments</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.communication_display" href="#tinytroupe.environment.tiny_world.TinyWorld.communication_display">communication_display</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.decode_complete_state" href="#tinytroupe.environment.tiny_world.TinyWorld.decode_complete_state">decode_complete_state</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.encode_complete_state" href="#tinytroupe.environment.tiny_world.TinyWorld.encode_complete_state">encode_complete_state</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_agent_by_name" href="#tinytroupe.environment.tiny_world.TinyWorld.get_agent_by_name">get_agent_by_name</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_cost_stats" href="#tinytroupe.environment.tiny_world.TinyWorld.get_cost_stats">get_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_environment_by_name" href="#tinytroupe.environment.tiny_world.TinyWorld.get_environment_by_name">get_environment_by_name</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.get_global_cost_stats" href="#tinytroupe.environment.tiny_world.TinyWorld.get_global_cost_stats">get_global_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.make_everyone_accessible" href="#tinytroupe.environment.tiny_world.TinyWorld.make_everyone_accessible">make_everyone_accessible</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pop_and_display_latest_communications" href="#tinytroupe.environment.tiny_world.TinyWorld.pop_and_display_latest_communications">pop_and_display_latest_communications</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pp_current_interactions" href="#tinytroupe.environment.tiny_world.TinyWorld.pp_current_interactions">pp_current_interactions</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pretty_current_interactions" href="#tinytroupe.environment.tiny_world.TinyWorld.pretty_current_interactions">pretty_current_interactions</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pretty_print_cost_stats" href="#tinytroupe.environment.tiny_world.TinyWorld.pretty_print_cost_stats">pretty_print_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.pretty_print_global_cost_stats" href="#tinytroupe.environment.tiny_world.TinyWorld.pretty_print_global_cost_stats">pretty_print_global_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.remove_agent" href="#tinytroupe.environment.tiny_world.TinyWorld.remove_agent">remove_agent</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.remove_all_agents" href="#tinytroupe.environment.tiny_world.TinyWorld.remove_all_agents">remove_all_agents</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run" href="#tinytroupe.environment.tiny_world.TinyWorld.run">run</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_days" href="#tinytroupe.environment.tiny_world.TinyWorld.run_days">run_days</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_hours" href="#tinytroupe.environment.tiny_world.TinyWorld.run_hours">run_hours</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_minutes" href="#tinytroupe.environment.tiny_world.TinyWorld.run_minutes">run_minutes</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_months" href="#tinytroupe.environment.tiny_world.TinyWorld.run_months">run_months</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_weeks" href="#tinytroupe.environment.tiny_world.TinyWorld.run_weeks">run_weeks</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.run_years" href="#tinytroupe.environment.tiny_world.TinyWorld.run_years">run_years</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.set_simulation_for_free_environments" href="#tinytroupe.environment.tiny_world.TinyWorld.set_simulation_for_free_environments">set_simulation_for_free_environments</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip" href="#tinytroupe.environment.tiny_world.TinyWorld.skip">skip</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_days" href="#tinytroupe.environment.tiny_world.TinyWorld.skip_days">skip_days</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_hours" href="#tinytroupe.environment.tiny_world.TinyWorld.skip_hours">skip_hours</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_minutes" href="#tinytroupe.environment.tiny_world.TinyWorld.skip_minutes">skip_minutes</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_months" href="#tinytroupe.environment.tiny_world.TinyWorld.skip_months">skip_months</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_weeks" href="#tinytroupe.environment.tiny_world.TinyWorld.skip_weeks">skip_weeks</a></code></li>
-<li><code><a title="tinytroupe.environment.tiny_world.TinyWorld.skip_years" href="#tinytroupe.environment.tiny_world.TinyWorld.skip_years">skip_years</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_agent" href="#openpersona.environment.world.World.add_agent">add_agent</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_agents" href="#openpersona.environment.world.World.add_agents">add_agents</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_environment" href="#openpersona.environment.world.World.add_environment">add_environment</a></code></li>
+<li><code><a title="openpersona.environment.world.World.add_intervention" href="#openpersona.environment.world.World.add_intervention">add_intervention</a></code></li>
+<li><code><a title="openpersona.environment.world.World.all_environments" href="#openpersona.environment.world.World.all_environments">all_environments</a></code></li>
+<li><code><a title="openpersona.environment.world.World.broadcast" href="#openpersona.environment.world.World.broadcast">broadcast</a></code></li>
+<li><code><a title="openpersona.environment.world.World.broadcast_context_change" href="#openpersona.environment.world.World.broadcast_context_change">broadcast_context_change</a></code></li>
+<li><code><a title="openpersona.environment.world.World.broadcast_internal_goal" href="#openpersona.environment.world.World.broadcast_internal_goal">broadcast_internal_goal</a></code></li>
+<li><code><a title="openpersona.environment.world.World.broadcast_thought" href="#openpersona.environment.world.World.broadcast_thought">broadcast_thought</a></code></li>
+<li><code><a title="openpersona.environment.world.World.clear_communications_buffer" href="#openpersona.environment.world.World.clear_communications_buffer">clear_communications_buffer</a></code></li>
+<li><code><a title="openpersona.environment.world.World.clear_environments" href="#openpersona.environment.world.World.clear_environments">clear_environments</a></code></li>
+<li><code><a title="openpersona.environment.world.World.communication_display" href="#openpersona.environment.world.World.communication_display">communication_display</a></code></li>
+<li><code><a title="openpersona.environment.world.World.decode_complete_state" href="#openpersona.environment.world.World.decode_complete_state">decode_complete_state</a></code></li>
+<li><code><a title="openpersona.environment.world.World.encode_complete_state" href="#openpersona.environment.world.World.encode_complete_state">encode_complete_state</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_agent_by_name" href="#openpersona.environment.world.World.get_agent_by_name">get_agent_by_name</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_cost_stats" href="#openpersona.environment.world.World.get_cost_stats">get_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_environment_by_name" href="#openpersona.environment.world.World.get_environment_by_name">get_environment_by_name</a></code></li>
+<li><code><a title="openpersona.environment.world.World.get_global_cost_stats" href="#openpersona.environment.world.World.get_global_cost_stats">get_global_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.make_everyone_accessible" href="#openpersona.environment.world.World.make_everyone_accessible">make_everyone_accessible</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pop_and_display_latest_communications" href="#openpersona.environment.world.World.pop_and_display_latest_communications">pop_and_display_latest_communications</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pp_current_interactions" href="#openpersona.environment.world.World.pp_current_interactions">pp_current_interactions</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pretty_current_interactions" href="#openpersona.environment.world.World.pretty_current_interactions">pretty_current_interactions</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pretty_print_cost_stats" href="#openpersona.environment.world.World.pretty_print_cost_stats">pretty_print_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.pretty_print_global_cost_stats" href="#openpersona.environment.world.World.pretty_print_global_cost_stats">pretty_print_global_cost_stats</a></code></li>
+<li><code><a title="openpersona.environment.world.World.remove_agent" href="#openpersona.environment.world.World.remove_agent">remove_agent</a></code></li>
+<li><code><a title="openpersona.environment.world.World.remove_all_agents" href="#openpersona.environment.world.World.remove_all_agents">remove_all_agents</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run" href="#openpersona.environment.world.World.run">run</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_days" href="#openpersona.environment.world.World.run_days">run_days</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_hours" href="#openpersona.environment.world.World.run_hours">run_hours</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_minutes" href="#openpersona.environment.world.World.run_minutes">run_minutes</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_months" href="#openpersona.environment.world.World.run_months">run_months</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_weeks" href="#openpersona.environment.world.World.run_weeks">run_weeks</a></code></li>
+<li><code><a title="openpersona.environment.world.World.run_years" href="#openpersona.environment.world.World.run_years">run_years</a></code></li>
+<li><code><a title="openpersona.environment.world.World.set_simulation_for_free_environments" href="#openpersona.environment.world.World.set_simulation_for_free_environments">set_simulation_for_free_environments</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip" href="#openpersona.environment.world.World.skip">skip</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_days" href="#openpersona.environment.world.World.skip_days">skip_days</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_hours" href="#openpersona.environment.world.World.skip_hours">skip_hours</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_minutes" href="#openpersona.environment.world.World.skip_minutes">skip_minutes</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_months" href="#openpersona.environment.world.World.skip_months">skip_months</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_weeks" href="#openpersona.environment.world.World.skip_weeks">skip_weeks</a></code></li>
+<li><code><a title="openpersona.environment.world.World.skip_years" href="#openpersona.environment.world.World.skip_years">skip_years</a></code></li>
 </ul>
 </li>
 </ul>

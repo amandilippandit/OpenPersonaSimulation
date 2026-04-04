@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.utils.rendering API documentation</title>
+<title>openpersona.utils.rendering API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.utils.rendering</code></h1>
+<h1 class="title">Module <code>openpersona.utils.rendering</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -32,7 +32,7 @@ from datetime import datetime
 from typing import Union
 import inspect
 
-from tinytroupe.utils import logger
+from openpersona.utils import logger
 
 
 ################################################################################
@@ -146,7 +146,7 @@ class RichTextStyle:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="tinytroupe.utils.rendering.break_text_at_length"><code class="name flex">
+<dt id="openpersona.utils.rendering.break_text_at_length"><code class="name flex">
 <span>def <span class="ident">break_text_at_length</span></span>(<span>text: Union[str, dict], max_length: int = None) ‑> str</span>
 </code></dt>
 <dd>
@@ -170,7 +170,7 @@ If the maximum length is <code>None</code>, the content is returned as is.</p></
         return text[:max_length] + &#34; (...)&#34;</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.rendering.dedent"><code class="name flex">
+<dt id="openpersona.utils.rendering.dedent"><code class="name flex">
 <span>def <span class="ident">dedent</span></span>(<span>text: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -186,7 +186,7 @@ If the maximum length is <code>None</code>, the content is returned as is.</p></
     return textwrap.dedent(text).strip()</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.rendering.indent_at_current_level"><code class="name flex">
+<dt id="openpersona.utils.rendering.indent_at_current_level"><code class="name flex">
 <span>def <span class="ident">indent_at_current_level</span></span>(<span>text: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -215,7 +215,7 @@ If the maximum length is <code>None</code>, the content is returned as is.</p></
     return textwrap.indent(text, &#39; &#39; * indent)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.rendering.inject_html_css_style_prefix"><code class="name flex">
+<dt id="openpersona.utils.rendering.inject_html_css_style_prefix"><code class="name flex">
 <span>def <span class="ident">inject_html_css_style_prefix</span></span>(<span>html, style_prefix_attributes)</span>
 </code></dt>
 <dd>
@@ -238,7 +238,7 @@ inject_html_css_style_prefix('<div style="color: red;">Hello</div>', 'font-size:
     return html.replace(&#39;style=&#34;&#39;, f&#39;style=&#34;{style_prefix_attributes};&#39;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.rendering.pretty_datetime"><code class="name flex">
+<dt id="openpersona.utils.rendering.pretty_datetime"><code class="name flex">
 <span>def <span class="ident">pretty_datetime</span></span>(<span>dt: datetime.datetime) ‑> str</span>
 </code></dt>
 <dd>
@@ -254,7 +254,7 @@ inject_html_css_style_prefix('<div style="color: red;">Hello</div>', 'font-size:
     return dt.strftime(&#34;%Y-%m-%d %H:%M&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.rendering.wrap_text"><code class="name flex">
+<dt id="openpersona.utils.rendering.wrap_text"><code class="name flex">
 <span>def <span class="ident">wrap_text</span></span>(<span>text: str, width: int = 100) ‑> str</span>
 </code></dt>
 <dd>
@@ -275,7 +275,7 @@ inject_html_css_style_prefix('<div style="color: red;">Hello</div>', 'font-size:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.utils.rendering.RichTextStyle"><code class="flex name class">
+<dt id="openpersona.utils.rendering.RichTextStyle"><code class="flex name class">
 <span>class <span class="ident">RichTextStyle</span></span>
 </code></dt>
 <dd>
@@ -324,42 +324,42 @@ inject_html_css_style_prefix('<div style="color: red;">Hello</div>', 'font-size:
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.ACTION_DEFAULT_STYLE"><code class="name">var <span class="ident">ACTION_DEFAULT_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.ACTION_DEFAULT_STYLE"><code class="name">var <span class="ident">ACTION_DEFAULT_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.ACTION_DONE_STYLE"><code class="name">var <span class="ident">ACTION_DONE_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.ACTION_DONE_STYLE"><code class="name">var <span class="ident">ACTION_DONE_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.ACTION_TALK_STYLE"><code class="name">var <span class="ident">ACTION_TALK_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.ACTION_TALK_STYLE"><code class="name">var <span class="ident">ACTION_TALK_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.ACTION_THINK_STYLE"><code class="name">var <span class="ident">ACTION_THINK_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.ACTION_THINK_STYLE"><code class="name">var <span class="ident">ACTION_THINK_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.INTERVENTION_DEFAULT_STYLE"><code class="name">var <span class="ident">INTERVENTION_DEFAULT_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.INTERVENTION_DEFAULT_STYLE"><code class="name">var <span class="ident">INTERVENTION_DEFAULT_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.STIMULUS_CONVERSATION_STYLE"><code class="name">var <span class="ident">STIMULUS_CONVERSATION_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.STIMULUS_CONVERSATION_STYLE"><code class="name">var <span class="ident">STIMULUS_CONVERSATION_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.STIMULUS_DEFAULT_STYLE"><code class="name">var <span class="ident">STIMULUS_DEFAULT_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.STIMULUS_DEFAULT_STYLE"><code class="name">var <span class="ident">STIMULUS_DEFAULT_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.STIMULUS_THOUGHT_STYLE"><code class="name">var <span class="ident">STIMULUS_THOUGHT_STYLE</span></code></dt>
+<dt id="openpersona.utils.rendering.RichTextStyle.STIMULUS_THOUGHT_STYLE"><code class="name">var <span class="ident">STIMULUS_THOUGHT_STYLE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="tinytroupe.utils.rendering.RichTextStyle.get_style_for"><code class="name flex">
+<dt id="openpersona.utils.rendering.RichTextStyle.get_style_for"><code class="name flex">
 <span>def <span class="ident">get_style_for</span></span>(<span>kind: str, event_type: str = None)</span>
 </code></dt>
 <dd>
@@ -405,33 +405,33 @@ def get_style_for(cls, kind:str, event_type:str=None):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.utils" href="index.html">tinytroupe.utils</a></code></li>
+<li><code><a title="openpersona.utils" href="index.html">openpersona.utils</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="tinytroupe.utils.rendering.break_text_at_length" href="#tinytroupe.utils.rendering.break_text_at_length">break_text_at_length</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.dedent" href="#tinytroupe.utils.rendering.dedent">dedent</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.indent_at_current_level" href="#tinytroupe.utils.rendering.indent_at_current_level">indent_at_current_level</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.inject_html_css_style_prefix" href="#tinytroupe.utils.rendering.inject_html_css_style_prefix">inject_html_css_style_prefix</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.pretty_datetime" href="#tinytroupe.utils.rendering.pretty_datetime">pretty_datetime</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.wrap_text" href="#tinytroupe.utils.rendering.wrap_text">wrap_text</a></code></li>
+<li><code><a title="openpersona.utils.rendering.break_text_at_length" href="#openpersona.utils.rendering.break_text_at_length">break_text_at_length</a></code></li>
+<li><code><a title="openpersona.utils.rendering.dedent" href="#openpersona.utils.rendering.dedent">dedent</a></code></li>
+<li><code><a title="openpersona.utils.rendering.indent_at_current_level" href="#openpersona.utils.rendering.indent_at_current_level">indent_at_current_level</a></code></li>
+<li><code><a title="openpersona.utils.rendering.inject_html_css_style_prefix" href="#openpersona.utils.rendering.inject_html_css_style_prefix">inject_html_css_style_prefix</a></code></li>
+<li><code><a title="openpersona.utils.rendering.pretty_datetime" href="#openpersona.utils.rendering.pretty_datetime">pretty_datetime</a></code></li>
+<li><code><a title="openpersona.utils.rendering.wrap_text" href="#openpersona.utils.rendering.wrap_text">wrap_text</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.utils.rendering.RichTextStyle" href="#tinytroupe.utils.rendering.RichTextStyle">RichTextStyle</a></code></h4>
+<h4><code><a title="openpersona.utils.rendering.RichTextStyle" href="#openpersona.utils.rendering.RichTextStyle">RichTextStyle</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.ACTION_DEFAULT_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.ACTION_DEFAULT_STYLE">ACTION_DEFAULT_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.ACTION_DONE_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.ACTION_DONE_STYLE">ACTION_DONE_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.ACTION_TALK_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.ACTION_TALK_STYLE">ACTION_TALK_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.ACTION_THINK_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.ACTION_THINK_STYLE">ACTION_THINK_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.INTERVENTION_DEFAULT_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.INTERVENTION_DEFAULT_STYLE">INTERVENTION_DEFAULT_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.STIMULUS_CONVERSATION_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.STIMULUS_CONVERSATION_STYLE">STIMULUS_CONVERSATION_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.STIMULUS_DEFAULT_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.STIMULUS_DEFAULT_STYLE">STIMULUS_DEFAULT_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.STIMULUS_THOUGHT_STYLE" href="#tinytroupe.utils.rendering.RichTextStyle.STIMULUS_THOUGHT_STYLE">STIMULUS_THOUGHT_STYLE</a></code></li>
-<li><code><a title="tinytroupe.utils.rendering.RichTextStyle.get_style_for" href="#tinytroupe.utils.rendering.RichTextStyle.get_style_for">get_style_for</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.ACTION_DEFAULT_STYLE" href="#openpersona.utils.rendering.RichTextStyle.ACTION_DEFAULT_STYLE">ACTION_DEFAULT_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.ACTION_DONE_STYLE" href="#openpersona.utils.rendering.RichTextStyle.ACTION_DONE_STYLE">ACTION_DONE_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.ACTION_TALK_STYLE" href="#openpersona.utils.rendering.RichTextStyle.ACTION_TALK_STYLE">ACTION_TALK_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.ACTION_THINK_STYLE" href="#openpersona.utils.rendering.RichTextStyle.ACTION_THINK_STYLE">ACTION_THINK_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.INTERVENTION_DEFAULT_STYLE" href="#openpersona.utils.rendering.RichTextStyle.INTERVENTION_DEFAULT_STYLE">INTERVENTION_DEFAULT_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.STIMULUS_CONVERSATION_STYLE" href="#openpersona.utils.rendering.RichTextStyle.STIMULUS_CONVERSATION_STYLE">STIMULUS_CONVERSATION_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.STIMULUS_DEFAULT_STYLE" href="#openpersona.utils.rendering.RichTextStyle.STIMULUS_DEFAULT_STYLE">STIMULUS_DEFAULT_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.STIMULUS_THOUGHT_STYLE" href="#openpersona.utils.rendering.RichTextStyle.STIMULUS_THOUGHT_STYLE">STIMULUS_THOUGHT_STYLE</a></code></li>
+<li><code><a title="openpersona.utils.rendering.RichTextStyle.get_style_for" href="#openpersona.utils.rendering.RichTextStyle.get_style_for">get_style_for</a></code></li>
 </ul>
 </li>
 </ul>

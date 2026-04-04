@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.profiling API documentation</title>
+<title>openpersona.profiling API documentation</title>
 <meta name="description" content="Provides mechanisms for understanding characteristics of agent populations: age distribution, interests,
 skills, beliefs, goals, routines, …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -20,7 +20,7 @@ skills, beliefs, goals, routines, …" />
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.profiling</code></h1>
+<h1 class="title">Module <code>openpersona.profiling</code></h1>
 </header>
 <section id="section-intro">
 <p>Provides mechanisms for understanding characteristics of agent populations: age distribution, interests,
@@ -52,10 +52,10 @@ try:  # Normalizer lives under extraction
 except Exception:  # pragma: no cover - fallback (normalization will degrade gracefully)
     Normalizer = None  # type: ignore
 
-try:  # Optional TinyPerson type
-    from .agent import TinyPerson  # type: ignore
+try:  # Optional Persona type
+    from .agent import Persona  # type: ignore
 except Exception:  # pragma: no cover
-    TinyPerson = dict  # type: ignore
+    Persona = dict  # type: ignore
 
 
 class Profiler:
@@ -114,14 +114,14 @@ class Profiler:
         &#34;&#34;&#34;Profile a set of agents.
 
         Args:
-            agents: List of TinyPerson instances.
+            agents: List of Persona instances.
             plot: Whether to render visualizations.
             advanced_analysis: Whether to run persona &amp; correlation analyses.
         Returns:
             Attribute distributions (basic) – advanced results available in self.analysis_results.
         &#34;&#34;&#34;
-        # Store original agent objects (TinyPerson or dicts).
-        # The TinyPerson API guarantees a .get() method supporting dot notation for persona attributes.
+        # Store original agent objects (Persona or dicts).
+        # The Persona API guarantees a .get() method supporting dot notation for persona attributes.
         # Plain dict agents are also supported via dict traversal in _get_nested_attribute.
         self.agents = list(agents)
 
@@ -239,7 +239,7 @@ class Profiler:
 
         # -------------------------- helpers --------------------------
         def _extract_path(agent: Dict[str, Any], path: List[str]) -&gt; Any:
-            # Simplified access: rely on TinyPerson.get (supports dot notation) when available.
+            # Simplified access: rely on Persona.get (supports dot notation) when available.
             joined = &#34;.&#34;.join(path)
             if hasattr(agent, &#34;get&#34;) and callable(getattr(agent, &#34;get&#34;)):
                 try:
@@ -1478,7 +1478,7 @@ class Profiler:
         &#34;&#34;&#34;Compute the distribution of a given attribute with support for nested attributes.
         
         Args:
-            agents: List of agents (TinyPerson or dict)
+            agents: List of agents (Persona or dict)
             attribute: Attribute path (supports dot notation)
             
         Returns:
@@ -1604,19 +1604,19 @@ class Profiler:
         return paths
 
     def _get_nested_attribute(self, agent: dict, attribute: str) -&gt; Any:
-        &#34;&#34;&#34;Get attribute from agent supporting both TinyPerson.get() and dict traversal.
+        &#34;&#34;&#34;Get attribute from agent supporting both Persona.get() and dict traversal.
 
-        For TinyPerson objects (non-dict with .get() method), uses their .get() which supports
+        For Persona objects (non-dict with .get() method), uses their .get() which supports
         dot notation. For plain dicts, performs manual dot-path traversal.
         
         Args:
-            agent: TinyPerson instance or dict
+            agent: Persona instance or dict
             attribute: Attribute path (supports dot notation like &#34;occupation.title&#34;)
             
         Returns:
             Attribute value or None if not found
         &#34;&#34;&#34;
-        # Check if it&#39;s a TinyPerson (has .get() but is NOT a plain dict)
+        # Check if it&#39;s a Persona (has .get() but is NOT a plain dict)
         if hasattr(agent, &#34;get&#34;) and callable(getattr(agent, &#34;get&#34;)) and not isinstance(agent, dict):
             try:
                 return agent.get(attribute)
@@ -1860,7 +1860,7 @@ class Profiler:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.profiling.Profiler"><code class="flex name class">
+<dt id="openpersona.profiling.Profiler"><code class="flex name class">
 <span>class <span class="ident">Profiler</span></span>
 <span>(</span><span>attributes: Optional[List[str]] = None, persona_label_max_chars: int = 40, use_pies_for_small: bool = True, max_categories: int = 15, top_n: int = 12, normalization_max_clusters: int = 6)</span>
 </code></dt>
@@ -1942,14 +1942,14 @@ class Profiler:
         &#34;&#34;&#34;Profile a set of agents.
 
         Args:
-            agents: List of TinyPerson instances.
+            agents: List of Persona instances.
             plot: Whether to render visualizations.
             advanced_analysis: Whether to run persona &amp; correlation analyses.
         Returns:
             Attribute distributions (basic) – advanced results available in self.analysis_results.
         &#34;&#34;&#34;
-        # Store original agent objects (TinyPerson or dicts).
-        # The TinyPerson API guarantees a .get() method supporting dot notation for persona attributes.
+        # Store original agent objects (Persona or dicts).
+        # The Persona API guarantees a .get() method supporting dot notation for persona attributes.
         # Plain dict agents are also supported via dict traversal in _get_nested_attribute.
         self.agents = list(agents)
 
@@ -2067,7 +2067,7 @@ class Profiler:
 
         # -------------------------- helpers --------------------------
         def _extract_path(agent: Dict[str, Any], path: List[str]) -&gt; Any:
-            # Simplified access: rely on TinyPerson.get (supports dot notation) when available.
+            # Simplified access: rely on Persona.get (supports dot notation) when available.
             joined = &#34;.&#34;.join(path)
             if hasattr(agent, &#34;get&#34;) and callable(getattr(agent, &#34;get&#34;)):
                 try:
@@ -3306,7 +3306,7 @@ class Profiler:
         &#34;&#34;&#34;Compute the distribution of a given attribute with support for nested attributes.
         
         Args:
-            agents: List of agents (TinyPerson or dict)
+            agents: List of agents (Persona or dict)
             attribute: Attribute path (supports dot notation)
             
         Returns:
@@ -3432,19 +3432,19 @@ class Profiler:
         return paths
 
     def _get_nested_attribute(self, agent: dict, attribute: str) -&gt; Any:
-        &#34;&#34;&#34;Get attribute from agent supporting both TinyPerson.get() and dict traversal.
+        &#34;&#34;&#34;Get attribute from agent supporting both Persona.get() and dict traversal.
 
-        For TinyPerson objects (non-dict with .get() method), uses their .get() which supports
+        For Persona objects (non-dict with .get() method), uses their .get() which supports
         dot notation. For plain dicts, performs manual dot-path traversal.
         
         Args:
-            agent: TinyPerson instance or dict
+            agent: Persona instance or dict
             attribute: Attribute path (supports dot notation like &#34;occupation.title&#34;)
             
         Returns:
             Attribute value or None if not found
         &#34;&#34;&#34;
-        # Check if it&#39;s a TinyPerson (has .get() but is NOT a plain dict)
+        # Check if it&#39;s a Persona (has .get() but is NOT a plain dict)
         if hasattr(agent, &#34;get&#34;) and callable(getattr(agent, &#34;get&#34;)) and not isinstance(agent, dict):
             try:
                 return agent.get(attribute)
@@ -3680,7 +3680,7 @@ class Profiler:
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.profiling.Profiler.add_custom_analysis"><code class="name flex">
+<dt id="openpersona.profiling.Profiler.add_custom_analysis"><code class="name flex">
 <span>def <span class="ident">add_custom_analysis</span></span>(<span>self, name: str, analysis_func: Callable[[List[Dict]], Any]) ‑> None</span>
 </code></dt>
 <dd>
@@ -3712,7 +3712,7 @@ class Profiler:
     self._custom_analyses[name] = analysis_func</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.profiling.Profiler.compare_populations"><code class="name flex">
+<dt id="openpersona.profiling.Profiler.compare_populations"><code class="name flex">
 <span>def <span class="ident">compare_populations</span></span>(<span>self, other_agents: List[dict], attributes: Optional[List[str]] = None) ‑> Dict[str, Any]</span>
 </code></dt>
 <dd>
@@ -3783,7 +3783,7 @@ class Profiler:
     return comparison</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.profiling.Profiler.export_analysis_report"><code class="name flex">
+<dt id="openpersona.profiling.Profiler.export_analysis_report"><code class="name flex">
 <span>def <span class="ident">export_analysis_report</span></span>(<span>self, filename: str = 'agent_population_analysis.txt') ‑> None</span>
 </code></dt>
 <dd>
@@ -3863,7 +3863,7 @@ class Profiler:
     print(f&#34;Analysis report exported to {filename}&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.profiling.Profiler.profile"><code class="name flex">
+<dt id="openpersona.profiling.Profiler.profile"><code class="name flex">
 <span>def <span class="ident">profile</span></span>(<span>self, agents: List, plot: bool = True, advanced_analysis: bool = True) ‑> Dict[str, Any]</span>
 </code></dt>
 <dd>
@@ -3871,7 +3871,7 @@ class Profiler:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>agents</code></strong></dt>
-<dd>List of TinyPerson instances.</dd>
+<dd>List of Persona instances.</dd>
 <dt><strong><code>plot</code></strong></dt>
 <dd>Whether to render visualizations.</dd>
 <dt><strong><code>advanced_analysis</code></strong></dt>
@@ -3892,14 +3892,14 @@ class Profiler:
     &#34;&#34;&#34;Profile a set of agents.
 
     Args:
-        agents: List of TinyPerson instances.
+        agents: List of Persona instances.
         plot: Whether to render visualizations.
         advanced_analysis: Whether to run persona &amp; correlation analyses.
     Returns:
         Attribute distributions (basic) – advanced results available in self.analysis_results.
     &#34;&#34;&#34;
-    # Store original agent objects (TinyPerson or dicts).
-    # The TinyPerson API guarantees a .get() method supporting dot notation for persona attributes.
+    # Store original agent objects (Persona or dicts).
+    # The Persona API guarantees a .get() method supporting dot notation for persona attributes.
     # Plain dict agents are also supported via dict traversal in _get_nested_attribute.
     self.agents = list(agents)
 
@@ -3938,7 +3938,7 @@ class Profiler:
     return self.attributes_distributions</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.profiling.Profiler.render"><code class="name flex">
+<dt id="openpersona.profiling.Profiler.render"><code class="name flex">
 <span>def <span class="ident">render</span></span>(<span>self, advanced: bool = True) ‑> None</span>
 </code></dt>
 <dd>
@@ -3971,19 +3971,19 @@ class Profiler:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe" href="index.html">tinytroupe</a></code></li>
+<li><code><a title="openpersona" href="index.html">openpersona</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.profiling.Profiler" href="#tinytroupe.profiling.Profiler">Profiler</a></code></h4>
+<h4><code><a title="openpersona.profiling.Profiler" href="#openpersona.profiling.Profiler">Profiler</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.profiling.Profiler.add_custom_analysis" href="#tinytroupe.profiling.Profiler.add_custom_analysis">add_custom_analysis</a></code></li>
-<li><code><a title="tinytroupe.profiling.Profiler.compare_populations" href="#tinytroupe.profiling.Profiler.compare_populations">compare_populations</a></code></li>
-<li><code><a title="tinytroupe.profiling.Profiler.export_analysis_report" href="#tinytroupe.profiling.Profiler.export_analysis_report">export_analysis_report</a></code></li>
-<li><code><a title="tinytroupe.profiling.Profiler.profile" href="#tinytroupe.profiling.Profiler.profile">profile</a></code></li>
-<li><code><a title="tinytroupe.profiling.Profiler.render" href="#tinytroupe.profiling.Profiler.render">render</a></code></li>
+<li><code><a title="openpersona.profiling.Profiler.add_custom_analysis" href="#openpersona.profiling.Profiler.add_custom_analysis">add_custom_analysis</a></code></li>
+<li><code><a title="openpersona.profiling.Profiler.compare_populations" href="#openpersona.profiling.Profiler.compare_populations">compare_populations</a></code></li>
+<li><code><a title="openpersona.profiling.Profiler.export_analysis_report" href="#openpersona.profiling.Profiler.export_analysis_report">export_analysis_report</a></code></li>
+<li><code><a title="openpersona.profiling.Profiler.profile" href="#openpersona.profiling.Profiler.profile">profile</a></code></li>
+<li><code><a title="openpersona.profiling.Profiler.render" href="#openpersona.profiling.Profiler.render">render</a></code></li>
 </ul>
 </li>
 </ul>

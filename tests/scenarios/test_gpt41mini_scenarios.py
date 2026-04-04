@@ -1,7 +1,7 @@
 """
 GPT-4.1-mini Compatibility Tests
 
-This module tests TinyTroupe functionality using the gpt-4.1-mini model to ensure
+This module tests OpenPersona functionality using the gpt-4.1-mini model to ensure
 compatibility with alternative models beyond the primary supported model.
 
 These tests are designed to be:
@@ -19,23 +19,23 @@ import pytest
 import logging
 import textwrap
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-from tinytroupe import config_manager
-from tinytroupe.agent import TinyPerson, TinyToolUse
-from tinytroupe.environment import TinyWorld
-from tinytroupe.factory import TinyPersonFactory
-from tinytroupe.extraction import ResultsExtractor, ArtifactExporter
-from tinytroupe.enrichment import TinyEnricher
-from tinytroupe.tools import TinyWordProcessor
-import tinytroupe.control as control
+from openpersona import config_manager
+from openpersona.agent import Persona, ToolUseFaculty
+from openpersona.environment import World
+from openpersona.factory import PersonaFactory
+from openpersona.extraction import ResultsExtractor, ArtifactExporter
+from openpersona.enrichment import Enricher
+from openpersona.tools import DocWriter
+import openpersona.control as control
 
-from tinytroupe.examples import (
+from openpersona.examples import (
     create_lisa_the_data_scientist,
     create_oscar_the_architect,
     create_marcos_the_physician,
@@ -115,7 +115,7 @@ class TestGPT41MiniScenarios:
     """
     Test scenarios using gpt-4.1-mini model.
     
-    Each test is designed to be dense, covering multiple TinyTroupe utilities
+    Each test is designed to be dense, covering multiple OpenPersona utilities
     in a single credible simulation scenario.
     """
 
@@ -125,7 +125,7 @@ class TestGPT41MiniScenarios:
         
         Covers:
         - Manual agent creation (using example functions)
-        - TinyWorld simulation
+        - World simulation
         - ResultsExtractor for agent and world extraction
         - ArtifactExporter for JSON/text export
         """
@@ -137,7 +137,7 @@ class TestGPT41MiniScenarios:
         marcos = create_marcos_the_physician()
         
         # Create world
-        world = TinyWorld("Product Feedback Session", [lisa, oscar, marcos])
+        world = World("Product Feedback Session", [lisa, oscar, marcos])
         world.make_everyone_accessible()
         
         # Run simulation
@@ -213,18 +213,18 @@ class TestGPT41MiniScenarios:
         
         Covers:
         - Loading agents from specification files
-        - TinyEnricher for content enrichment
+        - Enricher for content enrichment
         - ArtifactExporter for DOCX export
         - Agent state serialization
         """
         control.reset()
         
         # Load agents from files
-        oscar = TinyPerson.load_specification(
+        oscar = Persona.load_specification(
             get_relative_to_test_path("../examples/agents/Oscar.agent.json"),
             new_agent_name="Oscar_Loaded"
         )
-        lisa = TinyPerson.load_specification(
+        lisa = Persona.load_specification(
             get_relative_to_test_path("../examples/agents/Lisa.agent.json"),
             new_agent_name="Lisa_Loaded"
         )
@@ -233,7 +233,7 @@ class TestGPT41MiniScenarios:
         assert lisa is not None, "Lisa should be loaded from file"
         
         # Create world with loaded agents
-        world = TinyWorld("Documentation Workshop", [oscar, lisa])
+        world = World("Documentation Workshop", [oscar, lisa])
         world.make_everyone_accessible()
         
         # Generate content through simulation
@@ -257,7 +257,7 @@ class TestGPT41MiniScenarios:
             fields=["key_points", "implementation_steps"]
         )
         
-        # Test TinyEnricher
+        # Test Enricher
         draft_content = textwrap.dedent(f"""
         # AI Integration Guide
         
@@ -268,7 +268,7 @@ class TestGPT41MiniScenarios:
         {outline}
         """).strip()
         
-        enriched_content = TinyEnricher().enrich_content(
+        enriched_content = Enricher().enrich_content(
             requirements="Expand this outline into a more detailed section with examples. Add at least 2x more content.",
             content=draft_content,
             content_type="Technical Documentation",
@@ -302,8 +302,8 @@ class TestGPT41MiniScenarios:
         Scenario: Market Research Focus Group Creation
         
         Covers:
-        - TinyPersonFactory single agent generation
-        - TinyPersonFactory population generation (3 agents)
+        - PersonaFactory single agent generation
+        - PersonaFactory population generation (3 agents)
         - Post-processing hooks
         - Basic agent interaction
         - ResultsExtractor for synthesizing research findings
@@ -311,7 +311,7 @@ class TestGPT41MiniScenarios:
         control.reset()
         
         # Test single agent generation
-        factory = TinyPersonFactory(
+        factory = PersonaFactory(
             "Market research participants interested in consumer technology products."
         )
         
@@ -344,7 +344,7 @@ class TestGPT41MiniScenarios:
                 "Post-processing should add research_role"
         
         # Create focus group with generated population
-        world = TinyWorld("Tech Product Focus Group", [single_agent] + population)
+        world = World("Tech Product Focus Group", [single_agent] + population)
         world.make_everyone_accessible()
         
         # Run market research simulation
@@ -383,7 +383,7 @@ class TestGPT41MiniScenarios:
         Scenario: Collaborative Report Writing
         
         Covers:
-        - TinyToolUse with TinyWordProcessor
+        - ToolUseFaculty with DocWriter
         - Document creation through agent tool usage
         - Multi-agent collaboration on document
         - Export verification
@@ -392,11 +392,11 @@ class TestGPT41MiniScenarios:
         
         # Setup exporter and enricher for the word processor
         exporter = ArtifactExporter(base_output_folder=get_relative_to_test_path(f"{EXPORT_BASE_FOLDER}/gpt41mini/"))
-        enricher = TinyEnricher()
-        word_processor = TinyWordProcessor(exporter=exporter, enricher=enricher)
+        enricher = Enricher()
+        word_processor = DocWriter(exporter=exporter, enricher=enricher)
         
         # Create tool-using faculty
-        tooluse = TinyToolUse(tools=[word_processor])
+        tooluse = ToolUseFaculty(tools=[word_processor])
         
         # Create agents with tool capability
         lisa = create_lisa_the_data_scientist()
@@ -406,7 +406,7 @@ class TestGPT41MiniScenarios:
         oscar.add_mental_faculties([tooluse])
         
         # Create collaborative world
-        world = TinyWorld("Report Writing Team", [lisa, oscar])
+        world = World("Report Writing Team", [lisa, oscar])
         world.make_everyone_accessible()
         
         # Prompt document creation
@@ -442,7 +442,7 @@ class TestGPT41MiniScenarios:
         Scenario: Demographic Survey Simulation
         
         Covers:
-        - TinyPersonFactory.create_factory_from_demography (dict-based)
+        - PersonaFactory.create_factory_from_demography (dict-based)
         - Complete pipeline: generation -> simulation -> extraction -> export
         - State encode/decode for agents and world
         """
@@ -458,7 +458,7 @@ class TestGPT41MiniScenarios:
             }
         }
         
-        factory = TinyPersonFactory.create_factory_from_demography(
+        factory = PersonaFactory.create_factory_from_demography(
             demography_description_or_file_path=demography_spec,
             population_size=3,
             context="Consumer survey participants for market research"
@@ -473,7 +473,7 @@ class TestGPT41MiniScenarios:
         assert len(participants) == 3, "Should generate 3 participants"
         
         # Create survey world
-        world = TinyWorld("Consumer Survey", participants)
+        world = World("Consumer Survey", participants)
         world.make_everyone_accessible()
         
         # Run survey simulation
@@ -507,7 +507,7 @@ class TestGPT41MiniScenarios:
         assert "agents" in world_state, "World state should contain agents"
         
         # Test world state decoding (decode_complete_state is an instance method)
-        restored_world = TinyWorld("Restored Survey", [])  # Create empty world first
+        restored_world = World("Restored Survey", [])  # Create empty world first
         restored_world.decode_complete_state(world_state)  # Then restore state
         assert restored_world is not None, "World should be restorable"
         assert len(restored_world.agents) == 3, "Restored world should have 3 agents"
@@ -538,9 +538,9 @@ class TestGPT41MiniScenarios:
         - Manual agent creation
         - Loaded agent from file  
         - Factory-generated agent
-        - TinyWorld simulation
+        - World simulation
         - ResultsExtractor (agent + world)
-        - TinyEnricher
+        - Enricher
         - ArtifactExporter (JSON + DOCX)
         - State serialization
         """
@@ -550,13 +550,13 @@ class TestGPT41MiniScenarios:
         manual_agent = create_marcos_the_physician()
         
         # 2. Load agent from file
-        loaded_agent = TinyPerson.load_specification(
+        loaded_agent = Persona.load_specification(
             get_relative_to_test_path("../examples/agents/Oscar.agent.json"),
             new_agent_name="Oscar_Workshop"
         )
         
         # 3. Factory-generated agent
-        factory = TinyPersonFactory("Innovation workshop participants with diverse expertise.")
+        factory = PersonaFactory("Innovation workshop participants with diverse expertise.")
         generated_agent = factory.generate_person(
             "A healthcare technology specialist interested in digital innovation."
         )
@@ -566,7 +566,7 @@ class TestGPT41MiniScenarios:
         assert len(agents) == 3, "Should have 3 agents from different sources"
         
         # Create comprehensive workshop world
-        world = TinyWorld("Innovation Workshop", agents)
+        world = World("Innovation Workshop", agents)
         world.make_everyone_accessible()
         
         # Run multi-phase simulation
@@ -614,7 +614,7 @@ class TestGPT41MiniScenarios:
         {workshop_synthesis}
         """
         
-        enriched_report = TinyEnricher().enrich_content(
+        enriched_report = Enricher().enrich_content(
             requirements="Expand into a professional workshop report with executive summary and action items. Make it at least 2x longer.",
             content=draft_report,
             content_type="Workshop Report",

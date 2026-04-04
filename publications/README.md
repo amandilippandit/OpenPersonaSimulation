@@ -1,6 +1,6 @@
 # Publications
 
-This directory contains artifacts related to research publications associated with the TinyTroupe project.
+This directory contains artifacts related to research publications associated with the OpenPersona project.
 Each publication typically has its own subdirectory named according to the publication's identifier or date. Within each subdirectory, you may find:
 
 - Source materials

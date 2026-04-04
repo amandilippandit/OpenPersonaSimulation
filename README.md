@@ -42,11 +42,11 @@ export OPENAI_API_KEY="sk-..."
 ```
 
 ```python
-from tinytroupe.agent import TinyPerson
-from tinytroupe.environment import TinyWorld
+from openpersona.agent import Persona
+from openpersona.environment import World
 
 # Assemble two people
-chef = TinyPerson("Marco")
+chef = Persona("Marco")
 chef.define("age", 42)
 chef.define("nationality", "Italian")
 chef.define("occupation", {"title": "Head Chef", "organization": "Trattoria Bella"})
@@ -56,7 +56,7 @@ chef.define("personality", {"traits": [
     "Warm but opinionated — will argue about olive oil brands."
 ]})
 
-investor = TinyPerson("Priya")
+investor = Persona("Priya")
 investor.define("age", 35)
 investor.define("nationality", "Indian")
 investor.define("occupation", {"title": "VC Partner", "organization": "Horizon Ventures"})
@@ -67,7 +67,7 @@ investor.define("personality", {"traits": [
 ]})
 
 # Put them in a room
-room = TinyWorld("Pitch Meeting", [chef, investor])
+room = World("Pitch Meeting", [chef, investor])
 room.make_everyone_accessible()
 investor.listen("Marco, pitch me your idea for a premium frozen pasta subscription box.")
 room.run(4)
@@ -138,16 +138,16 @@ Study opinion dynamics, social influence, group polarization, or consensus forma
 ```
 openpersona/
 ├── agent/                  # Persona engine
-│   ├── tiny_person.py      # Identity, perception, action, memory
+│   ├── persona.py      # Identity, perception, action, memory
 │   ├── memory.py           # Episodic buffer + semantic vector store
 │   ├── action_generator.py # LLM-driven action production with guardrails
 │   ├── mental_faculty.py   # Pluggable capabilities (recall, grounding, tools)
 │   └── grounding.py        # Document retrieval via LlamaIndex
 ├── environment/            # Interaction containers
-│   ├── tiny_world.py       # General-purpose multi-agent environment
-│   └── tiny_social_network.py  # Relation-constrained communication
+│   ├── world.py       # General-purpose multi-agent environment
+│   └── social_network.py  # Relation-constrained communication
 ├── factory/                # Population synthesis
-│   └── tiny_person_factory.py  # Demographic-aware agent generation
+│   └── persona_factory.py  # Demographic-aware agent generation
 ├── clients/                # LLM provider abstraction
 │   ├── openai_client.py    # OpenAI + caching + cost tracking
 │   ├── azure_client.py     # Azure OpenAI (key + Entra ID)
@@ -180,9 +180,9 @@ openpersona/
 ### Load a Pre-Built Persona from JSON
 
 ```python
-from tinytroupe.agent import TinyPerson
+from openpersona.agent import Persona
 
-lisa = TinyPerson.load_specification("./examples/agents/Lisa.agent.json")
+lisa = Persona.load_specification("./examples/agents/Lisa.agent.json")
 lisa.listen_and_act("Describe your typical workday.")
 ```
 
@@ -193,7 +193,7 @@ Six ready-made personas ship in `examples/agents/`: an architect, a data scienti
 Fragments let you mix and match behavioral modules across different agents:
 
 ```python
-agent = TinyPerson("Alex")
+agent = Persona("Alex")
 agent.define("age", 29)
 agent.define("occupation", {"title": "Product Manager"})
 
@@ -205,9 +205,9 @@ agent.import_fragment("./examples/fragments/libertarian.agent.fragment.json")
 ### Generate a Population from Demographics
 
 ```python
-from tinytroupe.factory import TinyPersonFactory
+from openpersona.factory import PersonaFactory
 
-factory = TinyPersonFactory.create_factory_from_demography(
+factory = PersonaFactory.create_factory_from_demography(
     "./examples/information/populations/brazil.json",
     population_size=40,
     context="Consumer panel for a new fintech app"
@@ -221,9 +221,9 @@ The factory reads demographic distributions (age brackets, income levels, educat
 
 ```python
 from datetime import timedelta
-from tinytroupe.environment import TinyWorld
+from openpersona.environment import World
 
-world = TinyWorld("Workshop", agents)
+world = World("Workshop", agents)
 world.run(steps=6, timedelta_per_step=timedelta(hours=2))
 
 # Or use shorthand
@@ -234,7 +234,7 @@ world.run_hours(4)
 ### Extract Structured Data from Conversations
 
 ```python
-from tinytroupe.extraction import ResultsExtractor
+from openpersona.extraction import ResultsExtractor
 
 extractor = ResultsExtractor()
 data = extractor.extract_results_from_agents(
@@ -247,7 +247,7 @@ data = extractor.extract_results_from_agents(
 ### Evaluate a Claim About Agent Behavior
 
 ```python
-from tinytroupe.experimentation import Proposition
+from openpersona.experimentation import Proposition
 
 claim = Proposition(
     "The agent consistently demonstrates skepticism toward new technology.",
@@ -260,9 +260,9 @@ score = claim.score(target=agent)         # 0 (disagree) to 9 (strongly agree)
 ### Generate a Narrative from a Simulation
 
 ```python
-from tinytroupe.steering import TinyStory
+from openpersona.steering import Narrative
 
-story = TinyStory(environment=world, purpose="Document the negotiation dynamics.")
+story = Narrative(environment=world, purpose="Document the negotiation dynamics.")
 opening = story.start_story(requirements="Focus on the tension between the two leads.", number_of_words=200)
 continuation = story.continue_story(requirements="Build toward a resolution.", number_of_words=300)
 ```
@@ -270,20 +270,20 @@ continuation = story.continue_story(requirements="Build toward a resolution.", n
 ### Set Up Conditional Interventions
 
 ```python
-from tinytroupe.steering import Intervention
+from openpersona.steering import Intervention
 
 nudge = Intervention(targets=[agent])
 nudge.set_textual_precondition("The agent has become disengaged from the conversation.")
 nudge.set_effect(lambda targets: targets[0].think("Maybe I should re-engage and share my perspective."))
 
-world = TinyWorld("Debate", agents, interventions=[nudge])
+world = World("Debate", agents, interventions=[nudge])
 world.run(5)
 ```
 
 ### Profile a Generated Population
 
 ```python
-from tinytroupe.profiling import Profiler
+from openpersona.profiling import Profiler
 
 profiler = Profiler(attributes=["age", "occupation.title", "nationality"])
 profiler.profile(panel, plot=True)
@@ -316,7 +316,7 @@ OpenPersona reads configuration from the package's built-in `config.ini` (defaul
 ### Runtime Override
 
 ```python
-from tinytroupe import config_manager
+from openpersona import config_manager
 
 config_manager.update("model", "gpt-4o")
 config_manager.update("cache_api_calls", True)
@@ -334,9 +334,9 @@ Simulations are only useful if they approximate reality. OpenPersona includes to
 Ask an LLM evaluator to interview your agent and score how well it embodies its specification:
 
 ```python
-from tinytroupe.validation import TinyPersonValidator
+from openpersona.validation import PersonaValidator
 
-score, explanation = TinyPersonValidator.validate_person(
+score, explanation = PersonaValidator.validate_person(
     agent,
     expectations="Should behave like a cautious, detail-oriented financial analyst."
 )
@@ -347,7 +347,7 @@ score, explanation = TinyPersonValidator.validate_person(
 Compare simulation outputs against real-world responses using hypothesis tests:
 
 ```python
-from tinytroupe.validation import validate_simulation_experiment_empirically
+from openpersona.validation import validate_simulation_experiment_empirically
 
 result = validate_simulation_experiment_empirically(
     control_data=real_responses,
@@ -368,7 +368,7 @@ Eight test types available: Welch's t, Student's t, Kolmogorov-Smirnov, Mann-Whi
 Checkpoint your simulation state partway through. On re-runs, completed steps replay from cache — no API calls needed:
 
 ```python
-from tinytroupe import control
+from openpersona import control
 
 control.begin("experiment_v3.cache.json")
 # Steps 1-8 replay from cache...
@@ -384,7 +384,7 @@ Set `CACHE_API_CALLS=True` in your config. Any identical prompt-model pair retur
 ### Cost Monitoring
 
 ```python
-from tinytroupe.clients import client
+from openpersona.clients import client
 
 client().pretty_print_cost_stats()
 ```
@@ -412,7 +412,7 @@ pytest tests/ -m "core and not slow" -v
 
 | Directory | Contents |
 |---|---|
-| `tinytroupe/` | Core engine — 14 subpackages, 60+ Python modules |
+| `openpersona/` | Core engine — 14 subpackages, 60+ Python modules |
 | `examples/` | 30 Jupyter notebooks covering every major workflow |
 | `examples/agents/` | 7 ready-made persona JSON files |
 | `examples/fragments/` | 9 personality overlay modules |

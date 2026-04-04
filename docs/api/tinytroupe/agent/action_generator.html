@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.agent.action_generator API documentation</title>
+<title>openpersona.agent.action_generator API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.agent.action_generator</code></h1>
+<h1 class="title">Module <code>openpersona.agent.action_generator</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -29,12 +29,12 @@
 <pre><code class="python">import json
 import statistics  # Add this import
 
-import tinytroupe.utils as utils
-from tinytroupe.clients import client
-from tinytroupe.control import current_simulation, transactional
-from tinytroupe.experimentation import Proposition
-from tinytroupe.utils import JsonSerializableRegistry
-from tinytroupe.validation import propositions
+import openpersona.utils as utils
+from openpersona.clients import client
+from openpersona.control import current_simulation, transactional
+from openpersona.experimentation import Proposition
+from openpersona.utils import JsonSerializableRegistry
+from openpersona.validation import propositions
 
 
 class ActionGenerator(JsonSerializableRegistry):
@@ -144,7 +144,7 @@ class ActionGenerator(JsonSerializableRegistry):
 
     def generate_next_action(self, agent, current_messages: list):
 
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -338,7 +338,7 @@ class ActionGenerator(JsonSerializableRegistry):
         previous_llm_content=None,
     ):
 
-        from tinytroupe.agent import (  # import here to avoid circular import issues
+        from openpersona.agent import (  # import here to avoid circular import issues
             CognitiveActionModel,
             CognitiveActionModelWithReasoning,
             CognitiveActionsModel,
@@ -446,7 +446,7 @@ class ActionGenerator(JsonSerializableRegistry):
 
     def _check_action_quality(self, stage, agent, tentative_action):
 
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -613,7 +613,7 @@ class ActionGenerator(JsonSerializableRegistry):
         enable_proposition_check=True,
     ):
 
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -658,7 +658,7 @@ class ActionGenerator(JsonSerializableRegistry):
         High similarity indicates that the proposed action is too similar to the current one, and this
         check fails.
         &#34;&#34;&#34;
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -798,7 +798,7 @@ class PoorQualityActionException(Exception):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.agent.action_generator.ActionGenerator"><code class="flex name class">
+<dt id="openpersona.agent.action_generator.ActionGenerator"><code class="flex name class">
 <span>class <span class="ident">ActionGenerator</span></span>
 <span>(</span><span>max_attempts=2, enable_quality_checks=True, enable_regeneration=True, enable_direct_correction=False, enable_quality_check_for_persona_adherence=True, enable_quality_check_for_selfconsistency=True, enable_quality_check_for_fluency=True, enable_quality_check_for_suitability=False, enable_quality_check_for_similarity=False, continue_on_failure=True, quality_threshold=7, max_action_similarity=0.6, enable_reasoning_step=False, enable_multi_action_output=True)</span>
 </code></dt>
@@ -946,7 +946,7 @@ but rather the use of an additional reasoning step in the regular text completio
 
     def generate_next_action(self, agent, current_messages: list):
 
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -1140,7 +1140,7 @@ but rather the use of an additional reasoning step in the regular text completio
         previous_llm_content=None,
     ):
 
-        from tinytroupe.agent import (  # import here to avoid circular import issues
+        from openpersona.agent import (  # import here to avoid circular import issues
             CognitiveActionModel,
             CognitiveActionModelWithReasoning,
             CognitiveActionsModel,
@@ -1248,7 +1248,7 @@ but rather the use of an additional reasoning step in the regular text completio
 
     def _check_action_quality(self, stage, agent, tentative_action):
 
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -1415,7 +1415,7 @@ but rather the use of an additional reasoning step in the regular text completio
         enable_proposition_check=True,
     ):
 
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -1460,7 +1460,7 @@ but rather the use of an additional reasoning step in the regular text completio
         High similarity indicates that the proposed action is too similar to the current one, and this
         check fails.
         &#34;&#34;&#34;
-        from tinytroupe.agent import (
+        from openpersona.agent import (
             logger,
         )  # import here to avoid circular import issues
 
@@ -1586,11 +1586,11 @@ but rather the use of an additional reasoning step in the regular text completio
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
+<li><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.agent.action_generator.ActionGenerator.generate_next_action"><code class="name flex">
+<dt id="openpersona.agent.action_generator.ActionGenerator.generate_next_action"><code class="name flex">
 <span>def <span class="ident">generate_next_action</span></span>(<span>self, agent, current_messages: list)</span>
 </code></dt>
 <dd>
@@ -1601,7 +1601,7 @@ but rather the use of an additional reasoning step in the regular text completio
 </summary>
 <pre><code class="python">def generate_next_action(self, agent, current_messages: list):
 
-    from tinytroupe.agent import (
+    from openpersona.agent import (
         logger,
     )  # import here to avoid circular import issues
 
@@ -1786,7 +1786,7 @@ but rather the use of an additional reasoning step in the regular text completio
         return tentative, role, content, []</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.action_generator.ActionGenerator.generate_next_actions"><code class="name flex">
+<dt id="openpersona.agent.action_generator.ActionGenerator.generate_next_actions"><code class="name flex">
 <span>def <span class="ident">generate_next_actions</span></span>(<span>self, agent, current_messages: list)</span>
 </code></dt>
 <dd>
@@ -1818,7 +1818,7 @@ but rather the use of an additional reasoning step in the regular text completio
     return actions, role, content, all_negative_feedbacks</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.action_generator.ActionGenerator.get_statistics"><code class="name flex">
+<dt id="openpersona.agent.action_generator.ActionGenerator.get_statistics"><code class="name flex">
 <span>def <span class="ident">get_statistics</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1883,15 +1883,15 @@ but rather the use of an additional reasoning step in the regular text completio
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></b></code>:
+<li><code><b><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.utils.json.JsonSerializableRegistry.from_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
-<li><code><a title="tinytroupe.utils.json.JsonSerializableRegistry.to_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
+<li><code><a title="openpersona.utils.json.JsonSerializableRegistry.from_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
+<li><code><a title="openpersona.utils.json.JsonSerializableRegistry.to_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="tinytroupe.agent.action_generator.PoorQualityActionException"><code class="flex name class">
+<dt id="openpersona.agent.action_generator.PoorQualityActionException"><code class="flex name class">
 <span>class <span class="ident">PoorQualityActionException</span></span>
 <span>(</span><span>message='The generated action is of poor quality')</span>
 </code></dt>
@@ -1923,21 +1923,21 @@ but rather the use of an additional reasoning step in the regular text completio
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.agent" href="index.html">tinytroupe.agent</a></code></li>
+<li><code><a title="openpersona.agent" href="index.html">openpersona.agent</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.agent.action_generator.ActionGenerator" href="#tinytroupe.agent.action_generator.ActionGenerator">ActionGenerator</a></code></h4>
+<h4><code><a title="openpersona.agent.action_generator.ActionGenerator" href="#openpersona.agent.action_generator.ActionGenerator">ActionGenerator</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.agent.action_generator.ActionGenerator.generate_next_action" href="#tinytroupe.agent.action_generator.ActionGenerator.generate_next_action">generate_next_action</a></code></li>
-<li><code><a title="tinytroupe.agent.action_generator.ActionGenerator.generate_next_actions" href="#tinytroupe.agent.action_generator.ActionGenerator.generate_next_actions">generate_next_actions</a></code></li>
-<li><code><a title="tinytroupe.agent.action_generator.ActionGenerator.get_statistics" href="#tinytroupe.agent.action_generator.ActionGenerator.get_statistics">get_statistics</a></code></li>
+<li><code><a title="openpersona.agent.action_generator.ActionGenerator.generate_next_action" href="#openpersona.agent.action_generator.ActionGenerator.generate_next_action">generate_next_action</a></code></li>
+<li><code><a title="openpersona.agent.action_generator.ActionGenerator.generate_next_actions" href="#openpersona.agent.action_generator.ActionGenerator.generate_next_actions">generate_next_actions</a></code></li>
+<li><code><a title="openpersona.agent.action_generator.ActionGenerator.get_statistics" href="#openpersona.agent.action_generator.ActionGenerator.get_statistics">get_statistics</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.agent.action_generator.PoorQualityActionException" href="#tinytroupe.agent.action_generator.PoorQualityActionException">PoorQualityActionException</a></code></h4>
+<h4><code><a title="openpersona.agent.action_generator.PoorQualityActionException" href="#openpersona.agent.action_generator.PoorQualityActionException">PoorQualityActionException</a></code></h4>
 </li>
 </ul>
 </li>

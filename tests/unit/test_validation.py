@@ -5,14 +5,14 @@ import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
 
-from tinytroupe.examples import create_oscar_the_architect
-from tinytroupe.control import Simulation
-import tinytroupe.control as control
-from tinytroupe.factory import TinyPersonFactory
-from tinytroupe.validation import TinyPersonValidator
+from openpersona.examples import create_oscar_the_architect
+from openpersona.control import Simulation
+import openpersona.control as control
+from openpersona.factory import PersonaFactory
+from openpersona.validation import PersonaValidator
 
 from testing_utils import *
 
@@ -31,7 +31,7 @@ def test_validate_person(setup):
     A vice-president of one of the largest brazillian banks. Has a degree in engineering and an MBA in finance.
     """
     
-    banker_factory = TinyPersonFactory(bank_spec)
+    banker_factory = PersonaFactory(bank_spec)
     banker = banker_factory.generate_person(banker_spec)
 
     banker_expectations =\
@@ -53,7 +53,7 @@ def test_validate_person(setup):
     - Deep knowledge of finance, economics and financial technology
     - Is a bit of a snob
     """
-    banker_score, banker_justification = TinyPersonValidator.validate_person(banker, expectations=banker_expectations, include_agent_spec=False, max_content_length=None)
+    banker_score, banker_justification = PersonaValidator.validate_person(banker, expectations=banker_expectations, include_agent_spec=False, max_content_length=None)
     print("Banker score: ", banker_score)
     print("Banker justification: ", banker_justification)
 
@@ -72,7 +72,7 @@ def test_validate_person(setup):
     """
     A poor buddhist monk living alone and isolated in a remote montain.
     """
-    monk_spec_factory = TinyPersonFactory(monastery_spec)
+    monk_spec_factory = PersonaFactory(monastery_spec)
     monk = monk_spec_factory.generate_person(monk_spec)
     
     monk_expectations =\
@@ -85,7 +85,7 @@ def test_validate_person(setup):
     - Honesty is a core value    
     """
 
-    monk_score, monk_justification = TinyPersonValidator.validate_person(monk, expectations=monk_expectations, include_agent_spec=False, max_content_length=None)
+    monk_score, monk_justification = PersonaValidator.validate_person(monk, expectations=monk_expectations, include_agent_spec=False, max_content_length=None)
     print("Monk score: ", monk_score)
     print("Monk justification: ", monk_justification)
           
@@ -96,7 +96,7 @@ def test_validate_person(setup):
 
     # Now, let's check the score for the monk with the wrong expectations! It has to be low!
     monk.clear_episodic_memory()
-    wrong_expectations_score, wrong_expectations_justification = TinyPersonValidator.validate_person(monk, expectations=banker_expectations, include_agent_spec=False, max_content_length=None)
+    wrong_expectations_score, wrong_expectations_justification = PersonaValidator.validate_person(monk, expectations=banker_expectations, include_agent_spec=False, max_content_length=None)
 
     print("Wrong expectations score: ", wrong_expectations_score)
     print("Wrong expectations justification: ", wrong_expectations_justification)

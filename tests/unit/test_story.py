@@ -1,21 +1,21 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-from tinytroupe.steering import TinyStory
+from openpersona.steering import Narrative
 
 from testing_utils import *
 
 def test_story_start(setup, focus_group_world):
     world = focus_group_world
 
-    story = TinyStory(world)
+    story = Narrative(world)
 
     start = story.start_story()
 
@@ -26,7 +26,7 @@ def test_story_start(setup, focus_group_world):
 def test_story_start_2(setup, focus_group_world):
     world = focus_group_world
 
-    story = TinyStory(world)
+    story = Narrative(world)
 
     start = story.start_story(requirements="Start a story which is extremely crazy and out of this world.")
 
@@ -49,7 +49,7 @@ def test_story_continuation(setup, focus_group_world):
     
     world.run(2)
 
-    story = TinyStory(world)
+    story = Narrative(world)
 
     continuation = story.continue_story()
 

@@ -1,4 +1,4 @@
-# Runs the TinyTroupe core test suite on every push/PR to main.
+# Runs the OpenPersona core test suite on every push/PR to main.
 # Core tests validate critical functionality and typically complete in ~1 hour.
 # Slow tests are excluded for faster CI feedback.
 #

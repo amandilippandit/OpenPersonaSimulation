@@ -6,22 +6,22 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 sys.path.insert(0, "../../")
 sys.path.insert(0, "..")
 
 from testing_utils import *
 
-from tinytroupe.environment import TinyWorld
-from tinytroupe.examples import (
+from openpersona.environment import World
+from openpersona.examples import (
     create_lisa_the_data_scientist,
     create_oscar_the_architect,
 )
-from tinytroupe.extraction.results_extractor import ResultsExtractor
+from openpersona.extraction.results_extractor import ResultsExtractor
 
 
 @pytest.mark.core
@@ -185,14 +185,14 @@ def test_results_extractor_extract_from_multiple_agents(setup):
 
 @pytest.mark.core
 def test_results_extractor_extract_from_world(setup):
-    """Test extracting results from a TinyWorld environment using real API."""
+    """Test extracting results from a World environment using real API."""
 
     extractor = ResultsExtractor()
 
     # Create a world with agents
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
-    world = TinyWorld("Collaborative Project", [oscar, lisa])
+    world = World("Collaborative Project", [oscar, lisa])
 
     # Simulate realistic interactions
     world.broadcast(
@@ -380,7 +380,7 @@ def test_results_extractor_empty_interactions(setup):
     # This tests that the extraction doesn't crash with empty input
 
 
-@patch("tinytroupe.extraction.results_extractor.client")
+@patch("openpersona.extraction.results_extractor.client")
 def test_results_extractor_invalid_json_response(mock_client, setup):
     """Test extractor handling of invalid JSON responses."""
 
@@ -403,7 +403,7 @@ def test_results_extractor_invalid_json_response(mock_client, setup):
     assert result is None or result == {}
 
 
-@patch("tinytroupe.extraction.results_extractor.client")
+@patch("openpersona.extraction.results_extractor.client")
 def test_results_extractor_api_failure(mock_client, setup):
     """Test extractor handling of API failures."""
 

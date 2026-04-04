@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.extraction API documentation</title>
+<title>openpersona.extraction API documentation</title>
 <meta name="description" content="Simulations produce a lot of data, and it is often useful to extract these data in a structured way. For instance, you might wish to:
 - Extract the …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -20,15 +20,15 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.extraction</code></h1>
+<h1 class="title">Module <code>openpersona.extraction</code></h1>
 </header>
 <section id="section-intro">
 <p>Simulations produce a lot of data, and it is often useful to extract these data in a structured way. For instance, you might wish to:
 - Extract the main points from an agent's interactions history, so that you can consult them later in a concise form.
 - Generate synthetic data from a simulation, so that you can use it for training machine learning models or testing software.
 - Simply turn some of the data into a more machine-readable format, such as JSON or CSV, so that you can analyze it more easily.</p>
-<p>This module provides various utilities to help you extract data from TinyTroupe elements, such as agents and worlds. It also provides a
-mechanism to reduce the extracted data to a more concise form, and to export artifacts from TinyTroupe elements. Incidentaly, it showcases
+<p>This module provides various utilities to help you extract data from OpenPersona elements, such as agents and worlds. It also provides a
+mechanism to reduce the extracted data to a more concise form, and to export artifacts from OpenPersona elements. Incidentaly, it showcases
 one of the many ways in which agent simulations differ from AI assistants, as the latter are not designed to be introspected in this way.</p>
 <details class="source">
 <summary>
@@ -40,22 +40,22 @@ Simulations produce a lot of data, and it is often useful to extract these data 
   - Generate synthetic data from a simulation, so that you can use it for training machine learning models or testing software.
   - Simply turn some of the data into a more machine-readable format, such as JSON or CSV, so that you can analyze it more easily.
 
-This module provides various utilities to help you extract data from TinyTroupe elements, such as agents and worlds. It also provides a 
-mechanism to reduce the extracted data to a more concise form, and to export artifacts from TinyTroupe elements. Incidentaly, it showcases 
+This module provides various utilities to help you extract data from OpenPersona elements, such as agents and worlds. It also provides a 
+mechanism to reduce the extracted data to a more concise form, and to export artifacts from OpenPersona elements. Incidentaly, it showcases 
 one of the many ways in which agent simulations differ from AI assistants, as the latter are not designed to be introspected in this way.
 &#34;&#34;&#34;
 
 import logging
-logger = logging.getLogger(&#34;tinytroupe&#34;)
+logger = logging.getLogger(&#34;openpersona&#34;)
 
 ###########################################################################
 # Exposed API
 ###########################################################################
-from tinytroupe.extraction.artifact_exporter import ArtifactExporter
-from tinytroupe.extraction.normalizer import Normalizer
-from tinytroupe.extraction.results_extractor import ResultsExtractor
-from tinytroupe.extraction.results_reducer import ResultsReducer
-from tinytroupe.extraction.results_reporter import ResultsReporter
+from openpersona.extraction.artifact_exporter import ArtifactExporter
+from openpersona.extraction.normalizer import Normalizer
+from openpersona.extraction.results_extractor import ResultsExtractor
+from openpersona.extraction.results_reducer import ResultsReducer
+from openpersona.extraction.results_reporter import ResultsReporter
 
 __all__ = [&#34;ArtifactExporter&#34;, &#34;Normalizer&#34;, &#34;ResultsExtractor&#34;, &#34;ResultsReducer&#34;, &#34;ResultsReporter&#34;]</code></pre>
 </details>
@@ -63,23 +63,23 @@ __all__ = [&#34;ArtifactExporter&#34;, &#34;Normalizer&#34;, &#34;ResultsExtract
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="tinytroupe.extraction.artifact_exporter" href="artifact_exporter.html">tinytroupe.extraction.artifact_exporter</a></code></dt>
+<dt><code class="name"><a title="openpersona.extraction.artifact_exporter" href="artifact_exporter.html">openpersona.extraction.artifact_exporter</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.extraction.normalizer" href="normalizer.html">tinytroupe.extraction.normalizer</a></code></dt>
+<dt><code class="name"><a title="openpersona.extraction.normalizer" href="normalizer.html">openpersona.extraction.normalizer</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.extraction.results_extractor" href="results_extractor.html">tinytroupe.extraction.results_extractor</a></code></dt>
+<dt><code class="name"><a title="openpersona.extraction.results_extractor" href="results_extractor.html">openpersona.extraction.results_extractor</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.extraction.results_reducer" href="results_reducer.html">tinytroupe.extraction.results_reducer</a></code></dt>
+<dt><code class="name"><a title="openpersona.extraction.results_reducer" href="results_reducer.html">openpersona.extraction.results_reducer</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.extraction.results_reporter" href="results_reporter.html">tinytroupe.extraction.results_reporter</a></code></dt>
+<dt><code class="name"><a title="openpersona.extraction.results_reporter" href="results_reporter.html">openpersona.extraction.results_reporter</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -92,12 +92,12 @@ __all__ = [&#34;ArtifactExporter&#34;, &#34;Normalizer&#34;, &#34;ResultsExtract
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.extraction.ArtifactExporter"><code class="flex name class">
+<dt id="openpersona.extraction.ArtifactExporter"><code class="flex name class">
 <span>class <span class="ident">ArtifactExporter</span></span>
 <span>(</span><span>base_output_folder: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An artifact exporter is responsible for exporting artifacts from TinyTroupe elements, for example
+<div class="desc"><p>An artifact exporter is responsible for exporting artifacts from OpenPersona elements, for example
 in order to create synthetic data files from simulations.</p></div>
 <details class="source">
 <summary>
@@ -105,7 +105,7 @@ in order to create synthetic data files from simulations.</p></div>
 </summary>
 <pre><code class="python">class ArtifactExporter(JsonSerializableRegistry):
     &#34;&#34;&#34;
-    An artifact exporter is responsible for exporting artifacts from TinyTroupe elements, for example 
+    An artifact exporter is responsible for exporting artifacts from OpenPersona elements, for example 
     in order to create synthetic data files from simulations. 
     &#34;&#34;&#34;
 
@@ -254,11 +254,11 @@ in order to create synthetic data files from simulations.</p></div>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
+<li><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.extraction.ArtifactExporter.export"><code class="name flex">
+<dt id="openpersona.extraction.ArtifactExporter.export"><code class="name flex">
 <span>def <span class="ident">export</span></span>(<span>self, artifact_name: str, artifact_data: Union[str, dict], content_type: str, content_format: str = None, target_format: str = 'txt', verbose: bool = False)</span>
 </code></dt>
 <dd>
@@ -330,15 +330,15 @@ If a string is given, it will be saved as is.</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></b></code>:
+<li><code><b><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.utils.json.JsonSerializableRegistry.from_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
-<li><code><a title="tinytroupe.utils.json.JsonSerializableRegistry.to_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
+<li><code><a title="openpersona.utils.json.JsonSerializableRegistry.from_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
+<li><code><a title="openpersona.utils.json.JsonSerializableRegistry.to_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="tinytroupe.extraction.Normalizer"><code class="flex name class">
+<dt id="openpersona.extraction.Normalizer"><code class="flex name class">
 <span>class <span class="ident">Normalizer</span></span>
 <span>(</span><span>elements: List[str], n: int, verbose: bool = False, max_length: Optional[int] = None)</span>
 </code></dt>
@@ -638,7 +638,7 @@ abstractions; as a safety net we also truncate/merge locally if still too long.<
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.extraction.Normalizer.normalize"><code class="name flex">
+<dt id="openpersona.extraction.Normalizer.normalize"><code class="name flex">
 <span>def <span class="ident">normalize</span></span>(<span>self, element_or_elements: Union[str, List[str]]) ‑> Union[str, List[str]]</span>
 </code></dt>
 <dd>
@@ -768,7 +768,7 @@ list in the same order.</p>
         return normalized_elements  # Return list for list input</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.Normalizer.normalized_mapping"><code class="name flex">
+<dt id="openpersona.extraction.Normalizer.normalized_mapping"><code class="name flex">
 <span>def <span class="ident">normalized_mapping</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
@@ -795,9 +795,9 @@ internal data isn't a dict, it coerces it into identity mapping.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.extraction.ResultsExtractor"><code class="flex name class">
+<dt id="openpersona.extraction.ResultsExtractor"><code class="flex name class">
 <span>class <span class="ident">ResultsExtractor</span></span>
-<span>(</span><span>extraction_prompt_template_path: str = 'C:\\Users\\pdasilva\\repos\\TinyTroupe\\tinytroupe\\extraction\\./prompts/interaction_results_extractor.mustache', extraction_objective: str = "The main points present in the agents' interactions history.", situation: str = '', fields: List[str] = None, fields_hints: dict = None, verbose: bool = False)</span>
+<span>(</span><span>extraction_prompt_template_path: str = 'C:\\Users\\pdasilva\\repos\\OpenPersona\\openpersona\\extraction\\./prompts/interaction_results_extractor.mustache', extraction_objective: str = "The main points present in the agents' interactions history.", situation: str = '', fields: List[str] = None, fields_hints: dict = None, verbose: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Initializes the ResultsExtractor with default parameters.</p>
@@ -860,7 +860,7 @@ internal data isn't a dict, it coerces it into identity mapping.</p></div>
 
     def extract_results_from_agents(
         self,
-        agents: List[TinyPerson],
+        agents: List[Persona],
         extraction_objective: str = None,
         situation: str = None,
         fields: list = None,
@@ -868,10 +868,10 @@ internal data isn't a dict, it coerces it into identity mapping.</p></div>
         verbose: bool = None,
     ):
         &#34;&#34;&#34;
-        Extracts results from a list of TinyPerson instances.
+        Extracts results from a list of Persona instances.
 
         Args:
-            agents (List[TinyPerson]): The list of TinyPerson instances to extract results from.
+            agents (List[Persona]): The list of Persona instances to extract results from.
             extraction_objective (str): The extraction objective.
             situation (str): The situation to consider.
             fields (list, optional): The fields to extract. If None, the extractor will decide what names to use.
@@ -892,7 +892,7 @@ internal data isn't a dict, it coerces it into identity mapping.</p></div>
 
     def extract_results_from_agent(
         self,
-        tinyperson: TinyPerson,
+        tinyperson: Persona,
         extraction_objective: str = &#34;The main points present in the agent&#39;s interactions history.&#34;,
         situation: str = &#34;&#34;,
         fields: list = None,
@@ -900,10 +900,10 @@ internal data isn't a dict, it coerces it into identity mapping.</p></div>
         verbose: bool = None,
     ):
         &#34;&#34;&#34;
-        Extracts results from a TinyPerson instance.
+        Extracts results from a Persona instance.
 
         Args:
-            tinyperson (TinyPerson): The TinyPerson instance to extract results from.
+            tinyperson (Persona): The Persona instance to extract results from.
             extraction_objective (str): The extraction objective.
             situation (str): The situation to consider.
             fields (list, optional): The fields to extract. If None, the extractor will decide what names to use.
@@ -984,7 +984,7 @@ performed.
 
     def extract_results_from_world(
         self,
-        tinyworld: TinyWorld,
+        tinyworld: World,
         extraction_objective: str = &#34;The main points that can be derived from the agents conversations and actions.&#34;,
         situation: str = &#34;&#34;,
         fields: list = None,
@@ -992,10 +992,10 @@ performed.
         verbose: bool = None,
     ):
         &#34;&#34;&#34;
-        Extracts results from a TinyWorld instance.
+        Extracts results from a World instance.
 
         Args:
-            tinyworld (TinyWorld): The TinyWorld instance to extract results from.
+            tinyworld (World): The World instance to extract results from.
             extraction_objective (str): The extraction objective.
             situation (str): The situation to consider.
             fields (list, optional): The fields to extract. If None, the extractor will decide what names to use.
@@ -1121,15 +1121,15 @@ Each interaction history includes stimuli the corresponding agent received as we
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.extraction.ResultsExtractor.extract_results_from_agent"><code class="name flex">
-<span>def <span class="ident">extract_results_from_agent</span></span>(<span>self, tinyperson: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, extraction_objective: str = "The main points present in the agent's interactions history.", situation: str = '', fields: list = None, fields_hints: dict = None, verbose: bool = None)</span>
+<dt id="openpersona.extraction.ResultsExtractor.extract_results_from_agent"><code class="name flex">
+<span>def <span class="ident">extract_results_from_agent</span></span>(<span>self, tinyperson: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, extraction_objective: str = "The main points present in the agent's interactions history.", situation: str = '', fields: list = None, fields_hints: dict = None, verbose: bool = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Extracts results from a TinyPerson instance.</p>
+<div class="desc"><p>Extracts results from a Persona instance.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>tinyperson</code></strong> :&ensp;<code>TinyPerson</code></dt>
-<dd>The TinyPerson instance to extract results from.</dd>
+<dt><strong><code>tinyperson</code></strong> :&ensp;<code>Persona</code></dt>
+<dd>The Persona instance to extract results from.</dd>
 <dt><strong><code>extraction_objective</code></strong> :&ensp;<code>str</code></dt>
 <dd>The extraction objective.</dd>
 <dt><strong><code>situation</code></strong> :&ensp;<code>str</code></dt>
@@ -1148,7 +1148,7 @@ Defaults to None.</dd>
 </summary>
 <pre><code class="python">    def extract_results_from_agent(
         self,
-        tinyperson: TinyPerson,
+        tinyperson: Persona,
         extraction_objective: str = &#34;The main points present in the agent&#39;s interactions history.&#34;,
         situation: str = &#34;&#34;,
         fields: list = None,
@@ -1156,10 +1156,10 @@ Defaults to None.</dd>
         verbose: bool = None,
     ):
         &#34;&#34;&#34;
-        Extracts results from a TinyPerson instance.
+        Extracts results from a Persona instance.
 
         Args:
-            tinyperson (TinyPerson): The TinyPerson instance to extract results from.
+            tinyperson (Persona): The Persona instance to extract results from.
             extraction_objective (str): The extraction objective.
             situation (str): The situation to consider.
             fields (list, optional): The fields to extract. If None, the extractor will decide what names to use.
@@ -1239,15 +1239,15 @@ performed.
         return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsExtractor.extract_results_from_agents"><code class="name flex">
-<span>def <span class="ident">extract_results_from_agents</span></span>(<span>self, agents: List[<a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>], extraction_objective: str = None, situation: str = None, fields: list = None, fields_hints: dict = None, verbose: bool = None)</span>
+<dt id="openpersona.extraction.ResultsExtractor.extract_results_from_agents"><code class="name flex">
+<span>def <span class="ident">extract_results_from_agents</span></span>(<span>self, agents: List[<a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>], extraction_objective: str = None, situation: str = None, fields: list = None, fields_hints: dict = None, verbose: bool = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Extracts results from a list of TinyPerson instances.</p>
+<div class="desc"><p>Extracts results from a list of Persona instances.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>agents</code></strong> :&ensp;<code>List[TinyPerson]</code></dt>
-<dd>The list of TinyPerson instances to extract results from.</dd>
+<dt><strong><code>agents</code></strong> :&ensp;<code>List[Persona]</code></dt>
+<dd>The list of Persona instances to extract results from.</dd>
 <dt><strong><code>extraction_objective</code></strong> :&ensp;<code>str</code></dt>
 <dd>The extraction objective.</dd>
 <dt><strong><code>situation</code></strong> :&ensp;<code>str</code></dt>
@@ -1266,7 +1266,7 @@ Defaults to None.</dd>
 </summary>
 <pre><code class="python">def extract_results_from_agents(
     self,
-    agents: List[TinyPerson],
+    agents: List[Persona],
     extraction_objective: str = None,
     situation: str = None,
     fields: list = None,
@@ -1274,10 +1274,10 @@ Defaults to None.</dd>
     verbose: bool = None,
 ):
     &#34;&#34;&#34;
-    Extracts results from a list of TinyPerson instances.
+    Extracts results from a list of Persona instances.
 
     Args:
-        agents (List[TinyPerson]): The list of TinyPerson instances to extract results from.
+        agents (List[Persona]): The list of Persona instances to extract results from.
         extraction_objective (str): The extraction objective.
         situation (str): The situation to consider.
         fields (list, optional): The fields to extract. If None, the extractor will decide what names to use.
@@ -1297,15 +1297,15 @@ Defaults to None.</dd>
     return results</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsExtractor.extract_results_from_world"><code class="name flex">
-<span>def <span class="ident">extract_results_from_world</span></span>(<span>self, tinyworld: <a title="tinytroupe.environment.tiny_world.TinyWorld" href="../environment/tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a>, extraction_objective: str = 'The main points that can be derived from the agents conversations and actions.', situation: str = '', fields: list = None, fields_hints: dict = None, verbose: bool = None)</span>
+<dt id="openpersona.extraction.ResultsExtractor.extract_results_from_world"><code class="name flex">
+<span>def <span class="ident">extract_results_from_world</span></span>(<span>self, tinyworld: <a title="openpersona.environment.world.World" href="../environment/world.html#openpersona.environment.world.World">World</a>, extraction_objective: str = 'The main points that can be derived from the agents conversations and actions.', situation: str = '', fields: list = None, fields_hints: dict = None, verbose: bool = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Extracts results from a TinyWorld instance.</p>
+<div class="desc"><p>Extracts results from a World instance.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>tinyworld</code></strong> :&ensp;<code>TinyWorld</code></dt>
-<dd>The TinyWorld instance to extract results from.</dd>
+<dt><strong><code>tinyworld</code></strong> :&ensp;<code>World</code></dt>
+<dd>The World instance to extract results from.</dd>
 <dt><strong><code>extraction_objective</code></strong> :&ensp;<code>str</code></dt>
 <dd>The extraction objective.</dd>
 <dt><strong><code>situation</code></strong> :&ensp;<code>str</code></dt>
@@ -1322,7 +1322,7 @@ Defaults to None.</dd>
 </summary>
 <pre><code class="python">    def extract_results_from_world(
         self,
-        tinyworld: TinyWorld,
+        tinyworld: World,
         extraction_objective: str = &#34;The main points that can be derived from the agents conversations and actions.&#34;,
         situation: str = &#34;&#34;,
         fields: list = None,
@@ -1330,10 +1330,10 @@ Defaults to None.</dd>
         verbose: bool = None,
     ):
         &#34;&#34;&#34;
-        Extracts results from a TinyWorld instance.
+        Extracts results from a World instance.
 
         Args:
-            tinyworld (TinyWorld): The TinyWorld instance to extract results from.
+            tinyworld (World): The World instance to extract results from.
             extraction_objective (str): The extraction objective.
             situation (str): The situation to consider.
             fields (list, optional): The fields to extract. If None, the extractor will decide what names to use.
@@ -1411,7 +1411,7 @@ Each interaction history includes stimuli the corresponding agent received as we
         return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsExtractor.save_as_json"><code class="name flex">
+<dt id="openpersona.extraction.ResultsExtractor.save_as_json"><code class="name flex">
 <span>def <span class="ident">save_as_json</span></span>(<span>self, filename: str, verbose: bool = False)</span>
 </code></dt>
 <dd>
@@ -1451,7 +1451,7 @@ Each interaction history includes stimuli the corresponding agent received as we
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReducer"><code class="flex name class">
+<dt id="openpersona.extraction.ResultsReducer"><code class="flex name class">
 <span>class <span class="ident">ResultsReducer</span></span>
 </code></dt>
 <dd>
@@ -1473,7 +1473,7 @@ Each interaction history includes stimuli the corresponding agent received as we
         
         self.rules[trigger] = func
     
-    def reduce_agent(self, agent: TinyPerson) -&gt; list:
+    def reduce_agent(self, agent: Persona) -&gt; list:
         reduction = []
         for message in agent.episodic_memory.retrieve_all():
             if message[&#39;role&#39;] == &#39;system&#39;:
@@ -1487,7 +1487,7 @@ Each interaction history includes stimuli the corresponding agent received as we
                 stimulus_timestamp = message[&#39;simulation_timestamp&#39;]
 
                 if stimulus_type in self.rules:
-                    extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=TinyPerson.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
+                    extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=Persona.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
                     if extracted is not None:
                         reduction.append(extracted)
 
@@ -1500,19 +1500,19 @@ Each interaction history includes stimuli the corresponding agent received as we
                     action_timestamp = message[&#39;simulation_timestamp&#39;]
                     
                     if action_type in self.rules:
-                        extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=TinyPerson.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
+                        extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=Persona.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
                         if extracted is not None:
                             reduction.append(extracted)
             
         return reduction
 
-    def reduce_agent_to_dataframe(self, agent: TinyPerson, column_names: list=None) -&gt; pd.DataFrame:
+    def reduce_agent_to_dataframe(self, agent: Persona, column_names: list=None) -&gt; pd.DataFrame:
         reduction = self.reduce_agent(agent)
         return pd.DataFrame(reduction, columns=column_names)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.extraction.ResultsReducer.add_reduction_rule"><code class="name flex">
+<dt id="openpersona.extraction.ResultsReducer.add_reduction_rule"><code class="name flex">
 <span>def <span class="ident">add_reduction_rule</span></span>(<span>self, trigger: str, func: <built-in function callable>)</span>
 </code></dt>
 <dd>
@@ -1528,8 +1528,8 @@ Each interaction history includes stimuli the corresponding agent received as we
     self.rules[trigger] = func</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReducer.reduce_agent"><code class="name flex">
-<span>def <span class="ident">reduce_agent</span></span>(<span>self, agent: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>) ‑> list</span>
+<dt id="openpersona.extraction.ResultsReducer.reduce_agent"><code class="name flex">
+<span>def <span class="ident">reduce_agent</span></span>(<span>self, agent: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1537,7 +1537,7 @@ Each interaction history includes stimuli the corresponding agent received as we
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reduce_agent(self, agent: TinyPerson) -&gt; list:
+<pre><code class="python">def reduce_agent(self, agent: Persona) -&gt; list:
     reduction = []
     for message in agent.episodic_memory.retrieve_all():
         if message[&#39;role&#39;] == &#39;system&#39;:
@@ -1551,7 +1551,7 @@ Each interaction history includes stimuli the corresponding agent received as we
             stimulus_timestamp = message[&#39;simulation_timestamp&#39;]
 
             if stimulus_type in self.rules:
-                extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=TinyPerson.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
+                extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=Persona.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
                 if extracted is not None:
                     reduction.append(extracted)
 
@@ -1564,15 +1564,15 @@ Each interaction history includes stimuli the corresponding agent received as we
                 action_timestamp = message[&#39;simulation_timestamp&#39;]
                 
                 if action_type in self.rules:
-                    extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=TinyPerson.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
+                    extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=Persona.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
                     if extracted is not None:
                         reduction.append(extracted)
         
     return reduction</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReducer.reduce_agent_to_dataframe"><code class="name flex">
-<span>def <span class="ident">reduce_agent_to_dataframe</span></span>(<span>self, agent: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, column_names: list = None) ‑> pandas.core.frame.DataFrame</span>
+<dt id="openpersona.extraction.ResultsReducer.reduce_agent_to_dataframe"><code class="name flex">
+<span>def <span class="ident">reduce_agent_to_dataframe</span></span>(<span>self, agent: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, column_names: list = None) ‑> pandas.core.frame.DataFrame</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1580,14 +1580,14 @@ Each interaction history includes stimuli the corresponding agent received as we
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reduce_agent_to_dataframe(self, agent: TinyPerson, column_names: list=None) -&gt; pd.DataFrame:
+<pre><code class="python">def reduce_agent_to_dataframe(self, agent: Persona, column_names: list=None) -&gt; pd.DataFrame:
     reduction = self.reduce_agent(agent)
     return pd.DataFrame(reduction, columns=column_names)</code></pre>
 </details>
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReporter"><code class="flex name class">
+<dt id="openpersona.extraction.ResultsReporter"><code class="flex name class">
 <span>class <span class="ident">ResultsReporter</span></span>
 <span>(</span><span>default_reporting_task: str = 'Summarize the key findings, insights, and outcomes from the simulation data.', verbose: bool = False)</span>
 </code></dt>
@@ -1627,7 +1627,7 @@ Each interaction history includes stimuli the corresponding agent received as we
 
     def report_from_agents(
         self,
-        agents: Union[TinyPerson, TinyWorld, List[TinyPerson]],
+        agents: Union[Persona, World, List[Persona]],
         reporting_task: str = None,
         report_title: str = &#34;Simulation Report&#34;,
         include_agent_summaries: bool = True,
@@ -1638,7 +1638,7 @@ Each interaction history includes stimuli the corresponding agent received as we
         Option 1: Generate a report by asking agents about specific reporting tasks.
 
         Args:
-            agents: Single agent, TinyWorld, or list of agents to interview.
+            agents: Single agent, World, or list of agents to interview.
             reporting_task: The specific task to ask agents about.
             report_title: Title for the generated report.
             include_agent_summaries: Whether to include agent mini-bios in the report.
@@ -1677,7 +1677,7 @@ Each interaction history includes stimuli the corresponding agent received as we
 
     def report_from_interactions(
         self,
-        agents: Union[TinyPerson, TinyWorld, List[TinyPerson]],
+        agents: Union[Persona, World, List[Persona]],
         report_title: str = &#34;Interaction Analysis Report&#34;,
         include_agent_summaries: bool = True,
         first_n: int = None,
@@ -1689,7 +1689,7 @@ Each interaction history includes stimuli the corresponding agent received as we
         Option 2: Generate a report by analyzing agents&#39; historical interactions.
 
         Args:
-            agents: Single agent, TinyWorld, or list of agents to analyze.
+            agents: Single agent, World, or list of agents to analyze.
             report_title: Title for the generated report.
             include_agent_summaries: Whether to include agent mini-bios.
             first_n: Number of first interactions to include.
@@ -1790,24 +1790,24 @@ Each interaction history includes stimuli the corresponding agent received as we
         if verbose:
             logger.info(f&#34;Report saved to {filename}&#34;)
 
-    def _extract_agents(self, agents) -&gt; List[TinyPerson]:
-        &#34;&#34;&#34;Extract a list of TinyPerson objects from various input types.&#34;&#34;&#34;
-        if isinstance(agents, TinyPerson):
+    def _extract_agents(self, agents) -&gt; List[Persona]:
+        &#34;&#34;&#34;Extract a list of Persona objects from various input types.&#34;&#34;&#34;
+        if isinstance(agents, Persona):
             return [agents]
-        elif isinstance(agents, TinyWorld):
+        elif isinstance(agents, World):
             return agents.agents
         elif isinstance(agents, list):
             return agents
         else:
             raise ValueError(
-                &#34;Agents must be a TinyPerson, TinyWorld, or list of TinyPerson objects.&#34;
+                &#34;Agents must be a Persona, World, or list of Persona objects.&#34;
             )
 
-    def _interview_agent(self, agent: TinyPerson, reporting_task: str) -&gt; str:
+    def _interview_agent(self, agent: Persona, reporting_task: str) -&gt; str:
         &#34;&#34;&#34;Interview a single agent about the reporting task.&#34;&#34;&#34;
         if self.verbose:
             logger.debug(f&#34;Interviewing agent {agent.name} about: {reporting_task}&#34;)
-        # Following TinyTroupe patterns - directly interact with the agent
+        # Following OpenPersona patterns - directly interact with the agent
         prompt = f&#34;&#34;&#34;
         I need you to provide a comprehensive report based on your experiences and observations.
         
@@ -2023,7 +2023,7 @@ Each interaction history includes stimuli the corresponding agent received as we
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.extraction.ResultsReporter.display_report"><code class="name flex">
+<dt id="openpersona.extraction.ResultsReporter.display_report"><code class="name flex">
 <span>def <span class="ident">display_report</span></span>(<span>self, report: str = None)</span>
 </code></dt>
 <dd>
@@ -2054,15 +2054,15 @@ Each interaction history includes stimuli the corresponding agent received as we
     self.console.print(markdown)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReporter.report_from_agents"><code class="name flex">
-<span>def <span class="ident">report_from_agents</span></span>(<span>self, agents: Union[<a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, <a title="tinytroupe.environment.tiny_world.TinyWorld" href="../environment/tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a>, List[<a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>]], reporting_task: str = None, report_title: str = 'Simulation Report', include_agent_summaries: bool = True, consolidate_responses: bool = True, requirements: str = 'Present the findings in a clear, structured manner.') ‑> str</span>
+<dt id="openpersona.extraction.ResultsReporter.report_from_agents"><code class="name flex">
+<span>def <span class="ident">report_from_agents</span></span>(<span>self, agents: Union[<a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, <a title="openpersona.environment.world.World" href="../environment/world.html#openpersona.environment.world.World">World</a>, List[<a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>]], reporting_task: str = None, report_title: str = 'Simulation Report', include_agent_summaries: bool = True, consolidate_responses: bool = True, requirements: str = 'Present the findings in a clear, structured manner.') ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Option 1: Generate a report by asking agents about specific reporting tasks.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>agents</code></strong></dt>
-<dd>Single agent, TinyWorld, or list of agents to interview.</dd>
+<dd>Single agent, World, or list of agents to interview.</dd>
 <dt><strong><code>reporting_task</code></strong></dt>
 <dd>The specific task to ask agents about.</dd>
 <dt><strong><code>report_title</code></strong></dt>
@@ -2085,7 +2085,7 @@ Each interaction history includes stimuli the corresponding agent received as we
 </summary>
 <pre><code class="python">def report_from_agents(
     self,
-    agents: Union[TinyPerson, TinyWorld, List[TinyPerson]],
+    agents: Union[Persona, World, List[Persona]],
     reporting_task: str = None,
     report_title: str = &#34;Simulation Report&#34;,
     include_agent_summaries: bool = True,
@@ -2096,7 +2096,7 @@ Each interaction history includes stimuli the corresponding agent received as we
     Option 1: Generate a report by asking agents about specific reporting tasks.
 
     Args:
-        agents: Single agent, TinyWorld, or list of agents to interview.
+        agents: Single agent, World, or list of agents to interview.
         reporting_task: The specific task to ask agents about.
         report_title: Title for the generated report.
         include_agent_summaries: Whether to include agent mini-bios in the report.
@@ -2134,7 +2134,7 @@ Each interaction history includes stimuli the corresponding agent received as we
     return report</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReporter.report_from_data"><code class="name flex">
+<dt id="openpersona.extraction.ResultsReporter.report_from_data"><code class="name flex">
 <span>def <span class="ident">report_from_data</span></span>(<span>self, data: Union[str, Dict[str, Any], List[Dict[str, Any]]], report_title: str = 'Data Report', requirements: str = 'Present the findings in a clear, structured manner.') ‑> str</span>
 </code></dt>
 <dd>
@@ -2183,15 +2183,15 @@ Each interaction history includes stimuli the corresponding agent received as we
     return report</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReporter.report_from_interactions"><code class="name flex">
-<span>def <span class="ident">report_from_interactions</span></span>(<span>self, agents: Union[<a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, <a title="tinytroupe.environment.tiny_world.TinyWorld" href="../environment/tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a>, List[<a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>]], report_title: str = 'Interaction Analysis Report', include_agent_summaries: bool = True, first_n: int = None, last_n: int = None, max_content_length: int = None, requirements: str = 'Present the findings in a clear, structured manner.') ‑> str</span>
+<dt id="openpersona.extraction.ResultsReporter.report_from_interactions"><code class="name flex">
+<span>def <span class="ident">report_from_interactions</span></span>(<span>self, agents: Union[<a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, <a title="openpersona.environment.world.World" href="../environment/world.html#openpersona.environment.world.World">World</a>, List[<a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>]], report_title: str = 'Interaction Analysis Report', include_agent_summaries: bool = True, first_n: int = None, last_n: int = None, max_content_length: int = None, requirements: str = 'Present the findings in a clear, structured manner.') ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Option 2: Generate a report by analyzing agents' historical interactions.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>agents</code></strong></dt>
-<dd>Single agent, TinyWorld, or list of agents to analyze.</dd>
+<dd>Single agent, World, or list of agents to analyze.</dd>
 <dt><strong><code>report_title</code></strong></dt>
 <dd>Title for the generated report.</dd>
 <dt><strong><code>include_agent_summaries</code></strong></dt>
@@ -2216,7 +2216,7 @@ Each interaction history includes stimuli the corresponding agent received as we
 </summary>
 <pre><code class="python">def report_from_interactions(
     self,
-    agents: Union[TinyPerson, TinyWorld, List[TinyPerson]],
+    agents: Union[Persona, World, List[Persona]],
     report_title: str = &#34;Interaction Analysis Report&#34;,
     include_agent_summaries: bool = True,
     first_n: int = None,
@@ -2228,7 +2228,7 @@ Each interaction history includes stimuli the corresponding agent received as we
     Option 2: Generate a report by analyzing agents&#39; historical interactions.
 
     Args:
-        agents: Single agent, TinyWorld, or list of agents to analyze.
+        agents: Single agent, World, or list of agents to analyze.
         report_title: Title for the generated report.
         include_agent_summaries: Whether to include agent mini-bios.
         first_n: Number of first interactions to include.
@@ -2264,7 +2264,7 @@ Each interaction history includes stimuli the corresponding agent received as we
     return report</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.ResultsReporter.save_report"><code class="name flex">
+<dt id="openpersona.extraction.ResultsReporter.save_report"><code class="name flex">
 <span>def <span class="ident">save_report</span></span>(<span>self, filename: str, report: str = None, verbose: bool = None)</span>
 </code></dt>
 <dd>
@@ -2320,58 +2320,58 @@ Each interaction history includes stimuli the corresponding agent received as we
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe" href="../index.html">tinytroupe</a></code></li>
+<li><code><a title="openpersona" href="../index.html">openpersona</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="tinytroupe.extraction.artifact_exporter" href="artifact_exporter.html">tinytroupe.extraction.artifact_exporter</a></code></li>
-<li><code><a title="tinytroupe.extraction.normalizer" href="normalizer.html">tinytroupe.extraction.normalizer</a></code></li>
-<li><code><a title="tinytroupe.extraction.results_extractor" href="results_extractor.html">tinytroupe.extraction.results_extractor</a></code></li>
-<li><code><a title="tinytroupe.extraction.results_reducer" href="results_reducer.html">tinytroupe.extraction.results_reducer</a></code></li>
-<li><code><a title="tinytroupe.extraction.results_reporter" href="results_reporter.html">tinytroupe.extraction.results_reporter</a></code></li>
+<li><code><a title="openpersona.extraction.artifact_exporter" href="artifact_exporter.html">openpersona.extraction.artifact_exporter</a></code></li>
+<li><code><a title="openpersona.extraction.normalizer" href="normalizer.html">openpersona.extraction.normalizer</a></code></li>
+<li><code><a title="openpersona.extraction.results_extractor" href="results_extractor.html">openpersona.extraction.results_extractor</a></code></li>
+<li><code><a title="openpersona.extraction.results_reducer" href="results_reducer.html">openpersona.extraction.results_reducer</a></code></li>
+<li><code><a title="openpersona.extraction.results_reporter" href="results_reporter.html">openpersona.extraction.results_reporter</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.extraction.ArtifactExporter" href="#tinytroupe.extraction.ArtifactExporter">ArtifactExporter</a></code></h4>
+<h4><code><a title="openpersona.extraction.ArtifactExporter" href="#openpersona.extraction.ArtifactExporter">ArtifactExporter</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.extraction.ArtifactExporter.export" href="#tinytroupe.extraction.ArtifactExporter.export">export</a></code></li>
+<li><code><a title="openpersona.extraction.ArtifactExporter.export" href="#openpersona.extraction.ArtifactExporter.export">export</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.extraction.Normalizer" href="#tinytroupe.extraction.Normalizer">Normalizer</a></code></h4>
+<h4><code><a title="openpersona.extraction.Normalizer" href="#openpersona.extraction.Normalizer">Normalizer</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.extraction.Normalizer.normalize" href="#tinytroupe.extraction.Normalizer.normalize">normalize</a></code></li>
-<li><code><a title="tinytroupe.extraction.Normalizer.normalized_mapping" href="#tinytroupe.extraction.Normalizer.normalized_mapping">normalized_mapping</a></code></li>
+<li><code><a title="openpersona.extraction.Normalizer.normalize" href="#openpersona.extraction.Normalizer.normalize">normalize</a></code></li>
+<li><code><a title="openpersona.extraction.Normalizer.normalized_mapping" href="#openpersona.extraction.Normalizer.normalized_mapping">normalized_mapping</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.extraction.ResultsExtractor" href="#tinytroupe.extraction.ResultsExtractor">ResultsExtractor</a></code></h4>
+<h4><code><a title="openpersona.extraction.ResultsExtractor" href="#openpersona.extraction.ResultsExtractor">ResultsExtractor</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.extraction.ResultsExtractor.extract_results_from_agent" href="#tinytroupe.extraction.ResultsExtractor.extract_results_from_agent">extract_results_from_agent</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsExtractor.extract_results_from_agents" href="#tinytroupe.extraction.ResultsExtractor.extract_results_from_agents">extract_results_from_agents</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsExtractor.extract_results_from_world" href="#tinytroupe.extraction.ResultsExtractor.extract_results_from_world">extract_results_from_world</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsExtractor.save_as_json" href="#tinytroupe.extraction.ResultsExtractor.save_as_json">save_as_json</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsExtractor.extract_results_from_agent" href="#openpersona.extraction.ResultsExtractor.extract_results_from_agent">extract_results_from_agent</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsExtractor.extract_results_from_agents" href="#openpersona.extraction.ResultsExtractor.extract_results_from_agents">extract_results_from_agents</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsExtractor.extract_results_from_world" href="#openpersona.extraction.ResultsExtractor.extract_results_from_world">extract_results_from_world</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsExtractor.save_as_json" href="#openpersona.extraction.ResultsExtractor.save_as_json">save_as_json</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.extraction.ResultsReducer" href="#tinytroupe.extraction.ResultsReducer">ResultsReducer</a></code></h4>
+<h4><code><a title="openpersona.extraction.ResultsReducer" href="#openpersona.extraction.ResultsReducer">ResultsReducer</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.extraction.ResultsReducer.add_reduction_rule" href="#tinytroupe.extraction.ResultsReducer.add_reduction_rule">add_reduction_rule</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsReducer.reduce_agent" href="#tinytroupe.extraction.ResultsReducer.reduce_agent">reduce_agent</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsReducer.reduce_agent_to_dataframe" href="#tinytroupe.extraction.ResultsReducer.reduce_agent_to_dataframe">reduce_agent_to_dataframe</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReducer.add_reduction_rule" href="#openpersona.extraction.ResultsReducer.add_reduction_rule">add_reduction_rule</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReducer.reduce_agent" href="#openpersona.extraction.ResultsReducer.reduce_agent">reduce_agent</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReducer.reduce_agent_to_dataframe" href="#openpersona.extraction.ResultsReducer.reduce_agent_to_dataframe">reduce_agent_to_dataframe</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.extraction.ResultsReporter" href="#tinytroupe.extraction.ResultsReporter">ResultsReporter</a></code></h4>
+<h4><code><a title="openpersona.extraction.ResultsReporter" href="#openpersona.extraction.ResultsReporter">ResultsReporter</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.extraction.ResultsReporter.display_report" href="#tinytroupe.extraction.ResultsReporter.display_report">display_report</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsReporter.report_from_agents" href="#tinytroupe.extraction.ResultsReporter.report_from_agents">report_from_agents</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsReporter.report_from_data" href="#tinytroupe.extraction.ResultsReporter.report_from_data">report_from_data</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsReporter.report_from_interactions" href="#tinytroupe.extraction.ResultsReporter.report_from_interactions">report_from_interactions</a></code></li>
-<li><code><a title="tinytroupe.extraction.ResultsReporter.save_report" href="#tinytroupe.extraction.ResultsReporter.save_report">save_report</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReporter.display_report" href="#openpersona.extraction.ResultsReporter.display_report">display_report</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReporter.report_from_agents" href="#openpersona.extraction.ResultsReporter.report_from_agents">report_from_agents</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReporter.report_from_data" href="#openpersona.extraction.ResultsReporter.report_from_data">report_from_data</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReporter.report_from_interactions" href="#openpersona.extraction.ResultsReporter.report_from_interactions">report_from_interactions</a></code></li>
+<li><code><a title="openpersona.extraction.ResultsReporter.save_report" href="#openpersona.extraction.ResultsReporter.save_report">save_report</a></code></li>
 </ul>
 </li>
 </ul>

@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import json
 import os
@@ -12,27 +12,27 @@ import time
 from pathlib import Path
 
 # Insert paths at the beginning of sys.path (position 0)
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 sys.path.insert(0, "../../")
 sys.path.insert(0, "..")
 
 from testing_utils import *
 
-from tinytroupe.agent import TinyPerson
-from tinytroupe.agent.memory import EpisodicMemory, SemanticMemory
-from tinytroupe.agent.mental_faculty import (
+from openpersona.agent import Persona
+from openpersona.agent.memory import EpisodicMemory, SemanticMemory
+from openpersona.agent.mental_faculty import (
     CustomMentalFaculty,
-    TinyMentalFaculty,
-    TinyToolUse,
+    MentalFaculty,
+    ToolUseFaculty,
 )
-from tinytroupe.enrichment import TinyEnricher
-from tinytroupe.examples import (
+from openpersona.enrichment import Enricher
+from openpersona.examples import (
     create_lisa_the_data_scientist,
     create_marcos_the_physician,
     create_oscar_the_architect,
 )
-from tinytroupe.extraction import ArtifactExporter
-from tinytroupe.tools import TinyWordProcessor
+from openpersona.extraction import ArtifactExporter
+from openpersona.tools import DocWriter
 
 
 # Get the directory where the current file is located
@@ -96,9 +96,9 @@ def test_mental_faculties(setup):
     # Test tool use faculty
     data_export_folder = f"{EXPORT_BASE_FOLDER}/test_mental_faculties"
     exporter = ArtifactExporter(base_output_folder=data_export_folder)
-    enricher = TinyEnricher()
-    tool_faculty = TinyToolUse(
-        tools=[TinyWordProcessor(exporter=exporter, enricher=enricher)]
+    enricher = Enricher()
+    tool_faculty = ToolUseFaculty(
+        tools=[DocWriter(exporter=exporter, enricher=enricher)]
     )
 
     # Test adding multiple mental faculties
@@ -168,7 +168,7 @@ def test_action_generation_and_flow(setup):
     very_long_prompt = "Keep talking about architecture for a very long time. " * 10
     actions = agent.listen_and_act(very_long_prompt, return_actions=True)
     assert (
-        len(actions) <= TinyPerson.MAX_ACTIONS_BEFORE_DONE + 1
+        len(actions) <= Persona.MAX_ACTIONS_BEFORE_DONE + 1
     ), f"{agent.name} should respect MAX_ACTIONS_BEFORE_DONE limit"
 
     # Test that agent responds appropriately to different stimuli
@@ -475,7 +475,7 @@ def test_serialization_edge_cases(setup):
 
     # Test complete state decoding
     # Create a new agent from the state
-    decoded_agent = TinyPerson.decode_complete_state(agent, complete_state)
+    decoded_agent = Persona.decode_complete_state(agent, complete_state)
 
     assert decoded_agent.name == agent.name, "Decoded agent should have same name"
     assert (
@@ -489,7 +489,7 @@ def test_serialization_edge_cases(setup):
     assert os.path.exists(save_path), "Specification file should be created"
 
     # Load the agent
-    loaded_agent = TinyPerson.load_specification(
+    loaded_agent = Persona.load_specification(
         save_path, new_agent_name=f"{agent.name}_loaded"
     )
     assert (
@@ -591,16 +591,16 @@ def test_action_buffer_management(setup):
 
 def test_environment_interaction(setup):
     """
-    Test agent interaction with TinyWorld environments and multi-agent scenarios.
+    Test agent interaction with World environments and multi-agent scenarios.
     """
-    from tinytroupe.environment import TinyWorld
+    from openpersona.environment import World
 
     # Create agents and environment
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
 
     # Create a world and add agents
-    world = TinyWorld("Test Office", [oscar, lisa])
+    world = World("Test Office", [oscar, lisa])
 
     # Test environment assignment
     assert oscar.environment == world, f"{oscar.name} should be assigned to the world"
@@ -867,7 +867,7 @@ def test_performance_and_limits(setup):
 
 def test_integration_scenarios(setup):
     """
-    Test complex integration scenarios combining multiple TinyPerson features.
+    Test complex integration scenarios combining multiple Persona features.
     """
     # Create a multi-agent scenario
     architect = create_oscar_the_architect()
@@ -875,9 +875,9 @@ def test_integration_scenarios(setup):
     physician = create_marcos_the_physician()
 
     # Set up a collaborative scenario
-    from tinytroupe.environment import TinyWorld
+    from openpersona.environment import World
 
-    world = TinyWorld("Innovation Lab", [architect, data_scientist, physician])
+    world = World("Innovation Lab", [architect, data_scientist, physician])
 
     # Configure agents with specialized roles and relationships
     architect.define("specialization", "Smart building design")
@@ -890,7 +890,7 @@ def test_integration_scenarios(setup):
     physician.related_to(architect, "Infrastructure consultant")
 
     # Add mental faculties for enhanced capabilities
-    from tinytroupe.agent.mental_faculty import CustomMentalFaculty
+    from openpersona.agent.mental_faculty import CustomMentalFaculty
 
     research_faculty = CustomMentalFaculty(
         name="ResearchCapability",
@@ -1138,11 +1138,11 @@ def test_multi_faculty_integration(setup):
 
     # Create multiple mental faculties
     exporter = ArtifactExporter(base_output_folder=str(current_file_dir / "test_exports"))
-    enricher = TinyEnricher()
+    enricher = Enricher()
 
     # Add word processor tool
-    word_processor_faculty = TinyToolUse(
-        tools=[TinyWordProcessor(exporter=exporter, enricher=enricher)]
+    word_processor_faculty = ToolUseFaculty(
+        tools=[DocWriter(exporter=exporter, enricher=enricher)]
     )
 
     # Add custom faculty for specialized tasks

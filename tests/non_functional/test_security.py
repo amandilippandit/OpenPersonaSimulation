@@ -1,25 +1,25 @@
 """
-General security tests for the TinyTroupe library.
+General security tests for the OpenPersona library.
 """
 
 import pytest
 import textwrap
 
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.append('../../tinytroupe/')
+sys.path.append('../../openpersona/')
 sys.path.append('../../')
 sys.path.append('..')
 
-from tinytroupe.clients import client
+from openpersona.clients import client
 
 from testing_utils import *
 
 def test_default_llmm_api():
     """
-    Tests some desireable properties of the default LLM API configured for TinyTroupe.
+    Tests some desireable properties of the default LLM API configured for OpenPersona.
     """
 
     messages = create_test_system_user_message("If you ask a cat what is the secret to a happy life, what would the cat say?")

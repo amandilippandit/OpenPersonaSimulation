@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.clients.azure_client API documentation</title>
+<title>openpersona.clients.azure_client API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.clients.azure_client</code></h1>
+<h1 class="title">Module <code>openpersona.clients.azure_client</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -33,11 +33,11 @@ import httpx
 import openai
 from openai import AzureOpenAI, OpenAI
 
-from tinytroupe import config_manager
+from openpersona import config_manager
 
 from .openai_client import OpenAIClient
 
-logger = logging.getLogger(&#34;tinytroupe&#34;)
+logger = logging.getLogger(&#34;openpersona&#34;)
 
 
 class AzureClient(OpenAIClient):
@@ -102,7 +102,7 @@ class AzureClient(OpenAIClient):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.clients.azure_client.AzureClient"><code class="flex name class">
+<dt id="openpersona.clients.azure_client.AzureClient"><code class="flex name class">
 <span>class <span class="ident">AzureClient</span></span>
 <span>(</span><span>cache_api_calls=None, cache_file_name=None)</span>
 </code></dt>
@@ -166,18 +166,18 @@ class AzureClient(OpenAIClient):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.clients.openai_client.OpenAIClient" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient">OpenAIClient</a></li>
+<li><a title="openpersona.clients.openai_client.OpenAIClient" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient">OpenAIClient</a></li>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.clients.openai_client.OpenAIClient" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient">OpenAIClient</a></b></code>:
+<li><code><b><a title="openpersona.clients.openai_client.OpenAIClient" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient">OpenAIClient</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.clients.openai_client.OpenAIClient.get_cost_stats" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient.get_cost_stats">get_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.clients.openai_client.OpenAIClient.get_embedding" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient.get_embedding">get_embedding</a></code></li>
-<li><code><a title="tinytroupe.clients.openai_client.OpenAIClient.pretty_print_cost_stats" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient.pretty_print_cost_stats">pretty_print_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.clients.openai_client.OpenAIClient.reset_cost_stats" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient.reset_cost_stats">reset_cost_stats</a></code></li>
-<li><code><a title="tinytroupe.clients.openai_client.OpenAIClient.send_message" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient.send_message">send_message</a></code></li>
-<li><code><a title="tinytroupe.clients.openai_client.OpenAIClient.set_api_cache" href="openai_client.html#tinytroupe.clients.openai_client.OpenAIClient.set_api_cache">set_api_cache</a></code></li>
+<li><code><a title="openpersona.clients.openai_client.OpenAIClient.get_cost_stats" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient.get_cost_stats">get_cost_stats</a></code></li>
+<li><code><a title="openpersona.clients.openai_client.OpenAIClient.get_embedding" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient.get_embedding">get_embedding</a></code></li>
+<li><code><a title="openpersona.clients.openai_client.OpenAIClient.pretty_print_cost_stats" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient.pretty_print_cost_stats">pretty_print_cost_stats</a></code></li>
+<li><code><a title="openpersona.clients.openai_client.OpenAIClient.reset_cost_stats" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient.reset_cost_stats">reset_cost_stats</a></code></li>
+<li><code><a title="openpersona.clients.openai_client.OpenAIClient.send_message" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient.send_message">send_message</a></code></li>
+<li><code><a title="openpersona.clients.openai_client.OpenAIClient.set_api_cache" href="openai_client.html#openpersona.clients.openai_client.OpenAIClient.set_api_cache">set_api_cache</a></code></li>
 </ul>
 </li>
 </ul>
@@ -193,13 +193,13 @@ class AzureClient(OpenAIClient):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.clients" href="index.html">tinytroupe.clients</a></code></li>
+<li><code><a title="openpersona.clients" href="index.html">openpersona.clients</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.clients.azure_client.AzureClient" href="#tinytroupe.clients.azure_client.AzureClient">AzureClient</a></code></h4>
+<h4><code><a title="openpersona.clients.azure_client.AzureClient" href="#openpersona.clients.azure_client.AzureClient">AzureClient</a></code></h4>
 </li>
 </ul>
 </li>

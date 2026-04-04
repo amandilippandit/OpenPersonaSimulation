@@ -7,12 +7,12 @@ import logging
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
 from testing_utils import *
-from tinytroupe.extraction import Normalizer
+from openpersona.extraction import Normalizer
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 
 class TestNormalizer:

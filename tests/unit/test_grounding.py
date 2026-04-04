@@ -3,20 +3,20 @@ import logging
 import tempfile
 import os
 import shutil
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.agent.grounding import (
+from openpersona.agent.grounding import (
     GroundingConnector, 
     BaseSemanticGroundingConnector,
     LocalFilesGroundingConnector,
     WebPagesGroundingConnector
 )
-from tinytroupe.examples import create_oscar_the_architect
+from openpersona.examples import create_oscar_the_architect
 from testing_utils import *
 
 @pytest.fixture
@@ -154,7 +154,7 @@ def test_grounding_connector_serialization(temp_folder):
     assert new_connector.folders_paths == connector.folders_paths
 
 def test_grounding_connector_integration_with_agent(temp_folder, setup):
-    """Test grounding connector integration with TinyPerson agents."""
+    """Test grounding connector integration with Persona agents."""
     
     connector = LocalFilesGroundingConnector(
         name="agent_integration_test",
@@ -165,7 +165,7 @@ def test_grounding_connector_integration_with_agent(temp_folder, setup):
     
     # Test that we can add grounding capability to agent
     # (This tests the integration pattern shown in the notebooks)
-    from tinytroupe.agent.mental_faculty import FilesAndWebGroundingFaculty
+    from openpersona.agent.mental_faculty import FilesAndWebGroundingFaculty
     
     grounding_faculty = FilesAndWebGroundingFaculty(folders_paths=[temp_folder])
     agent.add_mental_faculties([grounding_faculty])

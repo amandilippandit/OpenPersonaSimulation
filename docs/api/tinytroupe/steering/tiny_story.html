@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.steering.tiny_story API documentation</title>
+<title>openpersona.steering.narrative API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.steering.tiny_story</code></h1>
+<h1 class="title">Module <code>openpersona.steering.narrative</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -28,22 +28,22 @@
 </summary>
 <pre><code class="python">from typing import List
 
-import tinytroupe.utils as utils
-from tinytroupe.agent import TinyPerson
-from tinytroupe.clients import client
-from tinytroupe.environment import TinyWorld
-from tinytroupe.extraction import logger
+import openpersona.utils as utils
+from openpersona.agent import Persona
+from openpersona.clients import client
+from openpersona.environment import World
+from openpersona.extraction import logger
 
 
-class TinyStory:
+class Narrative:
     &#34;&#34;&#34;
-    Every simulation tells a story. This class provides helper mechanisms to help with crafting appropriate stories in TinyTroupe.
+    Every simulation tells a story. This class provides helper mechanisms to help with crafting appropriate stories in OpenPersona.
     &#34;&#34;&#34;
 
     def __init__(
         self,
-        environment: TinyWorld = None,
-        agent: TinyPerson = None,
+        environment: World = None,
+        agent: Persona = None,
         purpose: str = &#34;Be a realistic simulation.&#34;,
         context: str = &#34;&#34;,
         first_n=10,
@@ -56,8 +56,8 @@ class TinyStory:
         specify simulation-related purposes.
 
         Args:
-            environment (TinyWorld, optional): The environment in which the story takes place. Defaults to None.
-            agent (TinyPerson, optional): The agent in the story. Defaults to None.
+            environment (World, optional): The environment in which the story takes place. Defaults to None.
+            agent (Persona, optional): The agent in the story. Defaults to None.
             purpose (str, optional): The purpose of the story. Defaults to &#34;Be a realistic simulation.&#34;.
             context (str, optional): The current story context. Defaults to &#34;&#34;. The actual story will be appended to this context.
             first_n (int, optional): The number of first interactions to include in the story. Defaults to 10.
@@ -206,20 +206,20 @@ class TinyStory:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.steering.tiny_story.TinyStory"><code class="flex name class">
-<span>class <span class="ident">TinyStory</span></span>
-<span>(</span><span>environment: <a title="tinytroupe.environment.tiny_world.TinyWorld" href="../environment/tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a> = None, agent: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a> = None, purpose: str = 'Be a realistic simulation.', context: str = '', first_n=10, last_n=20, include_omission_info: bool = True)</span>
+<dt id="openpersona.steering.narrative.Narrative"><code class="flex name class">
+<span>class <span class="ident">Narrative</span></span>
+<span>(</span><span>environment: <a title="openpersona.environment.world.World" href="../environment/world.html#openpersona.environment.world.World">World</a> = None, agent: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a> = None, purpose: str = 'Be a realistic simulation.', context: str = '', first_n=10, last_n=20, include_omission_info: bool = True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Every simulation tells a story. This class provides helper mechanisms to help with crafting appropriate stories in TinyTroupe.</p>
+<div class="desc"><p>Every simulation tells a story. This class provides helper mechanisms to help with crafting appropriate stories in OpenPersona.</p>
 <p>Initialize the story. The story can be about an environment or an agent. It also has a purpose, which
 is used to guide the story generation. Stories are aware that they are related to simulations, so one can
 specify simulation-related purposes.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>environment</code></strong> :&ensp;<code>TinyWorld</code>, optional</dt>
+<dt><strong><code>environment</code></strong> :&ensp;<code>World</code>, optional</dt>
 <dd>The environment in which the story takes place. Defaults to None.</dd>
-<dt><strong><code>agent</code></strong> :&ensp;<code>TinyPerson</code>, optional</dt>
+<dt><strong><code>agent</code></strong> :&ensp;<code>Persona</code>, optional</dt>
 <dd>The agent in the story. Defaults to None.</dd>
 <dt><strong><code>purpose</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>The purpose of the story. Defaults to "Be a realistic simulation.".</dd>
@@ -236,15 +236,15 @@ specify simulation-related purposes.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TinyStory:
+<pre><code class="python">class Narrative:
     &#34;&#34;&#34;
-    Every simulation tells a story. This class provides helper mechanisms to help with crafting appropriate stories in TinyTroupe.
+    Every simulation tells a story. This class provides helper mechanisms to help with crafting appropriate stories in OpenPersona.
     &#34;&#34;&#34;
 
     def __init__(
         self,
-        environment: TinyWorld = None,
-        agent: TinyPerson = None,
+        environment: World = None,
+        agent: Persona = None,
         purpose: str = &#34;Be a realistic simulation.&#34;,
         context: str = &#34;&#34;,
         first_n=10,
@@ -257,8 +257,8 @@ specify simulation-related purposes.</p>
         specify simulation-related purposes.
 
         Args:
-            environment (TinyWorld, optional): The environment in which the story takes place. Defaults to None.
-            agent (TinyPerson, optional): The agent in the story. Defaults to None.
+            environment (World, optional): The environment in which the story takes place. Defaults to None.
+            agent (Persona, optional): The agent in the story. Defaults to None.
             purpose (str, optional): The purpose of the story. Defaults to &#34;Be a realistic simulation.&#34;.
             context (str, optional): The current story context. Defaults to &#34;&#34;. The actual story will be appended to this context.
             first_n (int, optional): The number of first interactions to include in the story. Defaults to 10.
@@ -399,7 +399,7 @@ specify simulation-related purposes.</p>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.steering.tiny_story.TinyStory.continue_story"><code class="name flex">
+<dt id="openpersona.steering.narrative.Narrative.continue_story"><code class="name flex">
 <span>def <span class="ident">continue_story</span></span>(<span>self, requirements='Continue the story in an interesting way.', number_of_words: int = 100, include_plot_twist: bool = False) ‑> str</span>
 </code></dt>
 <dd>
@@ -449,7 +449,7 @@ specify simulation-related purposes.</p>
     return continuation</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.tiny_story.TinyStory.start_story"><code class="name flex">
+<dt id="openpersona.steering.narrative.Narrative.start_story"><code class="name flex">
 <span>def <span class="ident">start_story</span></span>(<span>self, requirements='Start some interesting story about the agents.', number_of_words: int = 100, include_plot_twist: bool = False) ‑> str</span>
 </code></dt>
 <dd>
@@ -512,16 +512,16 @@ specify simulation-related purposes.</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.steering" href="index.html">tinytroupe.steering</a></code></li>
+<li><code><a title="openpersona.steering" href="index.html">openpersona.steering</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.steering.tiny_story.TinyStory" href="#tinytroupe.steering.tiny_story.TinyStory">TinyStory</a></code></h4>
+<h4><code><a title="openpersona.steering.narrative.Narrative" href="#openpersona.steering.narrative.Narrative">Narrative</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.steering.tiny_story.TinyStory.continue_story" href="#tinytroupe.steering.tiny_story.TinyStory.continue_story">continue_story</a></code></li>
-<li><code><a title="tinytroupe.steering.tiny_story.TinyStory.start_story" href="#tinytroupe.steering.tiny_story.TinyStory.start_story">start_story</a></code></li>
+<li><code><a title="openpersona.steering.narrative.Narrative.continue_story" href="#openpersona.steering.narrative.Narrative.continue_story">continue_story</a></code></li>
+<li><code><a title="openpersona.steering.narrative.Narrative.start_story" href="#openpersona.steering.narrative.Narrative.start_story">start_story</a></code></li>
 </ul>
 </li>
 </ul>

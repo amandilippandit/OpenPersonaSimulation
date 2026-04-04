@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.tools.tiny_word_processor API documentation</title>
+<title>openpersona.tools.doc_writer API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.tools.tiny_word_processor</code></h1>
+<h1 class="title">Module <code>openpersona.tools.doc_writer</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -28,12 +28,12 @@
 </summary>
 <pre><code class="python">import json
 
-from tinytroupe.tools import logger, TinyTool
+from openpersona.tools import logger, SimTool
 
 
-import tinytroupe.utils as utils
+import openpersona.utils as utils
 
-class TinyWordProcessor(TinyTool):
+class DocWriter(SimTool):
 
     def __init__(self, owner=None, exporter=None, enricher=None):
         super().__init__(&#34;wordprocessor&#34;, &#34;A basic word processor tool that allows agents to write documents.&#34;, owner=owner, real_world_side_effects=False, exporter=exporter, enricher=enricher)
@@ -123,8 +123,8 @@ class TinyWordProcessor(TinyTool):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.tools.tiny_word_processor.TinyWordProcessor"><code class="flex name class">
-<span>class <span class="ident">TinyWordProcessor</span></span>
+<dt id="openpersona.tools.doc_writer.DocWriter"><code class="flex name class">
+<span>class <span class="ident">DocWriter</span></span>
 <span>(</span><span>owner=None, exporter=None, enricher=None)</span>
 </code></dt>
 <dd>
@@ -150,7 +150,7 @@ state of the world outside of the simulation. If it does, it should be used with
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TinyWordProcessor(TinyTool):
+<pre><code class="python">class DocWriter(SimTool):
 
     def __init__(self, owner=None, exporter=None, enricher=None):
         super().__init__(&#34;wordprocessor&#34;, &#34;A basic word processor tool that allows agents to write documents.&#34;, owner=owner, real_world_side_effects=False, exporter=exporter, enricher=enricher)
@@ -232,19 +232,19 @@ state of the world outside of the simulation. If it does, it should be used with
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.tools.tiny_tool.TinyTool" href="tiny_tool.html#tinytroupe.tools.tiny_tool.TinyTool">TinyTool</a></li>
-<li><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
+<li><a title="openpersona.tools.sim_tool.SimTool" href="sim_tool.html#openpersona.tools.sim_tool.SimTool">SimTool</a></li>
+<li><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.serializable_attributes"><code class="name">var <span class="ident">serializable_attributes</span></code></dt>
+<dt id="openpersona.tools.doc_writer.DocWriter.serializable_attributes"><code class="name">var <span class="ident">serializable_attributes</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.actions_constraints_prompt"><code class="name flex">
+<dt id="openpersona.tools.doc_writer.DocWriter.actions_constraints_prompt"><code class="name flex">
 <span>def <span class="ident">actions_constraints_prompt</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -264,7 +264,7 @@ state of the world outside of the simulation. If it does, it should be used with
     return utils.dedent(prompt)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.actions_definitions_prompt"><code class="name flex">
+<dt id="openpersona.tools.doc_writer.DocWriter.actions_definitions_prompt"><code class="name flex">
 <span>def <span class="ident">actions_definitions_prompt</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -284,7 +284,7 @@ state of the world outside of the simulation. If it does, it should be used with
     return utils.dedent(prompt)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.write_document"><code class="name flex">
+<dt id="openpersona.tools.doc_writer.DocWriter.write_document"><code class="name flex">
 <span>def <span class="ident">write_document</span></span>(<span>self, title, content, author=None)</span>
 </code></dt>
 <dd>
@@ -324,10 +324,10 @@ state of the world outside of the simulation. If it does, it should be used with
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.tools.tiny_tool.TinyTool" href="tiny_tool.html#tinytroupe.tools.tiny_tool.TinyTool">TinyTool</a></b></code>:
+<li><code><b><a title="openpersona.tools.sim_tool.SimTool" href="sim_tool.html#openpersona.tools.sim_tool.SimTool">SimTool</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.tools.tiny_tool.TinyTool.from_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
-<li><code><a title="tinytroupe.tools.tiny_tool.TinyTool.to_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
+<li><code><a title="openpersona.tools.sim_tool.SimTool.from_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
+<li><code><a title="openpersona.tools.sim_tool.SimTool.to_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
 </ul>
 </li>
 </ul>
@@ -343,18 +343,18 @@ state of the world outside of the simulation. If it does, it should be used with
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.tools" href="index.html">tinytroupe.tools</a></code></li>
+<li><code><a title="openpersona.tools" href="index.html">openpersona.tools</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.tools.tiny_word_processor.TinyWordProcessor" href="#tinytroupe.tools.tiny_word_processor.TinyWordProcessor">TinyWordProcessor</a></code></h4>
+<h4><code><a title="openpersona.tools.doc_writer.DocWriter" href="#openpersona.tools.doc_writer.DocWriter">DocWriter</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.actions_constraints_prompt" href="#tinytroupe.tools.tiny_word_processor.TinyWordProcessor.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
-<li><code><a title="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.actions_definitions_prompt" href="#tinytroupe.tools.tiny_word_processor.TinyWordProcessor.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
-<li><code><a title="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.serializable_attributes" href="#tinytroupe.tools.tiny_word_processor.TinyWordProcessor.serializable_attributes">serializable_attributes</a></code></li>
-<li><code><a title="tinytroupe.tools.tiny_word_processor.TinyWordProcessor.write_document" href="#tinytroupe.tools.tiny_word_processor.TinyWordProcessor.write_document">write_document</a></code></li>
+<li><code><a title="openpersona.tools.doc_writer.DocWriter.actions_constraints_prompt" href="#openpersona.tools.doc_writer.DocWriter.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
+<li><code><a title="openpersona.tools.doc_writer.DocWriter.actions_definitions_prompt" href="#openpersona.tools.doc_writer.DocWriter.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
+<li><code><a title="openpersona.tools.doc_writer.DocWriter.serializable_attributes" href="#openpersona.tools.doc_writer.DocWriter.serializable_attributes">serializable_attributes</a></code></li>
+<li><code><a title="openpersona.tools.doc_writer.DocWriter.write_document" href="#openpersona.tools.doc_writer.DocWriter.write_document">write_document</a></code></li>
 </ul>
 </li>
 </ul>

@@ -1,22 +1,22 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-from tinytroupe.examples import create_lisa_the_data_scientist, create_oscar_the_architect, create_marcos_the_physician
-from tinytroupe.environment import TinyWorld
+from openpersona.examples import create_lisa_the_data_scientist, create_oscar_the_architect, create_marcos_the_physician
+from openpersona.environment import World
 from testing_utils import *
 
 @pytest.mark.core
 def test_run(setup, focus_group_world):
 
     # empty world
-    world_1 = TinyWorld("Empty land", [])   
+    world_1 = World("Empty land", [])   
     world_1.run(2)
 
     # world with agents

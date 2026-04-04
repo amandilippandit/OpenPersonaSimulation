@@ -5,11 +5,11 @@ import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-from tinytroupe.utils import name_or_empty, extract_json, repeat_on_error
+from openpersona.utils import name_or_empty, extract_json, repeat_on_error
 from testing_utils import *
-from tinytroupe.utils.llm import llm
+from openpersona.utils.llm import llm
 
 @pytest.mark.core
 def test_extract_json():

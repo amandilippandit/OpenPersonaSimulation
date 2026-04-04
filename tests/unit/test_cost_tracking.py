@@ -2,19 +2,19 @@ import logging
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 sys.path.insert(0, "../../")
 sys.path.insert(0, "..")
 
 from testing_utils import *
 
-from tinytroupe.agent import TinyPerson
-from tinytroupe.clients import client
-from tinytroupe.environment import TinyWorld
+from openpersona.agent import Persona
+from openpersona.clients import client
+from openpersona.environment import World
 
 
 def test_openai_client_cost_tracking_methods_exist(setup):
@@ -68,8 +68,8 @@ def test_openai_client_reset_cost_stats(setup):
 
 
 def test_tinyworld_cost_tracking_methods_exist(setup):
-    """Test that TinyWorld has all cost tracking methods."""
-    world = TinyWorld("TestWorld")
+    """Test that World has all cost tracking methods."""
+    world = World("TestWorld")
 
     # Instance methods
     assert hasattr(world, "get_cost_stats"), "Missing get_cost_stats instance method"
@@ -79,16 +79,16 @@ def test_tinyworld_cost_tracking_methods_exist(setup):
 
     # Static methods
     assert hasattr(
-        TinyWorld, "get_global_cost_stats"
+        World, "get_global_cost_stats"
     ), "Missing get_global_cost_stats static method"
     assert hasattr(
-        TinyWorld, "pretty_print_global_cost_stats"
+        World, "pretty_print_global_cost_stats"
     ), "Missing pretty_print_global_cost_stats static method"
 
 
 def test_tinyworld_get_cost_stats_structure(setup):
-    """Test that TinyWorld.get_cost_stats returns the correct structure."""
-    world = TinyWorld("TestWorld")
+    """Test that World.get_cost_stats returns the correct structure."""
+    world = World("TestWorld")
     stats = world.get_cost_stats()
 
     assert isinstance(stats, dict), "get_cost_stats should return a dict"
@@ -107,7 +107,7 @@ def test_tinyworld_get_cost_stats_structure(setup):
 
 def test_tinyworld_derivative_stats_calculation(setup):
     """Test that derivative statistics are calculated correctly."""
-    world = TinyWorld("TestWorld")
+    world = World("TestWorld")
     stats = world.get_cost_stats()
 
     # With no agents and no steps, derivative stats should be None
@@ -121,8 +121,8 @@ def test_tinyworld_derivative_stats_calculation(setup):
 
 
 def test_tinyworld_global_cost_stats_structure(setup):
-    """Test that TinyWorld.get_global_cost_stats returns the correct structure."""
-    stats = TinyWorld.get_global_cost_stats()
+    """Test that World.get_global_cost_stats returns the correct structure."""
+    stats = World.get_global_cost_stats()
 
     assert isinstance(stats, dict), "get_global_cost_stats should return a dict"
     assert "base_stats" in stats, "Missing base_stats in global stats"
@@ -132,18 +132,18 @@ def test_tinyworld_global_cost_stats_structure(setup):
 
 
 def test_tinyperson_cost_tracking_methods_exist(setup):
-    """Test that TinyPerson has all cost tracking static methods."""
+    """Test that Persona has all cost tracking static methods."""
     assert hasattr(
-        TinyPerson, "get_global_cost_stats"
+        Persona, "get_global_cost_stats"
     ), "Missing get_global_cost_stats static method"
     assert hasattr(
-        TinyPerson, "pretty_print_global_cost_stats"
+        Persona, "pretty_print_global_cost_stats"
     ), "Missing pretty_print_global_cost_stats static method"
 
 
 def test_tinyperson_get_global_cost_stats_structure(setup):
-    """Test that TinyPerson.get_global_cost_stats returns the correct structure."""
-    stats = TinyPerson.get_global_cost_stats()
+    """Test that Persona.get_global_cost_stats returns the correct structure."""
+    stats = Persona.get_global_cost_stats()
 
     assert isinstance(stats, dict), "get_global_cost_stats should return a dict"
     assert "base_stats" in stats, "Missing base_stats in stats"
@@ -167,7 +167,7 @@ def test_cost_tracking_with_minimal_simulation(setup):
     assert initial_stats["model_calls"] == 0, "Should start with 0 model calls"
 
     # Create a simple agent
-    agent = TinyPerson("TestAgent")
+    agent = Persona("TestAgent")
     agent.define("age", 30)
     agent.define("occupation", "Software Engineer")
     agent.define("personality", {"traits": ["analytical"]})
@@ -189,17 +189,17 @@ def test_cost_tracking_with_minimal_simulation(setup):
 
 
 def test_world_cost_tracking_with_simulation_steps(setup):
-    """Test that TinyWorld tracks simulation steps and computes per-step statistics."""
+    """Test that World tracks simulation steps and computes per-step statistics."""
     # Reset cost stats
     cli = client()
     cli.reset_cost_stats()
 
     # Create a world with an agent
-    agent = TinyPerson("Alice")
+    agent = Persona("Alice")
     agent.define("age", 25)
     agent.define("occupation", "Researcher")
 
-    world = TinyWorld("TestWorld", [agent])
+    world = World("TestWorld", [agent])
 
     # Verify initial state
     initial_world_stats = world.get_cost_stats()
@@ -239,15 +239,15 @@ def test_derivative_stats_with_multiple_agents(setup):
     cli.reset_cost_stats()
 
     # Create a world with two agents
-    agent1 = TinyPerson("Bob")
+    agent1 = Persona("Bob")
     agent1.define("age", 30)
     agent1.define("occupation", "Engineer")
 
-    agent2 = TinyPerson("Carol")
+    agent2 = Persona("Carol")
     agent2.define("age", 28)
     agent2.define("occupation", "Designer")
 
-    world = TinyWorld("MultiAgentWorld", [agent1, agent2])
+    world = World("MultiAgentWorld", [agent1, agent2])
 
     # Run simulation
     world.run(1)
@@ -278,25 +278,25 @@ def test_global_stats_aggregation(setup):
     cli.reset_cost_stats()
 
     # Clear existing agents and worlds to start fresh
-    TinyPerson.clear_agents()
-    TinyWorld.clear_environments()
+    Persona.clear_agents()
+    World.clear_environments()
 
     # Create two worlds with agents
-    agent1 = TinyPerson("Agent1")
+    agent1 = Persona("Agent1")
     agent1.define("age", 30)
-    world1 = TinyWorld("World1", [agent1])
+    world1 = World("World1", [agent1])
 
-    agent2 = TinyPerson("Agent2")
+    agent2 = Persona("Agent2")
     agent2.define("age", 25)
-    world2 = TinyWorld("World2", [agent2])
+    world2 = World("World2", [agent2])
 
     # Run simulations
     world1.run(1)
     world2.run(1)
 
     # Get global statistics
-    global_world_stats = TinyWorld.get_global_cost_stats()
-    global_agent_stats = TinyPerson.get_global_cost_stats()
+    global_world_stats = World.get_global_cost_stats()
+    global_agent_stats = Persona.get_global_cost_stats()
 
     # Verify aggregation
     assert global_world_stats["total_environments"] == 2, "Should have 2 environments"

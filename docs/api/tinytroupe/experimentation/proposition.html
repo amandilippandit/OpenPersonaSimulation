@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.experimentation.proposition API documentation</title>
+<title>openpersona.experimentation.proposition API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.experimentation.proposition</code></h1>
+<h1 class="title">Module <code>openpersona.experimentation.proposition</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -30,11 +30,11 @@
 
 from chevron import render
 
-from tinytroupe import config_manager
-from tinytroupe.agent import TinyPerson
-from tinytroupe.environment import TinyWorld
-from tinytroupe.experimentation import logger
-from tinytroupe.utils import LLMChat, indent_at_current_level
+from openpersona import config_manager
+from openpersona.agent import Persona
+from openpersona.environment import World
+from openpersona.experimentation import logger
+from openpersona.utils import LLMChat, indent_at_current_level
 
 
 class Proposition:
@@ -54,7 +54,7 @@ class Proposition:
         precondition_function=None,
     ):
         &#34;&#34;&#34;
-        Define a proposition as a (textual) claim about a target, which can be a TinyWorld, a TinyPerson or several of any.
+        Define a proposition as a (textual) claim about a target, which can be a World, a Persona or several of any.
         The proposition&#39;s truth value can then either be checked as a boolean or computed as an integer score denoting the degree of truth.
 
         Sometimes a proposition is better used in an implicative way, i.e., as a claim that is true or false depending on the context. For example, when
@@ -69,7 +69,7 @@ class Proposition:
         Args:
 
             claim (str): the claim of the proposition
-            target (TinyWorld, TinyPerson, list): the target or targets of the proposition. If not given, it will have to be specified later.
+            target (World, Persona, list): the target or targets of the proposition. If not given, it will have to be specified later.
             include_personas (bool): whether to include the persona specifications of the agents in the context
             first_n (int): the number of first interactions to consider in the context
             last_n (int): the number of last interactions (most recent) to consider in the context
@@ -492,7 +492,7 @@ class Proposition:
                 max_content_length=None, first_n=self.first_n, last_n=self.last_n
             )
 
-            if isinstance(target, TinyPerson):
+            if isinstance(target, Persona):
                 if self.include_personas:
                     context += f&#34;## Agent &#39;{target.name}&#39; Persona Specification\n\n&#34;
                     context += &#34;Before presenting the actual simulation trajectory, here is the persona specification of the agent that was used to produce the simulation.\n\n&#34;
@@ -502,7 +502,7 @@ class Proposition:
                 context += (
                     f&#34;## Agent &#39;{target.name}&#39; Simulation Trajectory (if any)\n\n&#34;
                 )
-            elif isinstance(target, TinyWorld):
+            elif isinstance(target, World):
                 if self.include_personas:
                     context += (
                         f&#34;## Environment &#39;{target.name}&#39; Personas Specifications\n\n&#34;
@@ -524,15 +524,15 @@ class Proposition:
     def _target_as_list(self, target):
         if target is None:
             return None
-        elif isinstance(target, TinyWorld) or isinstance(target, TinyPerson):
+        elif isinstance(target, World) or isinstance(target, Persona):
             return [target]
         elif isinstance(target, list) and all(
-            isinstance(t, TinyWorld) or isinstance(t, TinyPerson) for t in target
+            isinstance(t, World) or isinstance(t, Persona) for t in target
         ):
             return target
         else:
             raise ValueError(
-                &#34;Target must be a TinyWorld, a TinyPerson or a list of them.&#34;
+                &#34;Target must be a World, a Persona or a list of them.&#34;
             )
 
 
@@ -551,7 +551,7 @@ def check_proposition(
     not use it again).
 
     Args:
-        target (TinyWorld, TinyPerson, list): the target or targets of the proposition
+        target (World, Persona, list): the target or targets of the proposition
         claim (str): the claim of the proposition
         additional_context (str): additional context to provide to the LLM
         first_n (int): the number of first interactions to consider in the context
@@ -583,7 +583,7 @@ def compute_score(
     not use it again).
 
     Args:
-        target (TinyWorld, TinyPerson, list): the target or targets of the proposition
+        target (World, Persona, list): the target or targets of the proposition
         claim (str): the claim of the proposition
         additional_context (str): additional context to provide to the LLM
         first_n (int): the number of first interactions to consider in the context
@@ -607,7 +607,7 @@ def compute_score(
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="tinytroupe.experimentation.proposition.check_proposition"><code class="name flex">
+<dt id="openpersona.experimentation.proposition.check_proposition"><code class="name flex">
 <span>def <span class="ident">check_proposition</span></span>(<span>target, claim: str, additional_context='No additional context available.', first_n: int = None, last_n: int = None, return_full_response: bool = False)</span>
 </code></dt>
 <dd>
@@ -617,7 +617,7 @@ if you are not interested in the justification or confidence of the claim, or wi
 not use it again).</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>TinyWorld, TinyPerson, list</code></dt>
+<dt><strong><code>target</code></strong> :&ensp;<code>World, Persona, list</code></dt>
 <dd>the target or targets of the proposition</dd>
 <dt><strong><code>claim</code></strong> :&ensp;<code>str</code></dt>
 <dd>the claim of the proposition</dd>
@@ -654,7 +654,7 @@ not use it again).</p>
     not use it again).
 
     Args:
-        target (TinyWorld, TinyPerson, list): the target or targets of the proposition
+        target (World, Persona, list): the target or targets of the proposition
         claim (str): the claim of the proposition
         additional_context (str): additional context to provide to the LLM
         first_n (int): the number of first interactions to consider in the context
@@ -671,7 +671,7 @@ not use it again).</p>
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.experimentation.proposition.compute_score"><code class="name flex">
+<dt id="openpersona.experimentation.proposition.compute_score"><code class="name flex">
 <span>def <span class="ident">compute_score</span></span>(<span>target, claim: str, additional_context='No additional context available.', first_n: int = None, last_n: int = None, return_full_response: bool = False)</span>
 </code></dt>
 <dd>
@@ -681,7 +681,7 @@ if you are not interested in the justification or confidence of the claim, or wi
 not use it again).</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>TinyWorld, TinyPerson, list</code></dt>
+<dt><strong><code>target</code></strong> :&ensp;<code>World, Persona, list</code></dt>
 <dd>the target or targets of the proposition</dd>
 <dt><strong><code>claim</code></strong> :&ensp;<code>str</code></dt>
 <dd>the claim of the proposition</dd>
@@ -718,7 +718,7 @@ not use it again).</p>
     not use it again).
 
     Args:
-        target (TinyWorld, TinyPerson, list): the target or targets of the proposition
+        target (World, Persona, list): the target or targets of the proposition
         claim (str): the claim of the proposition
         additional_context (str): additional context to provide to the LLM
         first_n (int): the number of first interactions to consider in the context
@@ -740,12 +740,12 @@ not use it again).</p>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.experimentation.proposition.Proposition"><code class="flex name class">
+<dt id="openpersona.experimentation.proposition.Proposition"><code class="flex name class">
 <span>class <span class="ident">Proposition</span></span>
 <span>(</span><span>claim: str, target=None, include_personas: bool = False, first_n: int = None, last_n: int = None, double_check: bool = False, use_reasoning_model: bool = False, precondition_function=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Define a proposition as a (textual) claim about a target, which can be a TinyWorld, a TinyPerson or several of any.
+<div class="desc"><p>Define a proposition as a (textual) claim about a target, which can be a World, a Persona or several of any.
 The proposition's truth value can then either be checked as a boolean or computed as an integer score denoting the degree of truth.</p>
 <p>Sometimes a proposition is better used in an implicative way, i.e., as a claim that is true or false depending on the context. For example, when
 considering the latest agent action, the proposition might be applicable only to certain agent action types. To allow this,
@@ -758,7 +758,7 @@ this class allows to define a precondition function, which effectivelly turns a 
 <dl>
 <dt><strong><code>claim</code></strong> :&ensp;<code>str</code></dt>
 <dd>the claim of the proposition</dd>
-<dt><strong><code>target</code></strong> :&ensp;<code>TinyWorld, TinyPerson, list</code></dt>
+<dt><strong><code>target</code></strong> :&ensp;<code>World, Persona, list</code></dt>
 <dd>the target or targets of the proposition. If not given, it will have to be specified later.</dd>
 <dt><strong><code>include_personas</code></strong> :&ensp;<code>bool</code></dt>
 <dd>whether to include the persona specifications of the agents in the context</dd>
@@ -794,7 +794,7 @@ this class allows to define a precondition function, which effectivelly turns a 
         precondition_function=None,
     ):
         &#34;&#34;&#34;
-        Define a proposition as a (textual) claim about a target, which can be a TinyWorld, a TinyPerson or several of any.
+        Define a proposition as a (textual) claim about a target, which can be a World, a Persona or several of any.
         The proposition&#39;s truth value can then either be checked as a boolean or computed as an integer score denoting the degree of truth.
 
         Sometimes a proposition is better used in an implicative way, i.e., as a claim that is true or false depending on the context. For example, when
@@ -809,7 +809,7 @@ this class allows to define a precondition function, which effectivelly turns a 
         Args:
 
             claim (str): the claim of the proposition
-            target (TinyWorld, TinyPerson, list): the target or targets of the proposition. If not given, it will have to be specified later.
+            target (World, Persona, list): the target or targets of the proposition. If not given, it will have to be specified later.
             include_personas (bool): whether to include the persona specifications of the agents in the context
             first_n (int): the number of first interactions to consider in the context
             last_n (int): the number of last interactions (most recent) to consider in the context
@@ -1232,7 +1232,7 @@ this class allows to define a precondition function, which effectivelly turns a 
                 max_content_length=None, first_n=self.first_n, last_n=self.last_n
             )
 
-            if isinstance(target, TinyPerson):
+            if isinstance(target, Persona):
                 if self.include_personas:
                     context += f&#34;## Agent &#39;{target.name}&#39; Persona Specification\n\n&#34;
                     context += &#34;Before presenting the actual simulation trajectory, here is the persona specification of the agent that was used to produce the simulation.\n\n&#34;
@@ -1242,7 +1242,7 @@ this class allows to define a precondition function, which effectivelly turns a 
                 context += (
                     f&#34;## Agent &#39;{target.name}&#39; Simulation Trajectory (if any)\n\n&#34;
                 )
-            elif isinstance(target, TinyWorld):
+            elif isinstance(target, World):
                 if self.include_personas:
                     context += (
                         f&#34;## Environment &#39;{target.name}&#39; Personas Specifications\n\n&#34;
@@ -1264,31 +1264,31 @@ this class allows to define a precondition function, which effectivelly turns a 
     def _target_as_list(self, target):
         if target is None:
             return None
-        elif isinstance(target, TinyWorld) or isinstance(target, TinyPerson):
+        elif isinstance(target, World) or isinstance(target, Persona):
             return [target]
         elif isinstance(target, list) and all(
-            isinstance(t, TinyWorld) or isinstance(t, TinyPerson) for t in target
+            isinstance(t, World) or isinstance(t, Persona) for t in target
         ):
             return target
         else:
             raise ValueError(
-                &#34;Target must be a TinyWorld, a TinyPerson or a list of them.&#34;
+                &#34;Target must be a World, a Persona or a list of them.&#34;
             )</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.experimentation.proposition.Proposition.MAX_SCORE"><code class="name">var <span class="ident">MAX_SCORE</span></code></dt>
+<dt id="openpersona.experimentation.proposition.Proposition.MAX_SCORE"><code class="name">var <span class="ident">MAX_SCORE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.experimentation.proposition.Proposition.MIN_SCORE"><code class="name">var <span class="ident">MIN_SCORE</span></code></dt>
+<dt id="openpersona.experimentation.proposition.Proposition.MIN_SCORE"><code class="name">var <span class="ident">MIN_SCORE</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.experimentation.proposition.Proposition.check"><code class="name flex">
+<dt id="openpersona.experimentation.proposition.Proposition.check"><code class="name flex">
 <span>def <span class="ident">check</span></span>(<span>self, target=None, additional_context='No additional context available.', claim_variables: dict = {}, return_full_response: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
@@ -1411,14 +1411,14 @@ this class allows to define a precondition function, which effectivelly turns a 
         return self.full_evaluation_response</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.experimentation.proposition.Proposition.copy"><code class="name flex">
+<dt id="openpersona.experimentation.proposition.Proposition.copy"><code class="name flex">
 <span>def <span class="ident">copy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a shallow copy of the proposition without any evaluation state.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="tinytroupe.experimentation.proposition.Proposition" href="#tinytroupe.experimentation.proposition.Proposition">Proposition</a></code></dt>
+<dt><code><a title="openpersona.experimentation.proposition.Proposition" href="#openpersona.experimentation.proposition.Proposition">Proposition</a></code></dt>
 <dd>A new proposition with the same configuration parameters.</dd>
 </dl></div>
 <details class="source">
@@ -1434,7 +1434,7 @@ this class allows to define a precondition function, which effectivelly turns a 
     return self.__copy__()</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.experimentation.proposition.Proposition.recommendations_for_improvement"><code class="name flex">
+<dt id="openpersona.experimentation.proposition.Proposition.recommendations_for_improvement"><code class="name flex">
 <span>def <span class="ident">recommendations_for_improvement</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1479,7 +1479,7 @@ this class allows to define a precondition function, which effectivelly turns a 
     return recommendation</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.experimentation.proposition.Proposition.score"><code class="name flex">
+<dt id="openpersona.experimentation.proposition.Proposition.score"><code class="name flex">
 <span>def <span class="ident">score</span></span>(<span>self, target=None, additional_context='No additional context available.', claim_variables: dict = {}, return_full_response: bool = False) ‑> int</span>
 </code></dt>
 <dd>
@@ -1652,26 +1652,26 @@ this class allows to define a precondition function, which effectivelly turns a 
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.experimentation" href="index.html">tinytroupe.experimentation</a></code></li>
+<li><code><a title="openpersona.experimentation" href="index.html">openpersona.experimentation</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="tinytroupe.experimentation.proposition.check_proposition" href="#tinytroupe.experimentation.proposition.check_proposition">check_proposition</a></code></li>
-<li><code><a title="tinytroupe.experimentation.proposition.compute_score" href="#tinytroupe.experimentation.proposition.compute_score">compute_score</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.check_proposition" href="#openpersona.experimentation.proposition.check_proposition">check_proposition</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.compute_score" href="#openpersona.experimentation.proposition.compute_score">compute_score</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.experimentation.proposition.Proposition" href="#tinytroupe.experimentation.proposition.Proposition">Proposition</a></code></h4>
+<h4><code><a title="openpersona.experimentation.proposition.Proposition" href="#openpersona.experimentation.proposition.Proposition">Proposition</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.experimentation.proposition.Proposition.MAX_SCORE" href="#tinytroupe.experimentation.proposition.Proposition.MAX_SCORE">MAX_SCORE</a></code></li>
-<li><code><a title="tinytroupe.experimentation.proposition.Proposition.MIN_SCORE" href="#tinytroupe.experimentation.proposition.Proposition.MIN_SCORE">MIN_SCORE</a></code></li>
-<li><code><a title="tinytroupe.experimentation.proposition.Proposition.check" href="#tinytroupe.experimentation.proposition.Proposition.check">check</a></code></li>
-<li><code><a title="tinytroupe.experimentation.proposition.Proposition.copy" href="#tinytroupe.experimentation.proposition.Proposition.copy">copy</a></code></li>
-<li><code><a title="tinytroupe.experimentation.proposition.Proposition.recommendations_for_improvement" href="#tinytroupe.experimentation.proposition.Proposition.recommendations_for_improvement">recommendations_for_improvement</a></code></li>
-<li><code><a title="tinytroupe.experimentation.proposition.Proposition.score" href="#tinytroupe.experimentation.proposition.Proposition.score">score</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.Proposition.MAX_SCORE" href="#openpersona.experimentation.proposition.Proposition.MAX_SCORE">MAX_SCORE</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.Proposition.MIN_SCORE" href="#openpersona.experimentation.proposition.Proposition.MIN_SCORE">MIN_SCORE</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.Proposition.check" href="#openpersona.experimentation.proposition.Proposition.check">check</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.Proposition.copy" href="#openpersona.experimentation.proposition.Proposition.copy">copy</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.Proposition.recommendations_for_improvement" href="#openpersona.experimentation.proposition.Proposition.recommendations_for_improvement">recommendations_for_improvement</a></code></li>
+<li><code><a title="openpersona.experimentation.proposition.Proposition.score" href="#openpersona.experimentation.proposition.Proposition.score">score</a></code></li>
 </ul>
 </li>
 </ul>

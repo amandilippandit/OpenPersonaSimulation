@@ -1,2 +1,2 @@
-pip uninstall -y tinytroupe
+pip uninstall -y openpersona
 pip install . --no-cache-dir

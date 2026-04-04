@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.validation.simulation_validator API documentation</title>
-<meta name="description" content="Simulation experiment empirical validation mechanisms for TinyTroupe …" />
+<title>openpersona.validation.simulation_validator API documentation</title>
+<meta name="description" content="Simulation experiment empirical validation mechanisms for OpenPersona …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,10 +19,10 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.validation.simulation_validator</code></h1>
+<h1 class="title">Module <code>openpersona.validation.simulation_validator</code></h1>
 </header>
 <section id="section-intro">
-<p>Simulation experiment empirical validation mechanisms for TinyTroupe.</p>
+<p>Simulation experiment empirical validation mechanisms for OpenPersona.</p>
 <p>This module provides tools to validate simulation experiment results against empirical control data,
 supporting both statistical hypothesis testing and semantic validation approaches.
 This is distinct from LLM-based evaluations, focusing on data-driven validation
@@ -32,7 +32,7 @@ against known empirical benchmarks.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-Simulation experiment empirical validation mechanisms for TinyTroupe.
+Simulation experiment empirical validation mechanisms for OpenPersona.
 
 This module provides tools to validate simulation experiment results against empirical control data,
 supporting both statistical hypothesis testing and semantic validation approaches.
@@ -49,8 +49,8 @@ from pydantic import BaseModel, Field
 
 import pandas as pd
 
-from tinytroupe.experimentation.statistical_tests import StatisticalTester
-from tinytroupe.utils.semantics import compute_semantic_proximity
+from openpersona.experimentation.statistical_tests import StatisticalTester
+from openpersona.utils.semantics import compute_semantic_proximity
 
 # TODO Work-in-Progress below
 
@@ -2100,8 +2100,8 @@ def validate_simulation_experiment_empirically(control_data: Dict[str, Any],
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="tinytroupe.validation.simulation_validator.validate_simulation_experiment_empirically"><code class="name flex">
-<span>def <span class="ident">validate_simulation_experiment_empirically</span></span>(<span>control_data: Dict[str, Any], treatment_data: Dict[str, Any], validation_types: List[str] = ['statistical', 'semantic'], statistical_test_type: str = 'welch_t_test', significance_level: float = 0.05, output_format: str = 'values') ‑> Union[<a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult">SimulationExperimentEmpiricalValidationResult</a>, str]</span>
+<dt id="openpersona.validation.simulation_validator.validate_simulation_experiment_empirically"><code class="name flex">
+<span>def <span class="ident">validate_simulation_experiment_empirically</span></span>(<span>control_data: Dict[str, Any], treatment_data: Dict[str, Any], validation_types: List[str] = ['statistical', 'semantic'], statistical_test_type: str = 'welch_t_test', significance_level: float = 0.05, output_format: str = 'values') ‑> Union[<a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult">SimulationExperimentEmpiricalValidationResult</a>, str]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Convenience function to validate simulation experiment data against empirical control data.</p>
@@ -2171,7 +2171,7 @@ distinct from LLM-based evaluations.</p>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset"><code class="flex name class">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset"><code class="flex name class">
 <span>class <span class="ident">SimulationExperimentDataset</span></span>
 <span>(</span><span>**data)</span>
 </code></dt>
@@ -2904,66 +2904,66 @@ categories for interpretation.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.Config"><code class="name">var <span class="ident">Config</span></code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.Config"><code class="name">var <span class="ident">Config</span></code></dt>
 <dd>
 <div class="desc"><p>Pydantic configuration.</p></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_attributes"><code class="name">var <span class="ident">agent_attributes</span> : Dict[str, List[Optional[str]]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_attributes"><code class="name">var <span class="ident">agent_attributes</span> : Dict[str, List[Optional[str]]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_justifications"><code class="name">var <span class="ident">agent_justifications</span> : List[Union[str, Dict[str, Union[str, int]]]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_justifications"><code class="name">var <span class="ident">agent_justifications</span> : List[Union[str, Dict[str, Union[str, int]]]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_names"><code class="name">var <span class="ident">agent_names</span> : Optional[List[Optional[str]]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_names"><code class="name">var <span class="ident">agent_names</span> : Optional[List[Optional[str]]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.categorical_mappings"><code class="name">var <span class="ident">categorical_mappings</span> : Dict[str, Dict[str, int]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.categorical_mappings"><code class="name">var <span class="ident">categorical_mappings</span> : Dict[str, Dict[str, int]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.data_types"><code class="name">var <span class="ident">data_types</span> : Dict[str, str]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.data_types"><code class="name">var <span class="ident">data_types</span> : Dict[str, str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.description"><code class="name">var <span class="ident">description</span> : Optional[str]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.description"><code class="name">var <span class="ident">description</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.justification_summary"><code class="name">var <span class="ident">justification_summary</span> : Optional[str]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.justification_summary"><code class="name">var <span class="ident">justification_summary</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.key_results"><code class="name">var <span class="ident">key_results</span> : Dict[str, Union[float, int, bool, str, List[Union[float, int, bool, str, ForwardRef(None)]], ForwardRef(None)]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.key_results"><code class="name">var <span class="ident">key_results</span> : Dict[str, Union[float, int, bool, str, List[Union[float, int, bool, str, ForwardRef(None)]], ForwardRef(None)]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.model_config"><code class="name">var <span class="ident">model_config</span></code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.model_config"><code class="name">var <span class="ident">model_config</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.ordinal_mappings"><code class="name">var <span class="ident">ordinal_mappings</span> : Dict[str, Dict[str, int]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.ordinal_mappings"><code class="name">var <span class="ident">ordinal_mappings</span> : Dict[str, Dict[str, int]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.ranking_info"><code class="name">var <span class="ident">ranking_info</span> : Dict[str, Dict[str, Any]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.ranking_info"><code class="name">var <span class="ident">ranking_info</span> : Dict[str, Dict[str, Any]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.result_types"><code class="name">var <span class="ident">result_types</span> : Dict[str, str]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.result_types"><code class="name">var <span class="ident">result_types</span> : Dict[str, str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.convert_ordinal_to_categorical"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.convert_ordinal_to_categorical"><code class="name flex">
 <span>def <span class="ident">convert_ordinal_to_categorical</span></span>(<span>self, metric_name: str, ordinal_value: Union[int, float]) ‑> Optional[str]</span>
 </code></dt>
 <dd>
@@ -2993,7 +2993,7 @@ categories for interpretation.</p>
     return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_agent_data"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_agent_data"><code class="name flex">
 <span>def <span class="ident">get_agent_data</span></span>(<span>self, metric_name: str, agent_index: int) ‑> Union[float, int, bool, ForwardRef(None)]</span>
 </code></dt>
 <dd>
@@ -3017,7 +3017,7 @@ categories for interpretation.</p>
     return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_agent_name"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_agent_name"><code class="name flex">
 <span>def <span class="ident">get_agent_name</span></span>(<span>self, index: int) ‑> Optional[str]</span>
 </code></dt>
 <dd>
@@ -3034,7 +3034,7 @@ categories for interpretation.</p>
     return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_all_agent_data"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_all_agent_data"><code class="name flex">
 <span>def <span class="ident">get_all_agent_data</span></span>(<span>self, metric_name: str) ‑> Dict[str, Union[float, int, bool]]</span>
 </code></dt>
 <dd>
@@ -3066,7 +3066,7 @@ categories for interpretation.</p>
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_categorical_values"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_categorical_values"><code class="name flex">
 <span>def <span class="ident">get_categorical_values</span></span>(<span>self, metric_name: str) ‑> Optional[List[str]]</span>
 </code></dt>
 <dd>
@@ -3089,7 +3089,7 @@ categories for interpretation.</p>
     return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_data_type_info"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_data_type_info"><code class="name flex">
 <span>def <span class="ident">get_data_type_info</span></span>(<span>self, metric_name: str) ‑> Dict[str, Any]</span>
 </code></dt>
 <dd>
@@ -3138,7 +3138,7 @@ categories for interpretation.</p>
     return info</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_justification_agent_reference"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_justification_agent_reference"><code class="name flex">
 <span>def <span class="ident">get_justification_agent_reference</span></span>(<span>self, justification_item: Union[str, Dict[str, Union[str, int]]]) ‑> Optional[str]</span>
 </code></dt>
 <dd>
@@ -3159,7 +3159,7 @@ categories for interpretation.</p>
     return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_justification_text"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_justification_text"><code class="name flex">
 <span>def <span class="ident">get_justification_text</span></span>(<span>self, justification_item: Union[str, Dict[str, Union[str, int]]]) ‑> str</span>
 </code></dt>
 <dd>
@@ -3177,7 +3177,7 @@ categories for interpretation.</p>
     return &#34;&#34;</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_metric_summary"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_metric_summary"><code class="name flex">
 <span>def <span class="ident">get_metric_summary</span></span>(<span>self, metric_name: str) ‑> Dict[str, Any]</span>
 </code></dt>
 <dd>
@@ -3249,7 +3249,7 @@ categories for interpretation.</p>
     return summary</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_valid_agent_data"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_valid_agent_data"><code class="name flex">
 <span>def <span class="ident">get_valid_agent_data</span></span>(<span>self, metric_name: str) ‑> List[Union[float, int, bool]]</span>
 </code></dt>
 <dd>
@@ -3271,7 +3271,7 @@ categories for interpretation.</p>
     return []</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.is_categorical_metric"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.is_categorical_metric"><code class="name flex">
 <span>def <span class="ident">is_categorical_metric</span></span>(<span>self, metric_name: str) ‑> bool</span>
 </code></dt>
 <dd>
@@ -3288,7 +3288,7 @@ categories for interpretation.</p>
              all(isinstance(k, str) for k in self.ordinal_mappings[metric_name].keys())))</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.validate_data_consistency"><code class="name flex">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentDataset.validate_data_consistency"><code class="name flex">
 <span>def <span class="ident">validate_data_consistency</span></span>(<span>self) ‑> List[str]</span>
 </code></dt>
 <dd>
@@ -3346,7 +3346,7 @@ categories for interpretation.</p>
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult"><code class="flex name class">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult"><code class="flex name class">
 <span>class <span class="ident">SimulationExperimentEmpiricalValidationResult</span></span>
 <span>(</span><span>**data: Any)</span>
 </code></dt>
@@ -3418,49 +3418,49 @@ validated to form a valid model.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.Config"><code class="name">var <span class="ident">Config</span></code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.Config"><code class="name">var <span class="ident">Config</span></code></dt>
 <dd>
 <div class="desc"><p>Pydantic configuration.</p></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.control_name"><code class="name">var <span class="ident">control_name</span> : str</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.control_name"><code class="name">var <span class="ident">control_name</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.model_config"><code class="name">var <span class="ident">model_config</span></code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.model_config"><code class="name">var <span class="ident">model_config</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.overall_score"><code class="name">var <span class="ident">overall_score</span> : Optional[float]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.overall_score"><code class="name">var <span class="ident">overall_score</span> : Optional[float]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.semantic_results"><code class="name">var <span class="ident">semantic_results</span> : Optional[Dict[str, Any]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.semantic_results"><code class="name">var <span class="ident">semantic_results</span> : Optional[Dict[str, Any]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.statistical_results"><code class="name">var <span class="ident">statistical_results</span> : Optional[Dict[str, Any]]</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.statistical_results"><code class="name">var <span class="ident">statistical_results</span> : Optional[Dict[str, Any]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.summary"><code class="name">var <span class="ident">summary</span> : str</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.summary"><code class="name">var <span class="ident">summary</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.timestamp"><code class="name">var <span class="ident">timestamp</span> : str</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.timestamp"><code class="name">var <span class="ident">timestamp</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.treatment_name"><code class="name">var <span class="ident">treatment_name</span> : str</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.treatment_name"><code class="name">var <span class="ident">treatment_name</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.validation_type"><code class="name">var <span class="ident">validation_type</span> : str</code></dt>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.validation_type"><code class="name">var <span class="ident">validation_type</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator"><code class="flex name class">
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator"><code class="flex name class">
 <span>class <span class="ident">SimulationExperimentEmpiricalValidator</span></span>
 </code></dt>
 <dd>
@@ -4758,8 +4758,8 @@ simulation experiment results against known empirical benchmarks, distinct from 
 </details>
 <h3>Static methods</h3>
 <dl>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_csv"><code class="name flex">
-<span>def <span class="ident">create_from_csv</span></span>(<span>file_path: Union[str, pathlib.Path], experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None, encoding: str = 'utf-8') ‑> tuple['<a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator">SimulationExperimentEmpiricalValidator</a>', '<a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>']</span>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_csv"><code class="name flex">
+<span>def <span class="ident">create_from_csv</span></span>(<span>file_path: Union[str, pathlib.Path], experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None, encoding: str = 'utf-8') ‑> tuple['<a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator">SimulationExperimentEmpiricalValidator</a>', '<a title="openpersona.validation.simulation_validator.SimulationExperimentDataset" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>']</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a validator and load empirical data from CSV in one step.</p>
@@ -4817,8 +4817,8 @@ def create_from_csv(cls,
     return validator, dataset</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_dataframe"><code class="name flex">
-<span>def <span class="ident">create_from_dataframe</span></span>(<span>df: pandas.core.frame.DataFrame, experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None) ‑> tuple['<a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator">SimulationExperimentEmpiricalValidator</a>', '<a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>']</span>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_dataframe"><code class="name flex">
+<span>def <span class="ident">create_from_dataframe</span></span>(<span>df: pandas.core.frame.DataFrame, experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None) ‑> tuple['<a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator">SimulationExperimentEmpiricalValidator</a>', '<a title="openpersona.validation.simulation_validator.SimulationExperimentDataset" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>']</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a validator and load empirical data from a pandas DataFrame in one step.</p>
@@ -4874,8 +4874,8 @@ def create_from_dataframe(cls,
     return validator, dataset</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_csv"><code class="name flex">
-<span>def <span class="ident">read_empirical_data_from_csv</span></span>(<span>file_path: Union[str, pathlib.Path], experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None, encoding: str = 'utf-8') ‑> <a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a></span>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_csv"><code class="name flex">
+<span>def <span class="ident">read_empirical_data_from_csv</span></span>(<span>file_path: Union[str, pathlib.Path], experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None, encoding: str = 'utf-8') ‑> <a title="openpersona.validation.simulation_validator.SimulationExperimentDataset" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Read empirical data from a CSV file and convert it to a SimulationExperimentDataset.</p>
@@ -5003,8 +5003,8 @@ def read_empirical_data_from_csv(cls,
     )</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_dataframe"><code class="name flex">
-<span>def <span class="ident">read_empirical_data_from_dataframe</span></span>(<span>df: pandas.core.frame.DataFrame, experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None) ‑> <a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a></span>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_dataframe"><code class="name flex">
+<span>def <span class="ident">read_empirical_data_from_dataframe</span></span>(<span>df: pandas.core.frame.DataFrame, experimental_data_type: str = 'single_value_per_agent', agent_id_column: Optional[str] = None, agent_comments_column: Optional[str] = None, agent_attributes_columns: Optional[List[str]] = None, value_column: Optional[str] = None, ranking_columns: Optional[List[str]] = None, ordinal_ranking_column: Optional[str] = None, ordinal_ranking_separator: str = '-', ordinal_ranking_options: Optional[List[str]] = None, dataset_name: Optional[str] = None, dataset_description: Optional[str] = None) ‑> <a title="openpersona.validation.simulation_validator.SimulationExperimentDataset" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Read empirical data from a pandas DataFrame and convert it to a SimulationExperimentDataset.</p>
@@ -5124,8 +5124,8 @@ def read_empirical_data_from_dataframe(cls,
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.validate"><code class="name flex">
-<span>def <span class="ident">validate</span></span>(<span>self, control: <a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>, treatment: <a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>, validation_types: List[str] = ['statistical', 'semantic'], statistical_test_type: str = 'welch_t_test', significance_level: float = 0.05, output_format: str = 'values') ‑> Union[<a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult">SimulationExperimentEmpiricalValidationResult</a>, str]</span>
+<dt id="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, control: <a title="openpersona.validation.simulation_validator.SimulationExperimentDataset" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>, treatment: <a title="openpersona.validation.simulation_validator.SimulationExperimentDataset" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a>, validation_types: List[str] = ['statistical', 'semantic'], statistical_test_type: str = 'welch_t_test', significance_level: float = 0.05, output_format: str = 'values') ‑> Union[<a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult">SimulationExperimentEmpiricalValidationResult</a>, str]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Validate a simulation experiment dataset against an empirical control dataset.</p>
@@ -5212,70 +5212,70 @@ def read_empirical_data_from_dataframe(cls,
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.validation" href="index.html">tinytroupe.validation</a></code></li>
+<li><code><a title="openpersona.validation" href="index.html">openpersona.validation</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="tinytroupe.validation.simulation_validator.validate_simulation_experiment_empirically" href="#tinytroupe.validation.simulation_validator.validate_simulation_experiment_empirically">validate_simulation_experiment_empirically</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.validate_simulation_experiment_empirically" href="#openpersona.validation.simulation_validator.validate_simulation_experiment_empirically">validate_simulation_experiment_empirically</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a></code></h4>
+<h4><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset">SimulationExperimentDataset</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.Config" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.Config">Config</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_attributes" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_attributes">agent_attributes</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_justifications" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_justifications">agent_justifications</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_names" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.agent_names">agent_names</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.categorical_mappings" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.categorical_mappings">categorical_mappings</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.convert_ordinal_to_categorical" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.convert_ordinal_to_categorical">convert_ordinal_to_categorical</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.data_types" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.data_types">data_types</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.description" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.description">description</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_agent_data" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_agent_data">get_agent_data</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_agent_name" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_agent_name">get_agent_name</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_all_agent_data" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_all_agent_data">get_all_agent_data</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_categorical_values" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_categorical_values">get_categorical_values</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_data_type_info" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_data_type_info">get_data_type_info</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_justification_agent_reference" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_justification_agent_reference">get_justification_agent_reference</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_justification_text" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_justification_text">get_justification_text</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_metric_summary" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_metric_summary">get_metric_summary</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_valid_agent_data" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.get_valid_agent_data">get_valid_agent_data</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.is_categorical_metric" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.is_categorical_metric">is_categorical_metric</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.justification_summary" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.justification_summary">justification_summary</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.key_results" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.key_results">key_results</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.model_config" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.model_config">model_config</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.name" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.name">name</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.ordinal_mappings" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.ordinal_mappings">ordinal_mappings</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.ranking_info" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.ranking_info">ranking_info</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.result_types" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.result_types">result_types</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentDataset.validate_data_consistency" href="#tinytroupe.validation.simulation_validator.SimulationExperimentDataset.validate_data_consistency">validate_data_consistency</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.Config" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.Config">Config</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_attributes" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_attributes">agent_attributes</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_justifications" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_justifications">agent_justifications</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_names" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.agent_names">agent_names</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.categorical_mappings" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.categorical_mappings">categorical_mappings</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.convert_ordinal_to_categorical" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.convert_ordinal_to_categorical">convert_ordinal_to_categorical</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.data_types" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.data_types">data_types</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.description" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.description">description</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_agent_data" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_agent_data">get_agent_data</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_agent_name" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_agent_name">get_agent_name</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_all_agent_data" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_all_agent_data">get_all_agent_data</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_categorical_values" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_categorical_values">get_categorical_values</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_data_type_info" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_data_type_info">get_data_type_info</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_justification_agent_reference" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_justification_agent_reference">get_justification_agent_reference</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_justification_text" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_justification_text">get_justification_text</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_metric_summary" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_metric_summary">get_metric_summary</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.get_valid_agent_data" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.get_valid_agent_data">get_valid_agent_data</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.is_categorical_metric" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.is_categorical_metric">is_categorical_metric</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.justification_summary" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.justification_summary">justification_summary</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.key_results" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.key_results">key_results</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.model_config" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.model_config">model_config</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.name" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.name">name</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.ordinal_mappings" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.ordinal_mappings">ordinal_mappings</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.ranking_info" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.ranking_info">ranking_info</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.result_types" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.result_types">result_types</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentDataset.validate_data_consistency" href="#openpersona.validation.simulation_validator.SimulationExperimentDataset.validate_data_consistency">validate_data_consistency</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult">SimulationExperimentEmpiricalValidationResult</a></code></h4>
+<h4><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult">SimulationExperimentEmpiricalValidationResult</a></code></h4>
 <ul class="two-column">
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.Config" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.Config">Config</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.control_name" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.control_name">control_name</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.model_config" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.model_config">model_config</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.overall_score" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.overall_score">overall_score</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.semantic_results" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.semantic_results">semantic_results</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.statistical_results" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.statistical_results">statistical_results</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.summary" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.summary">summary</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.timestamp" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.timestamp">timestamp</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.treatment_name" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.treatment_name">treatment_name</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.validation_type" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.validation_type">validation_type</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.Config" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.Config">Config</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.control_name" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.control_name">control_name</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.model_config" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.model_config">model_config</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.overall_score" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.overall_score">overall_score</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.semantic_results" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.semantic_results">semantic_results</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.statistical_results" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.statistical_results">statistical_results</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.summary" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.summary">summary</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.timestamp" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.timestamp">timestamp</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.treatment_name" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.treatment_name">treatment_name</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.validation_type" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidationResult.validation_type">validation_type</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator">SimulationExperimentEmpiricalValidator</a></code></h4>
+<h4><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator">SimulationExperimentEmpiricalValidator</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_csv" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_csv">create_from_csv</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_dataframe" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_dataframe">create_from_dataframe</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_csv" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_csv">read_empirical_data_from_csv</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_dataframe" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_dataframe">read_empirical_data_from_dataframe</a></code></li>
-<li><code><a title="tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.validate" href="#tinytroupe.validation.simulation_validator.SimulationExperimentEmpiricalValidator.validate">validate</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_csv" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_csv">create_from_csv</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_dataframe" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.create_from_dataframe">create_from_dataframe</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_csv" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_csv">read_empirical_data_from_csv</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_dataframe" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.read_empirical_data_from_dataframe">read_empirical_data_from_dataframe</a></code></li>
+<li><code><a title="openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.validate" href="#openpersona.validation.simulation_validator.SimulationExperimentEmpiricalValidator.validate">validate</a></code></li>
 </ul>
 </li>
 </ul>

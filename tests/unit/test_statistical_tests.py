@@ -2,10 +2,10 @@ import pytest
 import logging
 import numpy as np
 from unittest.mock import Mock, patch
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
@@ -17,7 +17,7 @@ except ImportError:
     HAS_SCIPY = False
     stats = None
 
-from tinytroupe.experimentation.statistical_tests import StatisticalTester
+from openpersona.experimentation.statistical_tests import StatisticalTester
 from testing_utils import *
 
 def test_statistical_tester_initialization():
@@ -336,7 +336,7 @@ def test_statistical_tester_warning_logging():
     control_data = {"control": {"metric1": [1, 2, 3], "metric2": [4, 5, 6]}}
     treatment_data = {"treatment1": {"metric3": [7, 8, 9]}}  # No overlapping metrics
     
-    with patch('tinytroupe.experimentation.statistical_tests.logger') as mock_logger:
+    with patch('openpersona.experimentation.statistical_tests.logger') as mock_logger:
         tester = StatisticalTester(control_data, treatment_data)
         
         # Should log warning about no common metrics during initialization

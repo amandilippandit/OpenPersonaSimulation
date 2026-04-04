@@ -1,14 +1,14 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-from tinytroupe.agent import TinyPerson
+from openpersona.agent import Persona
 
 from testing_utils import *
 
@@ -23,7 +23,7 @@ class TestBrainstormingScenarios:
         world.broadcast(
             """
             Folks, we need to brainstorm ideas for a new product. Your mission is to discuss potential AI feature ideas
-            to add to Microsoft Word. In general, we want features that make you or your industry more productive,
+            to add to Nexus Corp Word. In general, we want features that make you or your industry more productive,
             taking advantage of all the latest AI technologies.
 
             Please start the discussion now.
@@ -32,11 +32,11 @@ class TestBrainstormingScenarios:
 
         world.run(1)
 
-        agent = TinyPerson.get_agent_by_name("Lisa Carter")
+        agent = Persona.get_agent_by_name("Lisa Carter")
 
         agent.listen_and_act("Can you please summarize the ideas that the group came up with?")
 
-        from tinytroupe.extraction import ResultsExtractor
+        from openpersona.extraction import ResultsExtractor
 
         extractor = ResultsExtractor()
 

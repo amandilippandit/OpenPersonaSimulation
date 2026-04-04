@@ -1,1 +1,1 @@
-pip uninstall tinytroupe
+pip uninstall openpersona

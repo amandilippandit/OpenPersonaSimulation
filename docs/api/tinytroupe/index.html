@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe API documentation</title>
+<title>openpersona API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>tinytroupe</code></h1>
+<h1 class="title">Package <code>openpersona</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -37,13 +37,13 @@ import rich  # for rich console output
 import rich.jupyter
 
 sys.path.append(&#34;.&#34;)
-from tinytroupe import utils  # now we can import our utils
+from openpersona import utils  # now we can import our utils
 
 # AI disclaimers
 print(
     &#34;&#34;&#34;
 !!!!
-DISCLAIMER: TinyTroupe relies on Artificial Intelligence (AI) models to generate content. 
+DISCLAIMER: OpenPersona relies on Artificial Intelligence (AI) models to generate content. 
 The AI models are not perfect and may produce inappropriate or inacurate results. 
 For any serious or consequential use, please review the generated content before using it.
 !!!!
@@ -390,7 +390,7 @@ class ConfigManager:
 
 # Create global instance of the configuration manager
 config = utils.read_config_file()
-utils.pretty_print_tinytroupe_version()
+utils.pretty_print_openpersona_version()
 utils.pretty_print_datetime()
 utils.pretty_print_config(config)
 utils.start_logger(config)
@@ -460,67 +460,67 @@ rich.jupyter.JUPYTER_HTML_FORMAT = utils.inject_html_css_style_prefix(
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="tinytroupe.agent" href="agent/index.html">tinytroupe.agent</a></code></dt>
+<dt><code class="name"><a title="openpersona.agent" href="agent/index.html">openpersona.agent</a></code></dt>
 <dd>
-<div class="desc"><p>This module provides the main classes and functions for TinyTroupe's
+<div class="desc"><p>This module provides the main classes and functions for OpenPersona's
 agents …</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.clients" href="clients/index.html">tinytroupe.clients</a></code></dt>
+<dt><code class="name"><a title="openpersona.clients" href="clients/index.html">openpersona.clients</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.control" href="control.html">tinytroupe.control</a></code></dt>
+<dt><code class="name"><a title="openpersona.control" href="control.html">openpersona.control</a></code></dt>
 <dd>
 <div class="desc"><p>Simulation controlling mechanisms.</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.enrichment" href="enrichment/index.html">tinytroupe.enrichment</a></code></dt>
+<dt><code class="name"><a title="openpersona.enrichment" href="enrichment/index.html">openpersona.enrichment</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.environment" href="environment/index.html">tinytroupe.environment</a></code></dt>
+<dt><code class="name"><a title="openpersona.environment" href="environment/index.html">openpersona.environment</a></code></dt>
 <dd>
 <div class="desc"><p>Environments provide a structured way to define the world in which the
 agents interact with each other as well as external entities (e.g., search …</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.examples" href="examples/index.html">tinytroupe.examples</a></code></dt>
+<dt><code class="name"><a title="openpersona.examples" href="examples/index.html">openpersona.examples</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.experimentation" href="experimentation/index.html">tinytroupe.experimentation</a></code></dt>
+<dt><code class="name"><a title="openpersona.experimentation" href="experimentation/index.html">openpersona.experimentation</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.extraction" href="extraction/index.html">tinytroupe.extraction</a></code></dt>
+<dt><code class="name"><a title="openpersona.extraction" href="extraction/index.html">openpersona.extraction</a></code></dt>
 <dd>
 <div class="desc"><p>Simulations produce a lot of data, and it is often useful to extract these data in a structured way. For instance, you might wish to:
 - Extract the …</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.factory" href="factory/index.html">tinytroupe.factory</a></code></dt>
+<dt><code class="name"><a title="openpersona.factory" href="factory/index.html">openpersona.factory</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.profiling" href="profiling.html">tinytroupe.profiling</a></code></dt>
+<dt><code class="name"><a title="openpersona.profiling" href="profiling.html">openpersona.profiling</a></code></dt>
 <dd>
 <div class="desc"><p>Provides mechanisms for understanding characteristics of agent populations: age distribution, interests,
 skills, beliefs, goals, routines, …</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.steering" href="steering/index.html">tinytroupe.steering</a></code></dt>
+<dt><code class="name"><a title="openpersona.steering" href="steering/index.html">openpersona.steering</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.tools" href="tools/index.html">tinytroupe.tools</a></code></dt>
+<dt><code class="name"><a title="openpersona.tools" href="tools/index.html">openpersona.tools</a></code></dt>
 <dd>
 <div class="desc"><p>Tools allow agents to accomplish specialized tasks.</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.ui" href="ui/index.html">tinytroupe.ui</a></code></dt>
+<dt><code class="name"><a title="openpersona.ui" href="ui/index.html">openpersona.ui</a></code></dt>
 <dd>
-<div class="desc"><p>TinyTroupe UI Module …</p></div>
+<div class="desc"><p>OpenPersona UI Module …</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.utils" href="utils/index.html">tinytroupe.utils</a></code></dt>
+<dt><code class="name"><a title="openpersona.utils" href="utils/index.html">openpersona.utils</a></code></dt>
 <dd>
 <div class="desc"><p>General utilities and convenience functions.</p></div>
 </dd>
-<dt><code class="name"><a title="tinytroupe.validation" href="validation/index.html">tinytroupe.validation</a></code></dt>
+<dt><code class="name"><a title="openpersona.validation" href="validation/index.html">openpersona.validation</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -531,7 +531,7 @@ skills, beliefs, goals, routines, …</p></div>
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="tinytroupe.get_config"><code class="name flex">
+<dt id="openpersona.get_config"><code class="name flex">
 <span>def <span class="ident">get_config</span></span>(<span>key, override_value=None)</span>
 </code></dt>
 <dd>
@@ -572,7 +572,7 @@ Used in method signatures to get current config values.</p>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.ConfigManager"><code class="flex name class">
+<dt id="openpersona.ConfigManager"><code class="flex name class">
 <span>class <span class="ident">ConfigManager</span></span>
 </code></dt>
 <dd>
@@ -917,26 +917,26 @@ Provides dynamic access to the latest config values.</p></div>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.ConfigManager.LOGLEVEL_CONSOLE_KEY"><code class="name">var <span class="ident">LOGLEVEL_CONSOLE_KEY</span></code></dt>
+<dt id="openpersona.ConfigManager.LOGLEVEL_CONSOLE_KEY"><code class="name">var <span class="ident">LOGLEVEL_CONSOLE_KEY</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.ConfigManager.LOGLEVEL_FILE_KEY"><code class="name">var <span class="ident">LOGLEVEL_FILE_KEY</span></code></dt>
+<dt id="openpersona.ConfigManager.LOGLEVEL_FILE_KEY"><code class="name">var <span class="ident">LOGLEVEL_FILE_KEY</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.ConfigManager.LOGLEVEL_KEY"><code class="name">var <span class="ident">LOGLEVEL_KEY</span></code></dt>
+<dt id="openpersona.ConfigManager.LOGLEVEL_KEY"><code class="name">var <span class="ident">LOGLEVEL_KEY</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.ConfigManager.LOG_INCLUDE_THREAD_ID_KEY"><code class="name">var <span class="ident">LOG_INCLUDE_THREAD_ID_KEY</span></code></dt>
+<dt id="openpersona.ConfigManager.LOG_INCLUDE_THREAD_ID_KEY"><code class="name">var <span class="ident">LOG_INCLUDE_THREAD_ID_KEY</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.ConfigManager.config_defaults"><code class="name flex">
+<dt id="openpersona.ConfigManager.config_defaults"><code class="name flex">
 <span>def <span class="ident">config_defaults</span></span>(<span>self, **config_mappings)</span>
 </code></dt>
 <dd>
@@ -994,7 +994,7 @@ def generate(prompt, model=None, temp=None):
     return decorator</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ConfigManager.get"><code class="name flex">
+<dt id="openpersona.ConfigManager.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>self, key, default=None)</span>
 </code></dt>
 <dd>
@@ -1030,7 +1030,7 @@ def generate(prompt, model=None, temp=None):
     return self._config.get(key, default)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ConfigManager.reset"><code class="name flex">
+<dt id="openpersona.ConfigManager.reset"><code class="name flex">
 <span>def <span class="ident">reset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1045,7 +1045,7 @@ def generate(prompt, model=None, temp=None):
     logging.info(&#34;All configuration values have been reset to defaults&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ConfigManager.update"><code class="name flex">
+<dt id="openpersona.ConfigManager.update"><code class="name flex">
 <span>def <span class="ident">update</span></span>(<span>self, key, value)</span>
 </code></dt>
 <dd>
@@ -1124,7 +1124,7 @@ def generate(prompt, model=None, temp=None):
         logging.warning(f&#34;Attempted to update unknown config key: {key}&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ConfigManager.update_multiple"><code class="name flex">
+<dt id="openpersona.ConfigManager.update_multiple"><code class="name flex">
 <span>def <span class="ident">update_multiple</span></span>(<span>self, config_dict)</span>
 </code></dt>
 <dd>
@@ -1167,42 +1167,42 @@ def generate(prompt, model=None, temp=None):
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="tinytroupe.agent" href="agent/index.html">tinytroupe.agent</a></code></li>
-<li><code><a title="tinytroupe.clients" href="clients/index.html">tinytroupe.clients</a></code></li>
-<li><code><a title="tinytroupe.control" href="control.html">tinytroupe.control</a></code></li>
-<li><code><a title="tinytroupe.enrichment" href="enrichment/index.html">tinytroupe.enrichment</a></code></li>
-<li><code><a title="tinytroupe.environment" href="environment/index.html">tinytroupe.environment</a></code></li>
-<li><code><a title="tinytroupe.examples" href="examples/index.html">tinytroupe.examples</a></code></li>
-<li><code><a title="tinytroupe.experimentation" href="experimentation/index.html">tinytroupe.experimentation</a></code></li>
-<li><code><a title="tinytroupe.extraction" href="extraction/index.html">tinytroupe.extraction</a></code></li>
-<li><code><a title="tinytroupe.factory" href="factory/index.html">tinytroupe.factory</a></code></li>
-<li><code><a title="tinytroupe.profiling" href="profiling.html">tinytroupe.profiling</a></code></li>
-<li><code><a title="tinytroupe.steering" href="steering/index.html">tinytroupe.steering</a></code></li>
-<li><code><a title="tinytroupe.tools" href="tools/index.html">tinytroupe.tools</a></code></li>
-<li><code><a title="tinytroupe.ui" href="ui/index.html">tinytroupe.ui</a></code></li>
-<li><code><a title="tinytroupe.utils" href="utils/index.html">tinytroupe.utils</a></code></li>
-<li><code><a title="tinytroupe.validation" href="validation/index.html">tinytroupe.validation</a></code></li>
+<li><code><a title="openpersona.agent" href="agent/index.html">openpersona.agent</a></code></li>
+<li><code><a title="openpersona.clients" href="clients/index.html">openpersona.clients</a></code></li>
+<li><code><a title="openpersona.control" href="control.html">openpersona.control</a></code></li>
+<li><code><a title="openpersona.enrichment" href="enrichment/index.html">openpersona.enrichment</a></code></li>
+<li><code><a title="openpersona.environment" href="environment/index.html">openpersona.environment</a></code></li>
+<li><code><a title="openpersona.examples" href="examples/index.html">openpersona.examples</a></code></li>
+<li><code><a title="openpersona.experimentation" href="experimentation/index.html">openpersona.experimentation</a></code></li>
+<li><code><a title="openpersona.extraction" href="extraction/index.html">openpersona.extraction</a></code></li>
+<li><code><a title="openpersona.factory" href="factory/index.html">openpersona.factory</a></code></li>
+<li><code><a title="openpersona.profiling" href="profiling.html">openpersona.profiling</a></code></li>
+<li><code><a title="openpersona.steering" href="steering/index.html">openpersona.steering</a></code></li>
+<li><code><a title="openpersona.tools" href="tools/index.html">openpersona.tools</a></code></li>
+<li><code><a title="openpersona.ui" href="ui/index.html">openpersona.ui</a></code></li>
+<li><code><a title="openpersona.utils" href="utils/index.html">openpersona.utils</a></code></li>
+<li><code><a title="openpersona.validation" href="validation/index.html">openpersona.validation</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="tinytroupe.get_config" href="#tinytroupe.get_config">get_config</a></code></li>
+<li><code><a title="openpersona.get_config" href="#openpersona.get_config">get_config</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.ConfigManager" href="#tinytroupe.ConfigManager">ConfigManager</a></code></h4>
+<h4><code><a title="openpersona.ConfigManager" href="#openpersona.ConfigManager">ConfigManager</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.ConfigManager.LOGLEVEL_CONSOLE_KEY" href="#tinytroupe.ConfigManager.LOGLEVEL_CONSOLE_KEY">LOGLEVEL_CONSOLE_KEY</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.LOGLEVEL_FILE_KEY" href="#tinytroupe.ConfigManager.LOGLEVEL_FILE_KEY">LOGLEVEL_FILE_KEY</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.LOGLEVEL_KEY" href="#tinytroupe.ConfigManager.LOGLEVEL_KEY">LOGLEVEL_KEY</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.LOG_INCLUDE_THREAD_ID_KEY" href="#tinytroupe.ConfigManager.LOG_INCLUDE_THREAD_ID_KEY">LOG_INCLUDE_THREAD_ID_KEY</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.config_defaults" href="#tinytroupe.ConfigManager.config_defaults">config_defaults</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.get" href="#tinytroupe.ConfigManager.get">get</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.reset" href="#tinytroupe.ConfigManager.reset">reset</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.update" href="#tinytroupe.ConfigManager.update">update</a></code></li>
-<li><code><a title="tinytroupe.ConfigManager.update_multiple" href="#tinytroupe.ConfigManager.update_multiple">update_multiple</a></code></li>
+<li><code><a title="openpersona.ConfigManager.LOGLEVEL_CONSOLE_KEY" href="#openpersona.ConfigManager.LOGLEVEL_CONSOLE_KEY">LOGLEVEL_CONSOLE_KEY</a></code></li>
+<li><code><a title="openpersona.ConfigManager.LOGLEVEL_FILE_KEY" href="#openpersona.ConfigManager.LOGLEVEL_FILE_KEY">LOGLEVEL_FILE_KEY</a></code></li>
+<li><code><a title="openpersona.ConfigManager.LOGLEVEL_KEY" href="#openpersona.ConfigManager.LOGLEVEL_KEY">LOGLEVEL_KEY</a></code></li>
+<li><code><a title="openpersona.ConfigManager.LOG_INCLUDE_THREAD_ID_KEY" href="#openpersona.ConfigManager.LOG_INCLUDE_THREAD_ID_KEY">LOG_INCLUDE_THREAD_ID_KEY</a></code></li>
+<li><code><a title="openpersona.ConfigManager.config_defaults" href="#openpersona.ConfigManager.config_defaults">config_defaults</a></code></li>
+<li><code><a title="openpersona.ConfigManager.get" href="#openpersona.ConfigManager.get">get</a></code></li>
+<li><code><a title="openpersona.ConfigManager.reset" href="#openpersona.ConfigManager.reset">reset</a></code></li>
+<li><code><a title="openpersona.ConfigManager.update" href="#openpersona.ConfigManager.update">update</a></code></li>
+<li><code><a title="openpersona.ConfigManager.update_multiple" href="#openpersona.ConfigManager.update_multiple">update_multiple</a></code></li>
 </ul>
 </li>
 </ul>

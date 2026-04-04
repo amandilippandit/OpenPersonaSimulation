@@ -1,19 +1,19 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.tools.tiny_tool import TinyTool
-from tinytroupe.examples import create_oscar_the_architect, create_lisa_the_data_scientist
-from tinytroupe.extraction import ArtifactExporter
-from tinytroupe.enrichment import TinyEnricher
+from openpersona.tools.sim_tool import SimTool
+from openpersona.examples import create_oscar_the_architect, create_lisa_the_data_scientist
+from openpersona.extraction import ArtifactExporter
+from openpersona.enrichment import Enricher
 from testing_utils import *
 
-class MockTool(TinyTool):
+class MockTool(SimTool):
     """A mock tool implementation for testing."""
     
     def __init__(self, name="MockTool", description="A test tool", **kwargs):
@@ -33,7 +33,7 @@ class MockTool(TinyTool):
         """Mock implementation of action constraints."""
         return "Only use this tool during testing."
 
-class DangerousMockTool(TinyTool):
+class DangerousMockTool(SimTool):
     """A mock tool with real-world side effects for testing."""
     
     def __init__(self):
@@ -52,8 +52,8 @@ class DangerousMockTool(TinyTool):
     def actions_constraints_prompt(self) -> str:
         return "Use with extreme caution."
 
-def test_tiny_tool_initialization(setup):
-    """Test TinyTool initialization with various parameters."""
+def test_sim_tool_initialization(setup):
+    """Test SimTool initialization with various parameters."""
     
     # Test basic initialization
     tool = MockTool()
@@ -67,7 +67,7 @@ def test_tiny_tool_initialization(setup):
     # Test initialization with all parameters
     agent = create_oscar_the_architect()
     exporter = ArtifactExporter(base_output_folder="test")
-    enricher = TinyEnricher()
+    enricher = Enricher()
     
     tool = MockTool(
         name="CustomTool",
@@ -85,8 +85,8 @@ def test_tiny_tool_initialization(setup):
     assert tool.exporter == exporter
     assert tool.enricher == enricher
 
-def test_tiny_tool_ownership(setup):
-    """Test TinyTool ownership mechanisms."""
+def test_sim_tool_ownership(setup):
+    """Test SimTool ownership mechanisms."""
     
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
@@ -111,8 +111,8 @@ def test_tiny_tool_ownership(setup):
     result = tool.process_action(lisa, mock_action)
     assert result == True, "New owner should be able to use tool"
 
-def test_tiny_tool_real_world_side_effects(setup):
-    """Test TinyTool real-world side effects warning."""
+def test_sim_tool_real_world_side_effects(setup):
+    """Test SimTool real-world side effects warning."""
     
     # Test tool without side effects
     safe_tool = MockTool(real_world_side_effects=False)
@@ -131,8 +131,8 @@ def test_tiny_tool_real_world_side_effects(setup):
     result = dangerous_tool.process_action(agent, mock_action)
     assert result == True
 
-def test_tiny_tool_action_processing(setup):
-    """Test TinyTool action processing functionality."""
+def test_sim_tool_action_processing(setup):
+    """Test SimTool action processing functionality."""
     
     tool = MockTool()
     agent = create_oscar_the_architect()
@@ -154,8 +154,8 @@ def test_tiny_tool_action_processing(setup):
     assert tool.actions_processed[1]["content"] == "action 2"
     assert tool.actions_processed[2]["content"] == "action 3"
 
-def test_tiny_tool_prompts():
-    """Test TinyTool prompt generation methods."""
+def test_sim_tool_prompts():
+    """Test SimTool prompt generation methods."""
     
     tool = MockTool()
     
@@ -170,8 +170,8 @@ def test_tiny_tool_prompts():
     assert isinstance(constraints, str), "Should return string"
     assert len(constraints) > 0, "Should not be empty"
 
-def test_tiny_tool_serialization():
-    """Test TinyTool serialization/deserialization."""
+def test_sim_tool_serialization():
+    """Test SimTool serialization/deserialization."""
     
     tool = MockTool(
         name="SerializationTest",
@@ -192,11 +192,11 @@ def test_tiny_tool_serialization():
     assert new_tool.description == tool.description
     assert new_tool.real_world_side_effects == tool.real_world_side_effects
 
-def test_tiny_tool_with_exporter_and_enricher(setup):
-    """Test TinyTool with exporter and enricher components."""
+def test_sim_tool_with_exporter_and_enricher(setup):
+    """Test SimTool with exporter and enricher components."""
     
     exporter = ArtifactExporter(base_output_folder="test")
-    enricher = TinyEnricher()
+    enricher = Enricher()
     
     tool = MockTool(
         exporter=exporter,
@@ -213,11 +213,11 @@ def test_tiny_tool_with_exporter_and_enricher(setup):
     result = tool.process_action(agent, mock_action)
     assert result == True, "Should work with exporter and enricher"
 
-def test_tiny_tool_abstract_methods(setup):
-    """Test that TinyTool properly enforces abstract methods."""
+def test_sim_tool_abstract_methods(setup):
+    """Test that SimTool properly enforces abstract methods."""
     
     # Create a tool without implementing required methods
-    class IncompleteTool(TinyTool):
+    class IncompleteTool(SimTool):
         pass
     
     incomplete_tool = IncompleteTool("incomplete", "missing methods")
@@ -233,8 +233,8 @@ def test_tiny_tool_abstract_methods(setup):
     with pytest.raises(NotImplementedError):
         incomplete_tool.actions_constraints_prompt()
 
-def test_tiny_tool_edge_cases(setup):
-    """Test TinyTool edge cases and error handling."""
+def test_sim_tool_edge_cases(setup):
+    """Test SimTool edge cases and error handling."""
     
     tool = MockTool()
     agent = create_oscar_the_architect()
@@ -252,8 +252,8 @@ def test_tiny_tool_edge_cases(setup):
     result = tool.process_action(agent, malformed_action)
     assert result == True, "Should handle malformed action gracefully"
 
-def test_tiny_tool_multiple_agents(setup):
-    """Test TinyTool with multiple agents."""
+def test_sim_tool_multiple_agents(setup):
+    """Test SimTool with multiple agents."""
     
     tool = MockTool()  # No owner, so any agent can use it
     oscar = create_oscar_the_architect()

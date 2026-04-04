@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.ui API documentation</title>
-<meta name="description" content="TinyTroupe UI Module …" />
+<title>openpersona.ui API documentation</title>
+<meta name="description" content="OpenPersona UI Module …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,12 +19,12 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.ui</code></h1>
+<h1 class="title">Module <code>openpersona.ui</code></h1>
 </header>
 <section id="section-intro">
-<p>TinyTroupe UI Module</p>
-<p>This module provides user interface components and widgets for TinyTroupe,
-enabling interactive experiences with TinyTroupe agents and environments.</p>
+<p>OpenPersona UI Module</p>
+<p>This module provides user interface components and widgets for OpenPersona,
+enabling interactive experiences with OpenPersona agents and environments.</p>
 <p>The module is organized into different sub-modules based on the UI framework:</p>
 <ul>
 <li>jupyter_widgets: Interactive widgets for Jupyter notebooks</li>
@@ -32,7 +32,7 @@ enabling interactive experiences with TinyTroupe agents and environments.</p>
 <li>cli: Command-line interfaces (future)</li>
 </ul>
 <p>Example usage:
-from tinytroupe.ui.jupyter_widgets import AgentChatJupyterWidget</p>
+from openpersona.ui.jupyter_widgets import AgentChatJupyterWidget</p>
 <pre><code># Create a chat interface with your agents
 chat = AgentChatJupyterWidget(agents)
 chat.display()
@@ -42,10 +42,10 @@ chat.display()
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-TinyTroupe UI Module
+OpenPersona UI Module
 
-This module provides user interface components and widgets for TinyTroupe,
-enabling interactive experiences with TinyTroupe agents and environments.
+This module provides user interface components and widgets for OpenPersona,
+enabling interactive experiences with OpenPersona agents and environments.
 
 The module is organized into different sub-modules based on the UI framework:
 
@@ -54,7 +54,7 @@ The module is organized into different sub-modules based on the UI framework:
 - cli: Command-line interfaces (future)
 
 Example usage:
-    from tinytroupe.ui.jupyter_widgets import AgentChatJupyterWidget
+    from openpersona.ui.jupyter_widgets import AgentChatJupyterWidget
     
     # Create a chat interface with your agents
     chat = AgentChatJupyterWidget(agents)
@@ -69,9 +69,9 @@ __all__ = [&#39;AgentChatJupyterWidget&#39;]</code></pre>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="tinytroupe.ui.jupyter_widgets" href="jupyter_widgets.html">tinytroupe.ui.jupyter_widgets</a></code></dt>
+<dt><code class="name"><a title="openpersona.ui.jupyter_widgets" href="jupyter_widgets.html">openpersona.ui.jupyter_widgets</a></code></dt>
 <dd>
-<div class="desc"><p>TinyTroupe Jupyter Widgets …</p></div>
+<div class="desc"><p>OpenPersona Jupyter Widgets …</p></div>
 </dd>
 </dl>
 </section>
@@ -82,13 +82,13 @@ __all__ = [&#39;AgentChatJupyterWidget&#39;]</code></pre>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget"><code class="flex name class">
+<dt id="openpersona.ui.AgentChatJupyterWidget"><code class="flex name class">
 <span>class <span class="ident">AgentChatJupyterWidget</span></span>
 <span>(</span><span>agents_list)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An interactive chat widget for conversing with TinyTroupe agents in Jupyter notebooks.</p>
-<p>This widget provides a user-friendly interface for chatting with one or more TinyTroupe
+<div class="desc"><p>An interactive chat widget for conversing with OpenPersona agents in Jupyter notebooks.</p>
+<p>This widget provides a user-friendly interface for chatting with one or more OpenPersona
 agents. It features an animated loading indicator, message history, and responsive design.</p>
 <h2 id="features">Features</h2>
 <ul>
@@ -119,7 +119,7 @@ agents. It features an animated loading indicator, message history, and responsi
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>agents_list</code></strong> :&ensp;<code>list</code></dt>
-<dd>List of TinyTroupe agent objects to make available for chat</dd>
+<dd>List of OpenPersona agent objects to make available for chat</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -127,9 +127,9 @@ agents. It features an animated loading indicator, message history, and responsi
 </summary>
 <pre><code class="python">class AgentChatJupyterWidget:
     &#34;&#34;&#34;
-    An interactive chat widget for conversing with TinyTroupe agents in Jupyter notebooks.
+    An interactive chat widget for conversing with OpenPersona agents in Jupyter notebooks.
     
-    This widget provides a user-friendly interface for chatting with one or more TinyTroupe
+    This widget provides a user-friendly interface for chatting with one or more OpenPersona
     agents. It features an animated loading indicator, message history, and responsive design.
     
     Features:
@@ -156,7 +156,7 @@ agents. It features an animated loading indicator, message history, and responsi
         Initialize the chat widget with a list of agents.
         
         Args:
-            agents_list (list): List of TinyTroupe agent objects to make available for chat
+            agents_list (list): List of OpenPersona agent objects to make available for chat
         &#34;&#34;&#34;
         self.agents = {agent.name: agent for agent in agents_list}
         self.conversation_history = []
@@ -332,7 +332,7 @@ agents. It features an animated loading indicator, message history, and responsi
         # Process agent response in background thread
         def process_response():
             try:
-                # Use the proper TinyTroupe interaction method
+                # Use the proper OpenPersona interaction method
                 # Get the communication display setting from the checkbox
                 communication_display = self.communication_display_checkbox.value
                 actions = agent.listen_and_act(message, return_actions=True, communication_display=communication_display)
@@ -498,7 +498,7 @@ agents. It features an animated loading indicator, message history, and responsi
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget.clear_conversation"><code class="name flex">
+<dt id="openpersona.ui.AgentChatJupyterWidget.clear_conversation"><code class="name flex">
 <span>def <span class="ident">clear_conversation</span></span>(<span>self, b=None)</span>
 </code></dt>
 <dd>
@@ -524,7 +524,7 @@ agents. It features an animated loading indicator, message history, and responsi
         self.update_conversation_display()</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget.display"><code class="name flex">
+<dt id="openpersona.ui.AgentChatJupyterWidget.display"><code class="name flex">
 <span>def <span class="ident">display</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -543,7 +543,7 @@ agents. It features an animated loading indicator, message history, and responsi
     display(self.widget)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget.send_message"><code class="name flex">
+<dt id="openpersona.ui.AgentChatJupyterWidget.send_message"><code class="name flex">
 <span>def <span class="ident">send_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -617,7 +617,7 @@ agents. It features an animated loading indicator, message history, and responsi
     # Process agent response in background thread
     def process_response():
         try:
-            # Use the proper TinyTroupe interaction method
+            # Use the proper OpenPersona interaction method
             # Get the communication display setting from the checkbox
             communication_display = self.communication_display_checkbox.value
             actions = agent.listen_and_act(message, return_actions=True, communication_display=communication_display)
@@ -682,7 +682,7 @@ agents. It features an animated loading indicator, message history, and responsi
     threading.Thread(target=process_response, daemon=True).start()</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget.setup_widgets"><code class="name flex">
+<dt id="openpersona.ui.AgentChatJupyterWidget.setup_widgets"><code class="name flex">
 <span>def <span class="ident">setup_widgets</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -768,7 +768,7 @@ Also wires up event handlers for user interactions.</p></div>
     ])</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget.start_loading_animation"><code class="name flex">
+<dt id="openpersona.ui.AgentChatJupyterWidget.start_loading_animation"><code class="name flex">
 <span>def <span class="ident">start_loading_animation</span></span>(<span>self, loading_entry)</span>
 </code></dt>
 <dd>
@@ -811,7 +811,7 @@ message with different spinner frames at regular intervals.</p>
     animate()</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget.stop_loading_animation"><code class="name flex">
+<dt id="openpersona.ui.AgentChatJupyterWidget.stop_loading_animation"><code class="name flex">
 <span>def <span class="ident">stop_loading_animation</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -832,7 +832,7 @@ loop to stop at the next iteration.</p></div>
     self.loading_animation_active = False</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.ui.AgentChatJupyterWidget.update_conversation_display"><code class="name flex">
+<dt id="openpersona.ui.AgentChatJupyterWidget.update_conversation_display"><code class="name flex">
 <span>def <span class="ident">update_conversation_display</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -903,26 +903,26 @@ based on their type (user, agent, loading, error).</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe" href="../index.html">tinytroupe</a></code></li>
+<li><code><a title="openpersona" href="../index.html">openpersona</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="tinytroupe.ui.jupyter_widgets" href="jupyter_widgets.html">tinytroupe.ui.jupyter_widgets</a></code></li>
+<li><code><a title="openpersona.ui.jupyter_widgets" href="jupyter_widgets.html">openpersona.ui.jupyter_widgets</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.ui.AgentChatJupyterWidget" href="#tinytroupe.ui.AgentChatJupyterWidget">AgentChatJupyterWidget</a></code></h4>
+<h4><code><a title="openpersona.ui.AgentChatJupyterWidget" href="#openpersona.ui.AgentChatJupyterWidget">AgentChatJupyterWidget</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.ui.AgentChatJupyterWidget.clear_conversation" href="#tinytroupe.ui.AgentChatJupyterWidget.clear_conversation">clear_conversation</a></code></li>
-<li><code><a title="tinytroupe.ui.AgentChatJupyterWidget.display" href="#tinytroupe.ui.AgentChatJupyterWidget.display">display</a></code></li>
-<li><code><a title="tinytroupe.ui.AgentChatJupyterWidget.send_message" href="#tinytroupe.ui.AgentChatJupyterWidget.send_message">send_message</a></code></li>
-<li><code><a title="tinytroupe.ui.AgentChatJupyterWidget.setup_widgets" href="#tinytroupe.ui.AgentChatJupyterWidget.setup_widgets">setup_widgets</a></code></li>
-<li><code><a title="tinytroupe.ui.AgentChatJupyterWidget.start_loading_animation" href="#tinytroupe.ui.AgentChatJupyterWidget.start_loading_animation">start_loading_animation</a></code></li>
-<li><code><a title="tinytroupe.ui.AgentChatJupyterWidget.stop_loading_animation" href="#tinytroupe.ui.AgentChatJupyterWidget.stop_loading_animation">stop_loading_animation</a></code></li>
-<li><code><a title="tinytroupe.ui.AgentChatJupyterWidget.update_conversation_display" href="#tinytroupe.ui.AgentChatJupyterWidget.update_conversation_display">update_conversation_display</a></code></li>
+<li><code><a title="openpersona.ui.AgentChatJupyterWidget.clear_conversation" href="#openpersona.ui.AgentChatJupyterWidget.clear_conversation">clear_conversation</a></code></li>
+<li><code><a title="openpersona.ui.AgentChatJupyterWidget.display" href="#openpersona.ui.AgentChatJupyterWidget.display">display</a></code></li>
+<li><code><a title="openpersona.ui.AgentChatJupyterWidget.send_message" href="#openpersona.ui.AgentChatJupyterWidget.send_message">send_message</a></code></li>
+<li><code><a title="openpersona.ui.AgentChatJupyterWidget.setup_widgets" href="#openpersona.ui.AgentChatJupyterWidget.setup_widgets">setup_widgets</a></code></li>
+<li><code><a title="openpersona.ui.AgentChatJupyterWidget.start_loading_animation" href="#openpersona.ui.AgentChatJupyterWidget.start_loading_animation">start_loading_animation</a></code></li>
+<li><code><a title="openpersona.ui.AgentChatJupyterWidget.stop_loading_animation" href="#openpersona.ui.AgentChatJupyterWidget.stop_loading_animation">stop_loading_animation</a></code></li>
+<li><code><a title="openpersona.ui.AgentChatJupyterWidget.update_conversation_display" href="#openpersona.ui.AgentChatJupyterWidget.update_conversation_display">update_conversation_display</a></code></li>
 </ul>
 </li>
 </ul>

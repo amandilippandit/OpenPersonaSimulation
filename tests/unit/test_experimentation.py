@@ -4,13 +4,13 @@ import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
 from testing_utils import *
 
-from tinytroupe.experimentation import ABRandomizer
-from tinytroupe.experimentation import Proposition, check_proposition
-from tinytroupe.examples import create_oscar_the_architect, create_oscar_the_architect_2, create_lisa_the_data_scientist, create_lisa_the_data_scientist_2
+from openpersona.experimentation import ABRandomizer
+from openpersona.experimentation import Proposition, check_proposition
+from openpersona.examples import create_oscar_the_architect, create_oscar_the_architect_2, create_lisa_the_data_scientist, create_lisa_the_data_scientist_2
 
 
 def test_randomize():

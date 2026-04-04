@@ -1,4 +1,4 @@
-# TinyTroupe Test Strategy
+# OpenPersona Test Strategy
 
 ## Test Categories
 
@@ -12,7 +12,7 @@
 
 Tests that exercise LLM functionality use **real LLM API calls** rather than mocks. This means these tests serve as **integration tests** as well, verifying actual model behavior. We deliberately avoid mocking LLM calls because:
 
-1. **Centrality** - LLM calls are so central to TinyTroupe that mocking them would undermine test validity
+1. **Centrality** - LLM calls are so central to OpenPersona that mocking them would undermine test validity
 2. **Behavioral verification** - Real calls ensure agent behaviors remain coherent across model updates
 3. **Caching support** - The `--use_cache` option provides determinism and speed without sacrificing realism
 
@@ -60,7 +60,7 @@ test_with_cache_without_slow.bat
 | Fixture | Scope | Description |
 |---------|-------|-------------|
 | `setup` | function | Auto-runs before each test. Resets simulation state, clears agents/worlds/factories. |
-| `focus_group_world` | function | Pre-built `TinyWorld` with Lisa (data scientist), Oscar (architect), and Marcos (physician). |
+| `focus_group_world` | function | Pre-built `World` with Lisa (data scientist), Oscar (architect), and Marcos (physician). |
 
 ## Key Testing Utilities
 
@@ -90,8 +90,8 @@ The `@pytest.mark.core` marker identifies tests that:
 | Extraction | 4 | JSON/text/docx export, normalization |
 | ResultsExtractor | 5 | Agent/world extraction, field hints, caching |
 | Enrichment | 1 | Content enrichment |
-| TinyPerson | 11 | act, listen, define, socialize, see, think, goal, move, save |
-| TinyWorld | 4 | run, broadcast, state encode/decode |
+| Persona | 11 | act, listen, define, socialize, see, think, goal, move, save |
+| World | 4 | run, broadcast, state encode/decode |
 | Control | 3 | Agent/world/factory checkpointing |
 | Factory | 5 | Person generation, post-processing, demography |
 | ActionGenerator | 4 | Initialization, quality checks, serialization |

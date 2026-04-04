@@ -1,14 +1,14 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/') # ensures that the package is imported from the parent directory, not the Python installation
+sys.path.insert(0, '../../openpersona/') # ensures that the package is imported from the parent directory, not the Python installation
 sys.path.insert(0, '../../') # ensures that the package is imported from the parent directory, not the Python installation
 sys.path.insert(0, '..') # ensures that the package is imported from the parent directory, not the Python installation
 
 
-from tinytroupe.examples import create_oscar_the_architect, create_oscar_the_architect_2, create_lisa_the_data_scientist, create_lisa_the_data_scientist_2
+from openpersona.examples import create_oscar_the_architect, create_oscar_the_architect_2, create_lisa_the_data_scientist, create_lisa_the_data_scientist_2
 
 from testing_utils import *
 
@@ -170,9 +170,9 @@ def test_save_specification(setup):
         # check that the file exists
         assert os.path.exists(get_relative_to_test_path(f"{EXPORT_BASE_FOLDER}/serialization/{agent.name}.tinyperson.json")), f"{agent.name} should have saved the file."
 
-        # load the file to see if the agent is the same. The agent name should be different because it TinyTroupe does not allow two agents with the same name.
+        # load the file to see if the agent is the same. The agent name should be different because it OpenPersona does not allow two agents with the same name.
         loaded_name = f"{agent.name}_loaded"
-        loaded_agent = TinyPerson.load_specification(get_relative_to_test_path(f"{EXPORT_BASE_FOLDER}/serialization/{agent.name}.tinyperson.json"), new_agent_name=loaded_name)
+        loaded_agent = Persona.load_specification(get_relative_to_test_path(f"{EXPORT_BASE_FOLDER}/serialization/{agent.name}.tinyperson.json"), new_agent_name=loaded_name)
 
         # check that the loaded agent is the same as the original
         assert loaded_agent.name == loaded_name, f"{agent.name} should have the same name as the loaded agent."

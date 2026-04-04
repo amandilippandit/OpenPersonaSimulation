@@ -10,17 +10,17 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 sys.path.insert(0, "../../")
 sys.path.insert(0, "..")
 
 from testing_utils import *
 
-from tinytroupe.utils import config
+from openpersona.utils import config
 
 
 @pytest.fixture
@@ -342,7 +342,7 @@ def test_thread_safe_logging_concurrent_access():
     from multiple threads without reentrant errors.
 
     This test simulates the scenario that was causing the original reentrant
-    logging error in TinyPersonFactory's parallel agent generation.
+    logging error in PersonaFactory's parallel agent generation.
     """
 
     def logging_worker(worker_id, iterations=10):
@@ -350,7 +350,7 @@ def test_thread_safe_logging_concurrent_access():
         Simulate a worker thread that performs logging operations,
         similar to what happens during parallel agent generation.
         """
-        logger = logging.getLogger("tinytroupe")
+        logger = logging.getLogger("openpersona")
 
         try:
             for i in range(iterations):
@@ -402,7 +402,7 @@ def test_thread_safe_file_handler_creation():
     """
     Test that ThreadSafeFileHandler can be created and used properly.
     """
-    from tinytroupe.utils.config import ThreadSafeFileHandler
+    from openpersona.utils.config import ThreadSafeFileHandler
 
     # Create a temporary file for testing
     with tempfile.NamedTemporaryFile(
