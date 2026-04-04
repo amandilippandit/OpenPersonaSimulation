@@ -140,6 +140,11 @@ async def create_simulation(body: CreateSimulationRequest = CreateSimulationRequ
     return _sim_summary(sim)
 
 
+@app.get("/api/simulations")
+async def list_simulations():
+    return [_sim_summary(s) for s in manager.list_all()]
+
+
 @app.get("/api/simulations/{sim_id}")
 async def get_simulation(sim_id: str):
     sim = _get_sim_or_404(sim_id)

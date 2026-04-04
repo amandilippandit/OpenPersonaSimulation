@@ -17,19 +17,31 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 
 export const api = {
   // Simulations
-  createSimulation: (body: { name: string; agent_count?: number }) =>
-    request<{ id: string; name: string; created_at: string; agent_count: number; step_count: number }>(
+  createSimulation: async (body: { name: string }) => {
+    const raw = await request<{ sim_id: string; name: string; created_at: string; agent_count: number }>(
       "/api/simulations",
       { method: "POST", body: JSON.stringify(body) }
-    ),
+    );
+    return { id: raw.sim_id, name: raw.name, created_at: raw.created_at, agent_count: raw.agent_count, step_count: 0 };
+  },
 
-  getSimulation: (id: string) =>
-    request<Record<string, unknown>>(`/api/simulations/${id}`),
+  getSimulation: async (id: string) => {
+    const raw = await request<{ sim_id: string; name: string; created_at: string; agent_count: number }>(
+      `/api/simulations/${id}`
+    );
+    return { id: raw.sim_id, name: raw.name, created_at: raw.created_at, agent_count: raw.agent_count, step_count: 0, ...raw };
+  },
 
-  listSimulations: () =>
-    request<{ id: string; name: string; created_at: string; agent_count: number; step_count: number }[]>(
-      "/api/simulations"
-    ).catch(() => []),
+  listSimulations: async () => {
+    try {
+      const raw = await request<{ sim_id: string; name: string; created_at: string; agent_count: number }[]>(
+        "/api/simulations"
+      );
+      return raw.map(s => ({ id: s.sim_id, name: s.name, created_at: s.created_at, agent_count: s.agent_count, step_count: 0 }));
+    } catch {
+      return [];
+    }
+  },
 
   // Agents
   addAgent: (simId: string, body: Record<string, unknown>) =>
