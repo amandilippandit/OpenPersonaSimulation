@@ -7,8 +7,8 @@
 <p align="center">
   <a href="#get-started-in-60-seconds">Get Started</a> &bull;
   <a href="#core-concepts">Core Concepts</a> &bull;
-  <a href="#use-cases">Use Cases</a> &bull;
-  <a href="#system-design">System Design</a> &bull;
+  <a href="#openpersona-studio">Studio UI</a> &bull;
+  <a href="#autoresearch">Autoresearch</a> &bull;
   <a href="#cookbook">Cookbook</a> &bull;
   <a href="#settings">Settings</a> &bull;
   <a href="#benchmarking-against-real-data">Benchmarking</a>
@@ -24,11 +24,11 @@
 
 ## The Problem
 
-You have a product idea, an ad campaign, or a piece of software — and you need to know how **real humans** with **different backgrounds, opinions, and quirks** would respond to it. Traditional options are slow (focus groups), expensive (surveys at scale), or shallow (your own gut feeling).
+You need to know how **real humans** with different backgrounds, opinions, and quirks would respond to your product, ad campaign, or software — before spending money on focus groups or surveys.
 
-**OpenPersona** lets you spin up populations of synthetic people — each with a unique backstory, personality profile, set of beliefs, and behavioral tendencies — and observe how they react to stimuli in controlled environments. They argue with each other. They change their minds. They make irrational decisions. Just like real people.
+**OpenPersona** spins up populations of synthetic people — each with a unique backstory, personality profile, beliefs, and behavioral tendencies — and observes how they react in controlled environments. They argue. They change their minds. They make irrational decisions. Just like real people.
 
-This is not a chatbot framework. These agents are designed to **model human imperfection**, not optimize for helpfulness.
+This is not a chatbot framework. These agents model **human imperfection**, not helpfulness.
 
 ---
 
@@ -45,7 +45,6 @@ export OPENAI_API_KEY="sk-..."
 from openpersona.agent import Persona
 from openpersona.environment import World
 
-# Assemble two people
 chef = Persona("Marco")
 chef.define("age", 42)
 chef.define("nationality", "Italian")
@@ -66,14 +65,13 @@ investor.define("personality", {"traits": [
     "Impatient with vague pitches — wants numbers fast."
 ]})
 
-# Put them in a room
 room = World("Pitch Meeting", [chef, investor])
 room.make_everyone_accessible()
 investor.listen("Marco, pitch me your idea for a premium frozen pasta subscription box.")
 room.run(4)
 ```
 
-Two synthetic humans. One pitch meeting. Zero scripts. The conversation unfolds based entirely on who they are.
+Two synthetic humans. One pitch meeting. Zero scripts.
 
 ---
 
@@ -81,330 +79,246 @@ Two synthetic humans. One pitch meeting. Zero scripts. The conversation unfolds 
 
 ### Personas
 
-A persona is a detailed specification of a synthetic human. Not a chatbot prompt — a **full identity**:
+A persona is a full synthetic identity — not a chatbot prompt:
 
-| Layer | What You Define | Example |
-|---|---|---|
-| Demographics | Age, gender, nationality, residence | 34, Female, Brazilian, lives in Berlin |
-| Professional | Role, company, responsibilities, skills | UX Researcher at Spotify, expert in qualitative methods |
-| Psychology | Big Five traits, values, emotional tendencies | High openness, low neuroticism, values autonomy |
-| Beliefs | Political views, worldview, domain opinions | Believes remote work is the future, skeptical of crypto |
-| Behaviors | Daily routines, habits, decision patterns | Journals every morning, shops impulsively on weekends |
-| Preferences | Likes, dislikes, interests, tastes | Loves indie films, hates small talk, collects vinyl |
-| Relationships | Connections to other agents | Colleague of Agent X, mentor to Agent Y |
-
-Personas can be defined in Python, loaded from JSON files, or generated from demographic profiles by the factory system.
+| Layer | What You Define |
+|---|---|
+| Demographics | Age, gender, nationality, residence |
+| Professional | Role, company, responsibilities, skills |
+| Psychology | Big Five traits, values, emotional tendencies |
+| Beliefs | Worldview, domain opinions, political leanings |
+| Behaviors | Routines, habits, decision patterns |
+| Preferences | Likes, dislikes, interests, tastes |
+| Relationships | Connections to other agents |
 
 ### Environments
 
-An environment is a container where personas interact. When you call `run()`, each agent perceives what others say and do, thinks about it, and responds — in parallel or sequentially. The environment routes messages, enforces social structures, and advances simulated time.
+Containers where personas interact. Call `run()` and agents perceive what others say, think about it, and respond — in parallel or sequentially.
 
 ### The Stimulus-Action Loop
-
-Every agent operates on a simple cycle:
 
 ```
 Receive stimulus → Update mental state → Generate action → Broadcast to environment
 ```
 
-Stimuli can be conversations, visual descriptions, thoughts, goals, or documents. Actions include speaking, thinking, recalling memories, consulting grounded documents, using tools, or signaling completion.
+Stimuli: conversations, visuals, thoughts, goals, documents. Actions: speaking, thinking, recalling, consulting documents, using tools, or signaling completion.
 
 ---
 
-## Use Cases
+## OpenPersona Studio
 
-### Consumer Research
-Generate 50 demographically diverse personas and run them through a product concept test. Extract structured opinions, purchase intent, and objections — in minutes instead of weeks.
+A full-stack web UI for building, running, and visualizing persona simulations.
 
-### Ad Copy Testing
-Show different ad variations to simulated audience segments. Measure which version resonates with which demographic — before committing media spend.
+### Three-Panel Layout
 
-### Synthetic Data Pipelines
-Need realistic customer service tickets, product reviews, or survey responses for model training? Generate them from personas with known characteristics so you control the distribution.
+| Panel | What It Shows |
+|---|---|
+| **3D Social Graph** | Force-directed network — agents as nodes (colored by emotion), relations as edges, message animations on TALK |
+| **Agent Inspector** | Selected agent's persona card, mental state, emotions, goals, memory stats, send-message input |
+| **Event Feed** | Color-coded timeline of all actions (TALK=green, THINK=purple, DONE=gray, REACH_OUT=blue) |
 
-### Software QA
-Feed your search engine, chatbot, or recommendation system with inputs from simulated users who have realistic intent and context — not random strings.
+### Architecture
 
-### Stakeholder Simulation
-Before presenting a product roadmap, simulate how a skeptical CFO, an enthusiastic CTO, and a risk-averse compliance officer would each react to your proposal.
+```
+studio/
+├── backend/                  # FastAPI (Python)
+│   ├── main.py               # 17 REST endpoints + WebSocket
+│   ├── models.py             # Pydantic request/response models
+│   └── simulation_manager.py # In-memory simulation state management
+└── frontend/                 # Next.js 14 + TypeScript + Tailwind
+    ├── src/components/
+    │   ├── SimulationGraph.tsx    # 3D force graph (react-force-graph-3d)
+    │   ├── AgentInspector.tsx     # Agent detail panel
+    │   ├── EventFeed.tsx          # Action timeline
+    │   ├── AgentCreator.tsx       # Modal form for new agents
+    │   └── SimulationControls.tsx # Step/Run/Add Agent toolbar
+    ├── src/hooks/useSimulation.ts # State + WebSocket management
+    └── src/lib/api.ts            # Backend API client
+```
 
-### Academic Research
-Study opinion dynamics, social influence, group polarization, or consensus formation in controlled multi-agent settings with reproducible configurations.
+### Run It
+
+```bash
+# Terminal 1 — Backend
+uvicorn studio.backend.main:app --port 8000 --reload
+
+# Terminal 2 — Frontend
+cd studio/frontend && npm install && npm run dev
+
+# Open http://localhost:3000
+```
+
+### API Endpoints
+
+| Method | Path | What It Does |
+|---|---|---|
+| `POST` | `/api/simulations` | Create a new simulation |
+| `POST` | `/api/simulations/{id}/agents` | Add an agent with persona spec |
+| `POST` | `/api/simulations/{id}/step` | Run one simulation step |
+| `POST` | `/api/simulations/{id}/run` | Run N steps |
+| `GET` | `/api/simulations/{id}/graph` | Get social graph (nodes + edges) |
+| `GET` | `/api/simulations/{id}/events` | Get all events/actions |
+| `POST` | `/api/simulations/{id}/agents/{name}/listen_and_act` | Send message, get response |
+| `WS` | `/ws/simulations/{id}` | Real-time event stream |
 
 ---
 
-## System Design
+## Autoresearch
 
+> Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch). Same pattern, different domain.
+
+An AI agent autonomously experiments with persona simulation configurations overnight. It modifies the code, runs a scenario, scores the result, keeps improvements, discards regressions, and loops forever.
+
+### The Pattern
+
+| | Karpathy's autoresearch | OpenPersona autoresearch |
+|---|---|---|
+| **Domain** | LLM training | Persona simulation |
+| **One file to edit** | `train.py` | `autoresearch/experiment.py` |
+| **One metric** | `val_bpb` (lower is better) | `quality_score` (higher is better, 0.0→1.0) |
+| **Time budget** | 5 min | 3 min |
+| **Experiments/hour** | ~12 | ~20 |
+
+### The Metric: `quality_score`
+
+A weighted composite of five dimensions:
+
+| Dimension | Weight | What It Measures |
+|---|---|---|
+| Persona adherence | 25% | Does the agent act like its defined personality? |
+| Response coherence | 25% | Are responses natural, well-formed, non-repetitive? |
+| Interaction quality | 20% | Do multi-agent conversations have realistic turn-taking? |
+| Extraction accuracy | 15% | Can structured data be reliably pulled from conversations? |
+| Diversity | 15% | Do different personas actually behave differently? |
+
+### Three Files
+
+| File | Who edits | Role |
+|---|---|---|
+| `autoresearch/prepare.py` | **Nobody** | Fixed evaluation harness — 3 test scenarios, 5 scoring functions (read-only) |
+| `autoresearch/experiment.py` | **The AI agent** | Persona specs, interaction patterns, extraction logic (everything fair game) |
+| `autoresearch/program.md` | **You** | Instructions for the agent — the "research org code" |
+
+### Run It
+
+```bash
+# Verify setup
+python autoresearch/prepare.py --check
+
+# Run one experiment manually
+python autoresearch/experiment.py
+
+# Go autonomous — point Claude/Codex at the instructions:
+# "Read autoresearch/program.md and let's set up a new experiment run."
+# Walk away. ~160 experiments overnight.
 ```
-openpersona/
-├── agent/                  # Persona engine
-│   ├── persona.py      # Identity, perception, action, memory
-│   ├── memory.py           # Episodic buffer + semantic vector store
-│   ├── action_generator.py # LLM-driven action production with guardrails
-│   ├── mental_faculty.py   # Pluggable capabilities (recall, grounding, tools)
-│   └── grounding.py        # Document retrieval via LlamaIndex
-├── environment/            # Interaction containers
-│   ├── world.py       # General-purpose multi-agent environment
-│   └── social_network.py  # Relation-constrained communication
-├── factory/                # Population synthesis
-│   └── persona_factory.py  # Demographic-aware agent generation
-├── clients/                # LLM provider abstraction
-│   ├── openai_client.py    # OpenAI + caching + cost tracking
-│   ├── azure_client.py     # Azure OpenAI (key + Entra ID)
-│   └── ollama_client.py    # Local model support
-├── control.py              # Simulation lifecycle + replay from cache
-├── extraction/             # Structured output from conversations
-├── enrichment/             # Content enhancement via LLM
-├── steering/               # Narrative generation + conditional interventions
-├── experimentation/        # Propositions, A/B randomization, stat tests
-├── validation/             # Persona fidelity checks + empirical comparison
-├── tools/                  # Word processor, calendar (agent-usable)
-├── profiling.py            # Population distribution visualization
-└── utils/                  # Serialization, config, @llm decorator, helpers
-```
 
-### How the Internals Fit Together
+### What the Agent Can Try
 
-**Memory** operates on two levels. Episodic memory stores a rolling buffer of everything the agent experiences — conversations, thoughts, actions — with a sliding window for prompt inclusion. Semantic memory uses a LlamaIndex vector store to index and retrieve relevant information from documents, past consolidated memories, and grounded sources.
-
-**Action generation** sends the agent's system prompt (persona + mental state + recent memories + faculty definitions) to the LLM and parses structured output via Pydantic models. Optional quality gates evaluate the response against persona-adherence propositions and can trigger regeneration or correction.
-
-**Simulation control** wraps state-mutating methods with `@transactional()`. On the first run, every transaction captures a snapshot of the simulation state alongside the LLM response. On subsequent runs, if the input hash matches, the cached response replays instantly — no API call needed. This makes iterative experimentation dramatically cheaper.
-
-**The `@llm` decorator** turns any Python function into an LLM call. Write the task description as a docstring, declare the return type, and the decorator handles prompt construction, API invocation, JSON parsing, and type coercion. The function body is ignored at runtime.
+Persona specs (Big Five traits, specific beliefs), prompt framing (first-person vs structured), conversation warm-up, multi-step interactions, personality fragments, memory priming, relationship definitions, environmental context, emotional state initialization, goal injection, varied interaction styles (interview, debate, brainstorm, negotiation).
 
 ---
 
 ## Cookbook
 
-### Load a Pre-Built Persona from JSON
+### Load a Pre-Built Persona
 
 ```python
 from openpersona.agent import Persona
-
 lisa = Persona.load_specification("./examples/agents/Lisa.agent.json")
 lisa.listen_and_act("Describe your typical workday.")
-```
-
-Six ready-made personas ship in `examples/agents/`: an architect, a data scientist, a sociologist, a chef, and more.
-
-### Overlay Personality Fragments
-
-Fragments let you mix and match behavioral modules across different agents:
-
-```python
-agent = Persona("Alex")
-agent.define("age", 29)
-agent.define("occupation", {"title": "Product Manager"})
-
-# Layer on travel enthusiasm and political leanings
-agent.import_fragment("./examples/fragments/travel_enthusiast.agent.fragment.json")
-agent.import_fragment("./examples/fragments/libertarian.agent.fragment.json")
 ```
 
 ### Generate a Population from Demographics
 
 ```python
 from openpersona.factory import PersonaFactory
-
 factory = PersonaFactory.create_factory_from_demography(
     "./examples/information/populations/brazil.json",
-    population_size=40,
-    context="Consumer panel for a new fintech app"
+    population_size=40, context="Consumer panel for a fintech app"
 )
 panel = factory.generate_people(40)
 ```
 
-The factory reads demographic distributions (age brackets, income levels, education, regions) and produces a diverse set of agents that statistically mirrors the target population.
-
-### Run a Multi-Step Simulation with Time
+### Run a Focus Group
 
 ```python
-from datetime import timedelta
 from openpersona.environment import World
-
-world = World("Workshop", agents)
-world.run(steps=6, timedelta_per_step=timedelta(hours=2))
-
-# Or use shorthand
-world.run_days(1)
-world.run_hours(4)
-```
-
-### Extract Structured Data from Conversations
-
-```python
 from openpersona.extraction import ResultsExtractor
 
+world = World("Focus Group", panel[:5])
+world.make_everyone_accessible()
+world.broadcast("What do you think about a new AI cooking assistant app?")
+world.run(3)
+
 extractor = ResultsExtractor()
-data = extractor.extract_results_from_agents(
-    agents=panel,
-    extraction_objective="Determine each person's purchase intent for the product.",
-    fields=["name", "intent", "reason", "price_sensitivity"]
-)
+results = extractor.extract_results_from_world(world,
+    extraction_objective="Each person's opinion on the product",
+    fields=["name", "opinion", "would_buy"])
 ```
 
-### Evaluate a Claim About Agent Behavior
+### Evaluate a Claim About Behavior
 
 ```python
 from openpersona.experimentation import Proposition
-
-claim = Proposition(
-    "The agent consistently demonstrates skepticism toward new technology.",
-    include_personas=True
-)
-passed = claim.check(target=agent)        # True / False
-score = claim.score(target=agent)         # 0 (disagree) to 9 (strongly agree)
+prop = Proposition("The agent demonstrates skepticism toward new technology.", include_personas=True)
+passed = prop.check(target=agent)   # True/False
+score = prop.score(target=agent)    # 0-9
 ```
 
-### Generate a Narrative from a Simulation
+### Generate a Narrative
 
 ```python
 from openpersona.steering import Narrative
-
 story = Narrative(environment=world, purpose="Document the negotiation dynamics.")
-opening = story.start_story(requirements="Focus on the tension between the two leads.", number_of_words=200)
-continuation = story.continue_story(requirements="Build toward a resolution.", number_of_words=300)
+opening = story.start_story(requirements="Focus on tension.", number_of_words=200)
 ```
-
-### Set Up Conditional Interventions
-
-```python
-from openpersona.steering import Intervention
-
-nudge = Intervention(targets=[agent])
-nudge.set_textual_precondition("The agent has become disengaged from the conversation.")
-nudge.set_effect(lambda targets: targets[0].think("Maybe I should re-engage and share my perspective."))
-
-world = World("Debate", agents, interventions=[nudge])
-world.run(5)
-```
-
-### Profile a Generated Population
-
-```python
-from openpersona.profiling import Profiler
-
-profiler = Profiler(attributes=["age", "occupation.title", "nationality"])
-profiler.profile(panel, plot=True)
-```
-
-Outputs distribution charts and correlation analysis across your agent population.
 
 ---
 
 ## Settings
 
-OpenPersona reads configuration from the package's built-in `config.ini` (defaults), then overlays any `config.ini` in your working directory, then accepts runtime overrides.
+Layered config: `openpersona/config.ini` (defaults) → `./config.ini` (project) → `config_manager.update()` (runtime).
 
-### Key Parameters
-
-| Section | Parameter | Default | Purpose |
+| Section | Key | Default | Purpose |
 |---|---|---|---|
-| OpenAI | `API_TYPE` | `openai` | Provider: `openai`, `azure`, or `ollama` |
+| OpenAI | `API_TYPE` | `openai` | Provider: `openai`, `azure`, `ollama` |
 | OpenAI | `MODEL` | `gpt-5-mini` | Primary model for agent cognition |
-| OpenAI | `REASONING_MODEL` | `o3-mini` | Model for deep analysis tasks |
-| OpenAI | `EMBEDDING_MODEL` | `text-embedding-3-small` | Embedding model for semantic memory |
-| OpenAI | `MAX_COMPLETION_TOKENS` | `128000` | Token budget per response |
-| OpenAI | `TIMEOUT` | `480` | API timeout in seconds |
 | OpenAI | `CACHE_API_CALLS` | `False` | Cache identical LLM requests |
-| Simulation | `PARALLEL_AGENT_ACTIONS` | `True` | Parallelize agent steps within a round |
-| Cognition | `ENABLE_MEMORY_CONSOLIDATION` | `True` | Periodically compress episodic memories |
-| ActionGenerator | `ENABLE_QUALITY_CHECKS` | `False` | Gate actions on persona-adherence scores |
-| ActionGenerator | `QUALITY_THRESHOLD` | `5` | Minimum score (0-9) to accept an action |
-
-### Runtime Override
+| Simulation | `PARALLEL_AGENT_ACTIONS` | `True` | Run agents in parallel per step |
+| ActionGenerator | `ENABLE_QUALITY_CHECKS` | `False` | Gate actions on persona-adherence |
+| ActionGenerator | `QUALITY_THRESHOLD` | `5` | Minimum score (0-9) to accept |
 
 ```python
 from openpersona import config_manager
-
 config_manager.update("model", "gpt-4o")
 config_manager.update("cache_api_calls", True)
-config_manager.update("action_generator_enable_quality_checks", True)
 ```
 
 ---
 
 ## Benchmarking Against Real Data
 
-Simulations are only useful if they approximate reality. OpenPersona includes tools to measure that gap quantitatively.
-
-### Persona Fidelity Check
-
-Ask an LLM evaluator to interview your agent and score how well it embodies its specification:
+### Persona Fidelity
 
 ```python
 from openpersona.validation import PersonaValidator
-
-score, explanation = PersonaValidator.validate_person(
-    agent,
-    expectations="Should behave like a cautious, detail-oriented financial analyst."
-)
+score, explanation = PersonaValidator.validate_person(agent,
+    expectations="Should behave like a cautious financial analyst.")
 ```
 
-### Statistical Comparison with Survey Data
-
-Compare simulation outputs against real-world responses using hypothesis tests:
+### Statistical Comparison with Surveys
 
 ```python
 from openpersona.validation import validate_simulation_experiment_empirically
-
 result = validate_simulation_experiment_empirically(
-    control_data=real_responses,
-    treatment_data=simulated_responses,
-    statistical_test_type="welch_t_test"  # or ks_test, mann_whitney, chi_square, etc.
+    control_data=real_responses, treatment_data=simulated_responses,
+    statistical_test_type="welch_t_test"
 )
-print(f"Match score: {result.overall_score:.2%}")
+print(f"Match: {result.overall_score:.2%}")
 ```
 
-Eight test types available: Welch's t, Student's t, Kolmogorov-Smirnov, Mann-Whitney U, Wilcoxon signed-rank, chi-square, ANOVA, and Kruskal-Wallis.
-
----
-
-## Saving Compute
-
-### Simulation Snapshots
-
-Checkpoint your simulation state partway through. On re-runs, completed steps replay from cache — no API calls needed:
-
-```python
-from openpersona import control
-
-control.begin("experiment_v3.cache.json")
-# Steps 1-8 replay from cache...
-# Step 9 onward runs fresh
-control.checkpoint()
-control.end()
-```
-
-### Response Caching
-
-Set `CACHE_API_CALLS=True` in your config. Any identical prompt-model pair returns the cached completion. Useful for deterministic iteration during development.
-
-### Cost Monitoring
-
-```python
-from openpersona.clients import client
-
-client().pretty_print_cost_stats()
-```
-
-Track spend at the API client, environment, or individual agent level.
-
----
-
-## Running the Test Suite
-
-```bash
-# Full suite (needs OPENAI_API_KEY)
-pytest tests/ -v
-
-# Fast subset — no API key required
-pytest tests/unit/test_config.py tests/unit/test_statistical_tests.py -v
-
-# Core integration tests
-pytest tests/ -m "core and not slow" -v
-```
+8 tests: Welch's t, Student's t, KS, Mann-Whitney, Wilcoxon, chi-square, ANOVA, Kruskal-Wallis.
 
 ---
 
@@ -412,29 +326,24 @@ pytest tests/ -m "core and not slow" -v
 
 | Directory | Contents |
 |---|---|
-| `openpersona/` | Core engine — 14 subpackages, 60+ Python modules |
-| `examples/` | 30 Jupyter notebooks covering every major workflow |
-| `examples/agents/` | 7 ready-made persona JSON files |
-| `examples/fragments/` | 9 personality overlay modules |
-| `examples/information/` | Demographic profiles for Brazil, Colombia, Spain, USA |
-| `tests/` | 35+ unit tests, 7 scenario tests, security tests |
-| `data/` | Empirical survey CSVs, grounding documents, sample exports |
-| `publications/` | Research paper experiment artifacts |
-| `docs/` | API documentation, screenshots, guides |
+| `openpersona/` | Core engine — 14 subpackages, 60+ modules |
+| `studio/` | Full-stack web UI (FastAPI + Next.js + 3D graph) |
+| `autoresearch/` | Autonomous experiment runner (Karpathy-style) |
+| `examples/` | 30 Jupyter notebooks, 7 agent specs, 9 personality fragments |
+| `tests/` | 35+ unit tests, 7 scenario tests |
+| `data/` | Empirical survey CSVs, grounding documents |
 
 ---
 
-## Requirements
+## Running Tests
 
-- Python 3.10 or later
-- An LLM API key (OpenAI, Azure OpenAI, or local Ollama)
-- Core dependencies: `openai`, `pydantic`, `llama-index`, `chevron`, `rich`, `pandas`, `scipy`, `tiktoken`
-- Full list in [pyproject.toml](./pyproject.toml)
+```bash
+pytest tests/ -v                                          # full (needs API key)
+pytest tests/unit/test_config.py tests/unit/test_statistical_tests.py -v  # no key needed
+```
 
 ---
 
 ## Legal
 
-This software generates synthetic content using AI models. Outputs may be inaccurate, biased, or inappropriate. You are solely responsible for reviewing and validating all generated content before any use. Do not use this tool to simulate sensitive scenarios or to deceive, manipulate, or cause harm. Comply with all applicable laws and regulations.
-
-Licensed under the [MIT License](./LICENSE).
+This software generates synthetic content using AI models. Outputs may be inaccurate, biased, or inappropriate. You are solely responsible for reviewing all generated content. Do not simulate sensitive scenarios or use outputs to deceive or harm. Licensed under [MIT](./LICENSE).
