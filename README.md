@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="./docs/tinytroupe_stage.png" alt="Simulated personas in a virtual workspace." width="680">
-</p>
-
 <h1 align="center">OpenPersona</h1>
 
 <p align="center">
@@ -140,7 +136,7 @@ Study opinion dynamics, social influence, group polarization, or consensus forma
 ## System Design
 
 ```
-tinytroupe/
+openpersona/
 ├── agent/                  # Persona engine
 │   ├── tiny_person.py      # Identity, perception, action, memory
 │   ├── memory.py           # Episodic buffer + semantic vector store
@@ -299,7 +295,7 @@ Outputs distribution charts and correlation analysis across your agent populatio
 
 ## Settings
 
-OpenPersona reads configuration from `tinytroupe/config.ini` (defaults), then overlays any `config.ini` in your working directory, then accepts runtime overrides.
+OpenPersona reads configuration from the package's built-in `config.ini` (defaults), then overlays any `config.ini` in your working directory, then accepts runtime overrides.
 
 ### Key Parameters
 
@@ -416,7 +412,7 @@ pytest tests/ -m "core and not slow" -v
 
 | Directory | Contents |
 |---|---|
-| `tinytroupe/` | Core library — 14 subpackages, 60+ Python modules |
+| `tinytroupe/` | Core engine — 14 subpackages, 60+ Python modules |
 | `examples/` | 30 Jupyter notebooks covering every major workflow |
 | `examples/agents/` | 7 ready-made persona JSON files |
 | `examples/fragments/` | 9 personality overlay modules |
@@ -434,12 +430,6 @@ pytest tests/ -m "core and not slow" -v
 - An LLM API key (OpenAI, Azure OpenAI, or local Ollama)
 - Core dependencies: `openai`, `pydantic`, `llama-index`, `chevron`, `rich`, `pandas`, `scipy`, `tiktoken`
 - Full list in [pyproject.toml](./pyproject.toml)
-
----
-
-## Acknowledgements
-
-OpenPersona builds on the research and engineering work of the [TinyTroupe](https://github.com/microsoft/TinyTroupe) project by Paulo Salem and the team at Microsoft Research. Their foundational paper is available at [arXiv:2507.09788](https://arxiv.org/abs/2507.09788).
 
 ---
 
