@@ -2,26 +2,26 @@ import pytest
 import textwrap
 
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
 from testing_utils import *
 
-from tinytroupe.enrichment import TinyEnricher
+from openpersona.enrichment import Enricher
 
 @pytest.mark.core
 def test_enrich_content():
 
     content_to_enrich = textwrap.dedent(\
     """
-    # WonderCode & Microsoft Partnership: Integration of WonderWand with GitHub
+    # WonderCode & Nexus Corp Partnership: Integration of WonderWand with GitHub
     ## Executive Summary
-    This document outlines the strategic approach and considerations for the partnership between WonderCode and Microsoft, focusing on the integration of WonderWand with GitHub. It captures the collaborative efforts and insights from various departments within WonderCode.
+    This document outlines the strategic approach and considerations for the partnership between WonderCode and Nexus Corp, focusing on the integration of WonderWand with GitHub. It captures the collaborative efforts and insights from various departments within WonderCode.
     ## Business Strategy
     - **Tiered Integration Approach**: Implement a tiered system offering basic features to free users and advanced functionalities for premium accounts.
     - **Market Expansion**: Leverage the integration to enhance market presence and user base.
@@ -52,10 +52,10 @@ def test_enrich_content():
     The result **MUST** be at least 3 times larger than the original content in terms of characters - do whatever it takes to make it this long and detailed.
     """).strip()
     
-    result = TinyEnricher().enrich_content(requirements=requirements, 
+    result = Enricher().enrich_content(requirements=requirements, 
                                        content=content_to_enrich, 
                                        content_type="Document", 
-                                       context_info="WonderCode was approached by Microsoft to for a partnership.",
+                                       context_info="WonderCode was approached by Nexus Corp to for a partnership.",
                                        context_cache=None, verbose=True)    
     
     assert result is not None, "The result should not be None."

@@ -9,11 +9,11 @@ from pydantic import BaseModel
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, "..")
 sys.path.insert(0, "../../")
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 
 from testing_utils import proposition_holds
 
-from tinytroupe.utils.llm import (
+from openpersona.utils.llm import (
     LLMChat,
     LLMScalarWithJustificationAndReasoningResponse,
     LLMScalarWithJustificationResponse,
@@ -454,7 +454,7 @@ class TestLLMChat:
 
     # ==== MOCKED RESPONSE TESTS ====
 
-    @patch("tinytroupe.clients.client")
+    @patch("openpersona.clients.client")
     def test_call_with_mock_response(self, mock_client):
         """Test the call method with mocked responses."""
         # Setup mock
@@ -472,7 +472,7 @@ class TestLLMChat:
         assert len(chat.messages) > 0
         mock_client_instance.send_message.assert_called_once()
 
-    @patch("tinytroupe.clients.client")
+    @patch("openpersona.clients.client")
     def test_call_with_json_output_and_justification(self, mock_client):
         """Test call with JSON output and justification enabled."""
         # Setup mock
@@ -498,7 +498,7 @@ class TestLLMChat:
         assert chat.response_confidence == 0.9
         assert chat.response_value == True
 
-    @patch("tinytroupe.clients.client")
+    @patch("openpersona.clients.client")
     def test_call_with_reasoning_step(self, mock_client):
         """Test call with reasoning step enabled."""
         # Setup mock
@@ -528,7 +528,7 @@ class TestLLMChat:
 
     # ==== ERROR HANDLING TESTS ====
 
-    @patch("tinytroupe.clients.client")
+    @patch("openpersona.clients.client")
     def test_call_error_handling(self, mock_client):
         """Test error handling during LLM calls."""
         # Setup mock to raise exception
@@ -543,7 +543,7 @@ class TestLLMChat:
         # Should return None on error, not raise exception
         assert result is None
 
-    @patch("tinytroupe.clients.client")
+    @patch("openpersona.clients.client")
     def test_call_with_invalid_response_format(self, mock_client):
         """Test handling of invalid response format."""
         # Setup mock with missing content

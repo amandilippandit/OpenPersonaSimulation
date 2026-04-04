@@ -5,35 +5,35 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 
 # Insert paths at the beginning of sys.path (position 0)
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 sys.path.insert(0, "../../")
 sys.path.insert(0, "..")
 
 from testing_utils import *
 
-from tinytroupe.agent.grounding import BaseSemanticGroundingConnector
-from tinytroupe.agent.memory import (
+from openpersona.agent.grounding import BaseSemanticGroundingConnector
+from openpersona.agent.memory import (
     EpisodicConsolidator,
     EpisodicMemory,
     MemoryProcessor,
     ReflectionConsolidator,
     SemanticMemory,
-    TinyMemory,
+    AgentMemory,
 )
 
 
-class TestTinyMemory:
-    """Test cases for the abstract TinyMemory base class"""
+class TestAgentMemory:
+    """Test cases for the abstract AgentMemory base class"""
 
     def test_preprocess_value_for_storage_default(self, setup):
         """Test that the default preprocessing returns the value unchanged"""
 
-        class ConcreteTinyMemory(TinyMemory):
+        class ConcreteAgentMemory(AgentMemory):
             def __init__(self):
                 super().__init__("test_memory")
 
@@ -54,7 +54,7 @@ class TestTinyMemory:
             def retrieve_relevant(self, relevance_target, top_k=20):
                 pass
 
-        memory = ConcreteTinyMemory()
+        memory = ConcreteAgentMemory()
         test_value = {"content": "test"}
         result = memory._preprocess_value_for_storage(test_value)
         assert result == test_value
@@ -62,7 +62,7 @@ class TestTinyMemory:
     def test_filter_by_item_type(self, setup):
         """Test filtering memories by item type"""
 
-        class ConcreteTinyMemory(TinyMemory):
+        class ConcreteAgentMemory(AgentMemory):
             def __init__(self):
                 super().__init__("test_memory")
 
@@ -83,7 +83,7 @@ class TestTinyMemory:
             def retrieve_relevant(self, relevance_target, top_k=20):
                 pass
 
-        memory = ConcreteTinyMemory()
+        memory = ConcreteAgentMemory()
         memories = [
             {"type": "action", "content": "I walked"},
             {"type": "stimulus", "content": "I saw a cat"},
@@ -102,7 +102,7 @@ class TestTinyMemory:
     def test_filter_by_item_types(self, setup):
         """Test filtering memories by multiple item types"""
 
-        class ConcreteTinyMemory(TinyMemory):
+        class ConcreteAgentMemory(AgentMemory):
             def __init__(self):
                 super().__init__("test_memory")
 
@@ -123,7 +123,7 @@ class TestTinyMemory:
             def retrieve_relevant(self, relevance_target, top_k=20):
                 pass
 
-        memory = ConcreteTinyMemory()
+        memory = ConcreteAgentMemory()
         memories = [
             {"type": "action", "content": "I walked"},
             {"type": "stimulus", "content": "I saw a cat"},
@@ -138,7 +138,7 @@ class TestTinyMemory:
     def test_store_all(self, setup):
         """Test storing multiple values"""
 
-        class ConcreteTinyMemory(TinyMemory):
+        class ConcreteAgentMemory(AgentMemory):
             def __init__(self):
                 super().__init__("test_memory")
                 self.stored_values = []
@@ -160,7 +160,7 @@ class TestTinyMemory:
             def retrieve_relevant(self, relevance_target, top_k=20):
                 pass
 
-        memory = ConcreteTinyMemory()
+        memory = ConcreteAgentMemory()
         values = [{"content": "test1"}, {"content": "test2"}, {"content": "test3"}]
         memory.store_all(values)
 
@@ -469,7 +469,7 @@ class TestSemanticMemory:
         assert processed["type"] == "information"
         assert processed["simulation_timestamp"] is None
 
-    @patch("tinytroupe.agent.memory.logger")
+    @patch("openpersona.agent.memory.logger")
     def test_store(self, mock_logger, setup):
         """Test storing values in semantic memory"""
         memory = SemanticMemory()
@@ -651,7 +651,7 @@ class TestSemanticMemory:
         memory.semantic_grounding_connector = Mock()
         memory.semantic_grounding_connector.documents = [mock_doc]
 
-        with patch("tinytroupe.agent.memory.logger") as mock_logger:
+        with patch("openpersona.agent.memory.logger") as mock_logger:
             memories = memory.retrieve_all()
 
             # Should return empty list and log warning
@@ -740,7 +740,7 @@ class TestEpisodicConsolidator:
         consolidator = EpisodicConsolidator()
         assert isinstance(consolidator, MemoryProcessor)
 
-    @patch("tinytroupe.agent.memory.utils")
+    @patch("openpersona.agent.memory.utils")
     def test_process_small_batch(self, mock_utils, setup):
         """Test processing memories under word limit"""
         consolidator = EpisodicConsolidator()
@@ -763,7 +763,7 @@ class TestEpisodicConsolidator:
             consolidator._consolidate.assert_called_once()
             assert result == mock_result
 
-    @patch("tinytroupe.agent.memory.utils")
+    @patch("openpersona.agent.memory.utils")
     def test_process_large_batch(self, mock_utils, setup):
         """Test processing memories that exceed word limit (batch processing)"""
         consolidator = EpisodicConsolidator()

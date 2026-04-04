@@ -1,1 +1,1 @@
-pdoc --html --output-dir docs/api tinytroupe
+pdoc --html --output-dir docs/api openpersona

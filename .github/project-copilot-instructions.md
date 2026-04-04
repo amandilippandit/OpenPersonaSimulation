@@ -1,9 +1,9 @@
-# TinyTroupe Project Programming Guidelines 
+# OpenPersona Project Programming Guidelines 
 
-This document provides the TinyTroupe-specific guidelines for generating programs. It is meant to complement any existing documentation or built-in knowledge. 
+This document provides the OpenPersona-specific guidelines for generating programs. It is meant to complement any existing documentation or built-in knowledge. 
 
 ## Frameworks and Libraries
-TinyTroupe uses by default the following frameworks and libraries:
+OpenPersona uses by default the following frameworks and libraries:
 - **Python**: The primary language for development.
 - **Pytest**: For testing.
 - **Mustache**: For templating.

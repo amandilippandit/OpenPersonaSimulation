@@ -1,11 +1,11 @@
 """
-Unit tests for the vision modality in TinyTroupe.
+Unit tests for the vision modality in OpenPersona.
 
 Tests cover:
   - Image utilities (media.py)
-  - Image registration and caching in TinyPerson
+  - Image registration and caching in Persona
   - see() with images (backward compatibility and new image path)
-  - SHOW action dispatch in TinyWorld
+  - SHOW action dispatch in World
   - Consolidation stripping of image references
 """
 
@@ -15,24 +15,24 @@ import logging
 import base64
 import hashlib
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.examples import create_oscar_the_architect, create_lisa_the_data_scientist
-from tinytroupe.agent import TinyPerson
-from tinytroupe.environment import TinyWorld
-from tinytroupe.utils.media import (
+from openpersona.examples import create_oscar_the_architect, create_lisa_the_data_scientist
+from openpersona.agent import Persona
+from openpersona.environment import World
+from openpersona.utils.media import (
     normalize_image_to_openai_url,
     build_multimodal_content_array,
     hash_image,
     normalize_image_refs,
     _mime_type_for_image,
 )
-from tinytroupe.agent.memory import EpisodicConsolidator
+from openpersona.agent.memory import EpisodicConsolidator
 
 from testing_utils import *
 
@@ -52,7 +52,7 @@ XRAY_JPG = os.path.join(_IMAGES_DIR, "X-ray_pneumonia.JPG")
 # ========================== media.py utilities ==============================
 
 class TestMediaUtilities:
-    """Tests for tinytroupe.utils.media helper functions."""
+    """Tests for openpersona.utils.media helper functions."""
 
     def test_mime_type_for_image(self, setup):
         assert _mime_type_for_image("photo.jpg") == "image/jpeg"
@@ -126,10 +126,10 @@ class TestMediaUtilities:
         assert len(h) == 64
 
 
-# ========================== TinyPerson image registry =======================
+# ========================== Persona image registry =======================
 
 class TestImageRegistry:
-    """Tests for the image registry and description caching in TinyPerson."""
+    """Tests for the image registry and description caching in Persona."""
 
     def test_register_images(self, setup):
         agent = create_oscar_the_architect()
@@ -156,7 +156,7 @@ class TestImageRegistry:
         path = get_relative_to_test_path(f"{EXPORT_BASE_FOLDER}/serialization/{agent.name}_vision.tinyperson.json")
         agent.save_specification(path, include_memory=True)
 
-        loaded = TinyPerson.load_specification(path, new_agent_name=f"{agent.name}_v_loaded")
+        loaded = Persona.load_specification(path, new_agent_name=f"{agent.name}_v_loaded")
         assert loaded._image_registry["img_1"] == GAZPACHO_JPG
         assert loaded._image_id_counter == 1
 
@@ -210,9 +210,9 @@ class TestSeeWithImages:
     @pytest.mark.core
     def test_see_image_description_caching(self, setup):
         """Description for the same image content should be cached across agents."""
-        # Clear the class-level cache (use assignment in case no TinyPerson
+        # Clear the class-level cache (use assignment in case no Persona
         # was instantiated yet and the class attribute does not exist)
-        TinyPerson._image_description_cache = {}
+        Persona._image_description_cache = {}
 
         agent1 = create_oscar_the_architect()
         agent1.see(images=GAZPACHO_JPG, description="A bottle")
@@ -225,7 +225,7 @@ class TestSeeWithImages:
         # sha256 of the image's own hash string.
         img_hash = hash_image(GAZPACHO_JPG)
         cache_key = hashlib.sha256(img_hash.encode()).hexdigest()
-        assert cache_key in TinyPerson._image_description_cache
+        assert cache_key in Persona._image_description_cache
 
     def test_see_diverse_images(self, setup):
         """Agent should be able to see diverse image types."""
@@ -243,17 +243,17 @@ class TestSeeWithImages:
         assert len(agent._image_registry) == 3
 
 
-# ========================== SHOW action in TinyWorld ========================
+# ========================== SHOW action in World ========================
 
 class TestShowAction:
-    """Tests for the SHOW action dispatch in TinyWorld."""
+    """Tests for the SHOW action dispatch in World."""
 
     def test_handle_show_resolves_images(self, setup):
         """_handle_show should resolve image IDs and call see() on the target."""
         oscar = create_oscar_the_architect()
         lisa = create_lisa_the_data_scientist()
 
-        world = TinyWorld("Test world", [oscar, lisa])
+        world = World("Test world", [oscar, lisa])
 
         # Pre-register an image on oscar
         oscar._register_images([GAZPACHO_JPG])

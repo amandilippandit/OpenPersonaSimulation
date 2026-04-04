@@ -5,19 +5,19 @@ import random
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, "..")
 sys.path.insert(0, "../../")
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 
 from testing_utils import *
 
-from tinytroupe import utils
-from tinytroupe.extraction import ArtifactExporter, Normalizer
+from openpersona import utils
+from openpersona.extraction import ArtifactExporter, Normalizer
 
 
 @pytest.fixture

@@ -5,16 +5,16 @@ import os
 import sys
 from time import sleep
 
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.clients import client, force_api_cache
-from tinytroupe import control
-from tinytroupe.agent import TinyPerson
-from tinytroupe.environment import TinyWorld, TinySocialNetwork
-from tinytroupe.factory import TinyPersonFactory
-from tinytroupe.factory.tiny_factory import TinyFactory
+from openpersona.clients import client, force_api_cache
+from openpersona import control
+from openpersona.agent import Persona
+from openpersona.environment import World, SocialNetwork
+from openpersona.factory import PersonaFactory
+from openpersona.factory.base_factory import BaseFactory
 import pytest
 import importlib
 
@@ -26,7 +26,7 @@ import conftest
 EXPORT_BASE_FOLDER = os.path.join(os.path.dirname(__file__), "outputs/exports")
 TEMP_SIMULATION_CACHE_FILE_NAME = os.path.join(os.path.dirname(__file__), "simulation_test_case.cache.json")
 
-# Fixed datetime used by TinyWorld in tests to ensure API cache keys remain
+# Fixed datetime used by World in tests to ensure API cache keys remain
 # stable across CI runs.  Without this, datetime.now() would produce a
 # different system prompt on each run, invalidating cached LLM responses.
 from datetime import datetime as _dt
@@ -201,9 +201,9 @@ def get_relative_to_test_path(path_suffix):
 
 @pytest.fixture(scope="function")
 def focus_group_world():
-    import tinytroupe.examples as examples   
+    import openpersona.examples as examples   
     
-    world = TinyWorld("Focus group", [examples.create_lisa_the_data_scientist(), examples.create_oscar_the_architect(), examples.create_marcos_the_physician()])
+    world = World("Focus group", [examples.create_lisa_the_data_scientist(), examples.create_oscar_the_architect(), examples.create_marcos_the_physician()])
     return world
 
 #
@@ -212,16 +212,16 @@ def focus_group_world():
 @pytest.fixture(scope="function", autouse=True)
 def setup():
     control.reset()
-    TinyPerson.clear_agents()
-    TinyWorld.clear_environments()
-    TinyFactory.clear_factories()
-    TinyPersonFactory.clear_factories()
+    Persona.clear_agents()
+    World.clear_environments()
+    BaseFactory.clear_factories()
+    PersonaFactory.clear_factories()
 
-    # Pin TinyWorld's default datetime so that agent prompts (which include
+    # Pin World's default datetime so that agent prompts (which include
     # the current datetime) produce stable API cache keys across test runs.
-    TinyWorld.default_initial_datetime = FIXED_TEST_DATETIME
+    World.default_initial_datetime = FIXED_TEST_DATETIME
 
     yield
 
     # Restore production default after each test
-    TinyWorld.default_initial_datetime = None
+    World.default_initial_datetime = None

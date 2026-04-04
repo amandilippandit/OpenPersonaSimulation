@@ -1,9 +1,9 @@
 """
-Scenario tests for the vision modality in TinyTroupe.
+Scenario tests for the vision modality in OpenPersona.
 
 These tests exercise the full end-to-end flow of the vision feature:
   - An agent seeing real images and reacting to them.
-  - Two agents sharing images via the SHOW action in a TinyWorld.
+  - Two agents sharing images via the SHOW action in a World.
 
 The scenarios use actual test images of diverse subjects (product photos,
 historical photography, art, medical imagery) to validate that the LLM
@@ -20,23 +20,23 @@ import pytest
 import os
 import logging
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-import tinytroupe
-from tinytroupe.agent import TinyPerson
-from tinytroupe.environment import TinyWorld
-from tinytroupe.examples import (
+import openpersona
+from openpersona.agent import Persona
+from openpersona.environment import World
+from openpersona.examples import (
     create_oscar_the_architect,
     create_lisa_the_data_scientist,
     create_marcos_the_physician,
 )
-import tinytroupe.control as control
-from tinytroupe.control import Simulation
+import openpersona.control as control
+from openpersona.control import Simulation
 
 from testing_utils import *
 
@@ -130,7 +130,7 @@ class TestVisionScenarios:
     def test_two_agents_share_image_via_world(self):
         """
         Oscar sees a product photo and then shares it with Lisa via the
-        SHOW action in a TinyWorld. Lisa should then react to the image.
+        SHOW action in a World. Lisa should then react to the image.
 
         This tests the full social vision loop: perception → action (SHOW) →
         environment dispatch → second agent's perception → reaction.
@@ -140,7 +140,7 @@ class TestVisionScenarios:
 
         oscar = create_oscar_the_architect()
         lisa = create_lisa_the_data_scientist()
-        world = TinyWorld("Product Review", [oscar, lisa])
+        world = World("Product Review", [oscar, lisa])
 
         # Oscar sees the image first
         oscar.see(

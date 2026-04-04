@@ -6,7 +6,7 @@ import pytest
 from nbconvert.preprocessors import ExecutePreprocessor
 
 sys.path.insert(
-    0, "../../tinytroupe/"
+    0, "../../openpersona/"
 )  # ensures that the package is imported from the parent directory, not the Python installation
 sys.path.insert(
     0, "../../"

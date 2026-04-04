@@ -1,4 +1,4 @@
-# Runs the full TinyTroupe test suite (including slow tests).
+# Runs the full OpenPersona test suite (including slow tests).
 # Runs on the 1st of each month (if there were recent commits), or manually.
 #
 # Required secret:

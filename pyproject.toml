@@ -3,16 +3,16 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["tinytroupe"]
+packages = ["openpersona"]
 include-package-data = true
 
 [project]
-name = "tinytroupe"
+name = "openpersona"
 version = "0.7.0"
 authors = [
-  { name="Paulo Salem", email="paulo.salem@microsoft.com" }
+  { name="Aman Pandit" }
 ]
-description = "LLM-based people simulation for design, validation and insight generation in business."
+description = "Synthetic human behavior at scale — LLM-powered multiagent persona simulation."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
@@ -40,7 +40,7 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/microsoft/tinytroupe"
+"Homepage" = "https://github.com/amandilippandit/OpenPersonaSimulation"
 
 [tool.pytest.ini_options]
 pythonpath = [
@@ -58,5 +58,5 @@ markers = [
   "slow: mark a test as slow running (excluded from core tests)",
   "gpt41mini: mark a test for gpt-4.1-mini model compatibility testing",
 ]
-addopts = "--cov=tinytroupe --cov-report=html --cov-report=xml --junit-xml=test-results.xml --html=test-report.html --self-contained-html"
+addopts = "--cov=openpersona --cov-report=html --cov-report=xml --junit-xml=test-results.xml --html=test-report.html --self-contained-html"
 timeout_exit = 0

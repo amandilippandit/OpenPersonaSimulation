@@ -1,24 +1,24 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 import os
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-import tinytroupe
-from tinytroupe.agent import TinyPerson
-from tinytroupe.environment import TinyWorld, TinySocialNetwork
-from tinytroupe.factory import TinyPersonFactory
-from tinytroupe.extraction import ResultsExtractor
+import openpersona
+from openpersona.agent import Persona
+from openpersona.environment import World, SocialNetwork
+from openpersona.factory import PersonaFactory
+from openpersona.extraction import ResultsExtractor
 
-from tinytroupe.examples import create_lisa_the_data_scientist, create_oscar_the_architect, create_marcos_the_physician
+from openpersona.examples import create_lisa_the_data_scientist, create_oscar_the_architect, create_marcos_the_physician
 
-import tinytroupe.control as control
-from tinytroupe.control import Simulation
+import openpersona.control as control
+from openpersona.control import Simulation
 
 from testing_utils import *
 
@@ -35,7 +35,7 @@ class TestExtendedScenarios:
         control.reset()
 
         # Create a small group of diverse characters
-        factory = TinyPersonFactory("A creative writing workshop with diverse participants.")
+        factory = PersonaFactory("A creative writing workshop with diverse participants.")
 
         writer = factory.generate_person(
             "A creative writer who loves storytelling, and always insists in including dogs in all stories."
@@ -48,7 +48,7 @@ class TestExtendedScenarios:
         print("Writer:", writer.minibio())
         print("Editor:", editor.minibio())
 
-        world = TinyWorld("Creative Writing Workshop", [writer, editor])
+        world = World("Creative Writing Workshop", [writer, editor])
         world.make_everyone_accessible()
 
         # Start a collaborative story
@@ -92,12 +92,12 @@ class TestExtendedScenarios:
         control.reset()
 
         # Create agents for conversation generation
-        factory = TinyPersonFactory("A workplace environment with knowledge workers.")
+        factory = PersonaFactory("A workplace environment with knowledge workers.")
 
         agent1 = factory.generate_person("A project manager focused on deadlines and coordination.")
         agent2 = factory.generate_person("A software developer interested in technical solutions.")
 
-        world = TinyWorld("Workplace", [agent1, agent2])
+        world = World("Workplace", [agent1, agent2])
         world.make_everyone_accessible()
 
         # Generate workplace conversation by having them collaborate
@@ -149,7 +149,7 @@ class TestExtendedScenarios:
         control.reset()
 
         # Create diverse consumer personas
-        factory = TinyPersonFactory("Random consumers from different demographics and backgrounds.")
+        factory = PersonaFactory("Random consumers from different demographics and backgrounds.")
 
         consumers = []
         # Create fewer consumers for quick testing
@@ -198,7 +198,7 @@ class TestExtendedScenarios:
         control.reset()
 
         # Create agents with different political leanings
-        factory = TinyPersonFactory("American voters with diverse political perspectives.")
+        factory = PersonaFactory("American voters with diverse political perspectives.")
 
         conservative = factory.generate_person(
             "A conservative-leaning voter concerned about traditional values and fiscal responsibility."
@@ -256,7 +256,7 @@ class TestExtendedScenarios:
         architect = create_oscar_the_architect()
         doctor = create_marcos_the_physician()
 
-        world = TinyWorld("Problem Solving Team", [analyst, architect, doctor])
+        world = World("Problem Solving Team", [analyst, architect, doctor])
         world.make_everyone_accessible()
 
         # Present complex problem

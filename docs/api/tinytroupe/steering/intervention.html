@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.steering.intervention API documentation</title>
+<title>openpersona.steering.intervention API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.steering.intervention</code></h1>
+<h1 class="title">Module <code>openpersona.steering.intervention</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -27,12 +27,12 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from typing import Union, List
-from tinytroupe.extraction import logger
-from tinytroupe.utils import JsonSerializableRegistry
-from tinytroupe.experimentation import Proposition
-from tinytroupe.environment import TinyWorld
-from tinytroupe.agent import TinyPerson
-import tinytroupe.utils as utils
+from openpersona.extraction import logger
+from openpersona.utils import JsonSerializableRegistry
+from openpersona.experimentation import Proposition
+from openpersona.environment import World
+from openpersona.agent import Persona
+import openpersona.utils as utils
 
 DEFAULT_FIRST_N = 10
 DEFAULT_LAST_N = 100
@@ -76,14 +76,14 @@ class InterventionBatch:
 
 class Intervention:
 
-    def __init__(self, targets: Union[TinyPerson, TinyWorld, List[TinyPerson], List[TinyWorld]], 
+    def __init__(self, targets: Union[Persona, World, List[Persona], List[World]], 
                  first_n:int=DEFAULT_FIRST_N, last_n:int=DEFAULT_LAST_N,
                  name: str = None):
         &#34;&#34;&#34;
         Initialize the intervention.
 
         Args:
-            target (Union[TinyPerson, TinyWorld, List[TinyPerson], List[TinyWorld]]): the target to intervene on
+            target (Union[Persona, World, List[Persona], List[World]]): the target to intervene on
             first_n (int): the number of first interactions to consider in the context
             last_n (int): the number of last interactions (most recent) to consider in the context
             name (str): the name of the intervention
@@ -126,7 +126,7 @@ class Intervention:
         Create separate interventions for each target in the list.
         
         Args:
-            targets (list): List of targets (TinyPerson or TinyWorld instances)
+            targets (list): List of targets (Persona or World instances)
             first_n (int): the number of first interactions to consider in the context
             last_n (int): the number of last interactions (most recent) to consider in the context
             name (str): the name of the intervention
@@ -233,7 +233,7 @@ class Intervention:
 
         Args:
             func (function): the function of the precondition. 
-              Must have the a single argument, targets (either a TinyWorld or TinyPerson, or a list). Must return a boolean.
+              Must have the a single argument, targets (either a World or Persona, or a list). Must return a boolean.
         &#34;&#34;&#34;
         self.precondition_func = func
         return self # for chaining
@@ -301,15 +301,15 @@ class Intervention:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.steering.intervention.Intervention"><code class="flex name class">
+<dt id="openpersona.steering.intervention.Intervention"><code class="flex name class">
 <span>class <span class="ident">Intervention</span></span>
-<span>(</span><span>targets: Union[<a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, <a title="tinytroupe.environment.tiny_world.TinyWorld" href="../environment/tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a>, List[<a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>], List[<a title="tinytroupe.environment.tiny_world.TinyWorld" href="../environment/tiny_world.html#tinytroupe.environment.tiny_world.TinyWorld">TinyWorld</a>]], first_n: int = 10, last_n: int = 100, name: str = None)</span>
+<span>(</span><span>targets: Union[<a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, <a title="openpersona.environment.world.World" href="../environment/world.html#openpersona.environment.world.World">World</a>, List[<a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>], List[<a title="openpersona.environment.world.World" href="../environment/world.html#openpersona.environment.world.World">World</a>]], first_n: int = 10, last_n: int = 100, name: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Initialize the intervention.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>Union[TinyPerson, TinyWorld, List[TinyPerson], List[TinyWorld]]</code></dt>
+<dt><strong><code>target</code></strong> :&ensp;<code>Union[Persona, World, List[Persona], List[World]]</code></dt>
 <dd>the target to intervene on</dd>
 <dt><strong><code>first_n</code></strong> :&ensp;<code>int</code></dt>
 <dd>the number of first interactions to consider in the context</dd>
@@ -324,14 +324,14 @@ class Intervention:
 </summary>
 <pre><code class="python">class Intervention:
 
-    def __init__(self, targets: Union[TinyPerson, TinyWorld, List[TinyPerson], List[TinyWorld]], 
+    def __init__(self, targets: Union[Persona, World, List[Persona], List[World]], 
                  first_n:int=DEFAULT_FIRST_N, last_n:int=DEFAULT_LAST_N,
                  name: str = None):
         &#34;&#34;&#34;
         Initialize the intervention.
 
         Args:
-            target (Union[TinyPerson, TinyWorld, List[TinyPerson], List[TinyWorld]]): the target to intervene on
+            target (Union[Persona, World, List[Persona], List[World]]): the target to intervene on
             first_n (int): the number of first interactions to consider in the context
             last_n (int): the number of last interactions (most recent) to consider in the context
             name (str): the name of the intervention
@@ -374,7 +374,7 @@ class Intervention:
         Create separate interventions for each target in the list.
         
         Args:
-            targets (list): List of targets (TinyPerson or TinyWorld instances)
+            targets (list): List of targets (Persona or World instances)
             first_n (int): the number of first interactions to consider in the context
             last_n (int): the number of last interactions (most recent) to consider in the context
             name (str): the name of the intervention
@@ -481,7 +481,7 @@ class Intervention:
 
         Args:
             func (function): the function of the precondition. 
-              Must have the a single argument, targets (either a TinyWorld or TinyPerson, or a list). Must return a boolean.
+              Must have the a single argument, targets (either a World or Persona, or a list). Must return a boolean.
         &#34;&#34;&#34;
         self.precondition_func = func
         return self # for chaining
@@ -541,7 +541,7 @@ class Intervention:
 </details>
 <h3>Static methods</h3>
 <dl>
-<dt id="tinytroupe.steering.intervention.Intervention.create_for_each"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.create_for_each"><code class="name flex">
 <span>def <span class="ident">create_for_each</span></span>(<span>targets, first_n=10, last_n=100, name=None)</span>
 </code></dt>
 <dd>
@@ -549,7 +549,7 @@ class Intervention:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>targets</code></strong> :&ensp;<code>list</code></dt>
-<dd>List of targets (TinyPerson or TinyWorld instances)</dd>
+<dd>List of targets (Persona or World instances)</dd>
 <dt><strong><code>first_n</code></strong> :&ensp;<code>int</code></dt>
 <dd>the number of first interactions to consider in the context</dd>
 <dt><strong><code>last_n</code></strong> :&ensp;<code>int</code></dt>
@@ -559,7 +559,7 @@ class Intervention:
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="tinytroupe.steering.intervention.InterventionBatch" href="#tinytroupe.steering.intervention.InterventionBatch">InterventionBatch</a></code></dt>
+<dt><code><a title="openpersona.steering.intervention.InterventionBatch" href="#openpersona.steering.intervention.InterventionBatch">InterventionBatch</a></code></dt>
 <dd>A wrapper that allows chaining set_* methods that will apply to all interventions</dd>
 </dl></div>
 <details class="source">
@@ -572,7 +572,7 @@ def create_for_each(cls, targets, first_n=DEFAULT_FIRST_N, last_n=DEFAULT_LAST_N
     Create separate interventions for each target in the list.
     
     Args:
-        targets (list): List of targets (TinyPerson or TinyWorld instances)
+        targets (list): List of targets (Persona or World instances)
         first_n (int): the number of first interactions to consider in the context
         last_n (int): the number of last interactions (most recent) to consider in the context
         name (str): the name of the intervention
@@ -592,7 +592,7 @@ def create_for_each(cls, targets, first_n=DEFAULT_FIRST_N, last_n=DEFAULT_LAST_N
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.steering.intervention.Intervention.apply_effect"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.apply_effect"><code class="name flex">
 <span>def <span class="ident">apply_effect</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -610,7 +610,7 @@ so it should be called after check_precondition.</p></div>
     self.effect_func(self.targets)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.Intervention.check_precondition"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.check_precondition"><code class="name flex">
 <span>def <span class="ident">check_precondition</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -656,7 +656,7 @@ so it should be called after check_precondition.</p></div>
     return llm_precondition_check and self._last_functional_precondition_check and self._last_propositional_precondition_check</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.Intervention.execute"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.execute"><code class="name flex">
 <span>def <span class="ident">execute</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -689,7 +689,7 @@ This is the simplest method to run the intervention.</p>
     return False</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.Intervention.precondition_justification"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.precondition_justification"><code class="name flex">
 <span>def <span class="ident">precondition_justification</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -728,7 +728,7 @@ This is the simplest method to run the intervention.</p>
     return justification</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.Intervention.set_effect"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.set_effect"><code class="name flex">
 <span>def <span class="ident">set_effect</span></span>(<span>self, effect_func)</span>
 </code></dt>
 <dd>
@@ -753,7 +753,7 @@ This is the simplest method to run the intervention.</p>
     return self # for chaining</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.Intervention.set_functional_precondition"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.set_functional_precondition"><code class="name flex">
 <span>def <span class="ident">set_functional_precondition</span></span>(<span>self, func)</span>
 </code></dt>
 <dd>
@@ -762,7 +762,7 @@ This is the simplest method to run the intervention.</p>
 <dl>
 <dt><strong><code>func</code></strong> :&ensp;<code>function</code></dt>
 <dd>the function of the precondition.
-Must have the a single argument, targets (either a TinyWorld or TinyPerson, or a list). Must return a boolean.</dd>
+Must have the a single argument, targets (either a World or Persona, or a list). Must return a boolean.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -774,14 +774,14 @@ Must have the a single argument, targets (either a TinyWorld or TinyPerson, or a
 
     Args:
         func (function): the function of the precondition. 
-          Must have the a single argument, targets (either a TinyWorld or TinyPerson, or a list). Must return a boolean.
+          Must have the a single argument, targets (either a World or Persona, or a list). Must return a boolean.
     &#34;&#34;&#34;
     self.precondition_func = func
     return self # for chaining</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.Intervention.set_propositional_precondition"><code class="name flex">
-<span>def <span class="ident">set_propositional_precondition</span></span>(<span>self, proposition: <a title="tinytroupe.experimentation.proposition.Proposition" href="../experimentation/proposition.html#tinytroupe.experimentation.proposition.Proposition">Proposition</a>, threshold: int = None)</span>
+<dt id="openpersona.steering.intervention.Intervention.set_propositional_precondition"><code class="name flex">
+<span>def <span class="ident">set_propositional_precondition</span></span>(<span>self, proposition: <a title="openpersona.experimentation.proposition.Proposition" href="../experimentation/proposition.html#openpersona.experimentation.proposition.Proposition">Proposition</a>, threshold: int = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set a propositional precondition using the Proposition class,
@@ -801,7 +801,7 @@ optionally with a score threshold.</p></div>
     return self</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.Intervention.set_textual_precondition"><code class="name flex">
+<dt id="openpersona.steering.intervention.Intervention.set_textual_precondition"><code class="name flex">
 <span>def <span class="ident">set_textual_precondition</span></span>(<span>self, text)</span>
 </code></dt>
 <dd>
@@ -828,7 +828,7 @@ optionally with a score threshold.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.steering.intervention.InterventionBatch"><code class="flex name class">
+<dt id="openpersona.steering.intervention.InterventionBatch"><code class="flex name class">
 <span>class <span class="ident">InterventionBatch</span></span>
 <span>(</span><span>interventions)</span>
 </code></dt>
@@ -876,7 +876,7 @@ optionally with a score threshold.</p></div>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.steering.intervention.InterventionBatch.as_list"><code class="name flex">
+<dt id="openpersona.steering.intervention.InterventionBatch.as_list"><code class="name flex">
 <span>def <span class="ident">as_list</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -890,7 +890,7 @@ optionally with a score threshold.</p></div>
     return self.interventions</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.InterventionBatch.set_effect"><code class="name flex">
+<dt id="openpersona.steering.intervention.InterventionBatch.set_effect"><code class="name flex">
 <span>def <span class="ident">set_effect</span></span>(<span>self, effect_func)</span>
 </code></dt>
 <dd>
@@ -905,7 +905,7 @@ optionally with a score threshold.</p></div>
     return self</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.InterventionBatch.set_functional_precondition"><code class="name flex">
+<dt id="openpersona.steering.intervention.InterventionBatch.set_functional_precondition"><code class="name flex">
 <span>def <span class="ident">set_functional_precondition</span></span>(<span>self, func)</span>
 </code></dt>
 <dd>
@@ -920,7 +920,7 @@ optionally with a score threshold.</p></div>
     return self</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.InterventionBatch.set_propositional_precondition"><code class="name flex">
+<dt id="openpersona.steering.intervention.InterventionBatch.set_propositional_precondition"><code class="name flex">
 <span>def <span class="ident">set_propositional_precondition</span></span>(<span>self, proposition, threshold=None)</span>
 </code></dt>
 <dd>
@@ -935,7 +935,7 @@ optionally with a score threshold.</p></div>
     return self</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.steering.intervention.InterventionBatch.set_textual_precondition"><code class="name flex">
+<dt id="openpersona.steering.intervention.InterventionBatch.set_textual_precondition"><code class="name flex">
 <span>def <span class="ident">set_textual_precondition</span></span>(<span>self, text)</span>
 </code></dt>
 <dd>
@@ -963,33 +963,33 @@ optionally with a score threshold.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.steering" href="index.html">tinytroupe.steering</a></code></li>
+<li><code><a title="openpersona.steering" href="index.html">openpersona.steering</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.steering.intervention.Intervention" href="#tinytroupe.steering.intervention.Intervention">Intervention</a></code></h4>
+<h4><code><a title="openpersona.steering.intervention.Intervention" href="#openpersona.steering.intervention.Intervention">Intervention</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.steering.intervention.Intervention.apply_effect" href="#tinytroupe.steering.intervention.Intervention.apply_effect">apply_effect</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.check_precondition" href="#tinytroupe.steering.intervention.Intervention.check_precondition">check_precondition</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.create_for_each" href="#tinytroupe.steering.intervention.Intervention.create_for_each">create_for_each</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.execute" href="#tinytroupe.steering.intervention.Intervention.execute">execute</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.precondition_justification" href="#tinytroupe.steering.intervention.Intervention.precondition_justification">precondition_justification</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.set_effect" href="#tinytroupe.steering.intervention.Intervention.set_effect">set_effect</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.set_functional_precondition" href="#tinytroupe.steering.intervention.Intervention.set_functional_precondition">set_functional_precondition</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.set_propositional_precondition" href="#tinytroupe.steering.intervention.Intervention.set_propositional_precondition">set_propositional_precondition</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.Intervention.set_textual_precondition" href="#tinytroupe.steering.intervention.Intervention.set_textual_precondition">set_textual_precondition</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.apply_effect" href="#openpersona.steering.intervention.Intervention.apply_effect">apply_effect</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.check_precondition" href="#openpersona.steering.intervention.Intervention.check_precondition">check_precondition</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.create_for_each" href="#openpersona.steering.intervention.Intervention.create_for_each">create_for_each</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.execute" href="#openpersona.steering.intervention.Intervention.execute">execute</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.precondition_justification" href="#openpersona.steering.intervention.Intervention.precondition_justification">precondition_justification</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.set_effect" href="#openpersona.steering.intervention.Intervention.set_effect">set_effect</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.set_functional_precondition" href="#openpersona.steering.intervention.Intervention.set_functional_precondition">set_functional_precondition</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.set_propositional_precondition" href="#openpersona.steering.intervention.Intervention.set_propositional_precondition">set_propositional_precondition</a></code></li>
+<li><code><a title="openpersona.steering.intervention.Intervention.set_textual_precondition" href="#openpersona.steering.intervention.Intervention.set_textual_precondition">set_textual_precondition</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.steering.intervention.InterventionBatch" href="#tinytroupe.steering.intervention.InterventionBatch">InterventionBatch</a></code></h4>
+<h4><code><a title="openpersona.steering.intervention.InterventionBatch" href="#openpersona.steering.intervention.InterventionBatch">InterventionBatch</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.steering.intervention.InterventionBatch.as_list" href="#tinytroupe.steering.intervention.InterventionBatch.as_list">as_list</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.InterventionBatch.set_effect" href="#tinytroupe.steering.intervention.InterventionBatch.set_effect">set_effect</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.InterventionBatch.set_functional_precondition" href="#tinytroupe.steering.intervention.InterventionBatch.set_functional_precondition">set_functional_precondition</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.InterventionBatch.set_propositional_precondition" href="#tinytroupe.steering.intervention.InterventionBatch.set_propositional_precondition">set_propositional_precondition</a></code></li>
-<li><code><a title="tinytroupe.steering.intervention.InterventionBatch.set_textual_precondition" href="#tinytroupe.steering.intervention.InterventionBatch.set_textual_precondition">set_textual_precondition</a></code></li>
+<li><code><a title="openpersona.steering.intervention.InterventionBatch.as_list" href="#openpersona.steering.intervention.InterventionBatch.as_list">as_list</a></code></li>
+<li><code><a title="openpersona.steering.intervention.InterventionBatch.set_effect" href="#openpersona.steering.intervention.InterventionBatch.set_effect">set_effect</a></code></li>
+<li><code><a title="openpersona.steering.intervention.InterventionBatch.set_functional_precondition" href="#openpersona.steering.intervention.InterventionBatch.set_functional_precondition">set_functional_precondition</a></code></li>
+<li><code><a title="openpersona.steering.intervention.InterventionBatch.set_propositional_precondition" href="#openpersona.steering.intervention.InterventionBatch.set_propositional_precondition">set_propositional_precondition</a></code></li>
+<li><code><a title="openpersona.steering.intervention.InterventionBatch.set_textual_precondition" href="#openpersona.steering.intervention.InterventionBatch.set_textual_precondition">set_textual_precondition</a></code></li>
 </ul>
 </li>
 </ul>

@@ -1,7 +1,7 @@
 """
 Common utilities and auxiliary mechanisms for the market research use case.
 """
-from tinytroupe.extraction import ResultsExtractor
+from openpersona.extraction import ResultsExtractor
 import pandas as pd
 import matplotlib.pyplot as plt
 

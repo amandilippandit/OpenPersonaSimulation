@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.factory.tiny_factory API documentation</title>
+<title>openpersona.factory.base_factory API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.factory.tiny_factory</code></h1>
+<h1 class="title">Module <code>openpersona.factory.base_factory</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -29,10 +29,10 @@
 <pre><code class="python">import copy
 import random
 
-from tinytroupe.factory import logger
-import tinytroupe.utils as utils
+from openpersona.factory import logger
+import openpersona.utils as utils
 
-class TinyFactory:
+class BaseFactory:
     &#34;&#34;&#34;
     A base class for various types of factories. This is important because it makes it easier to extend the system, particularly 
     regarding transaction caching.
@@ -47,7 +47,7 @@ class TinyFactory:
     
     def __init__(self, simulation_id:str=None) -&gt; None:
         &#34;&#34;&#34;
-        Initialize a TinyFactory instance.
+        Initialize a BaseFactory instance.
 
         Args:
             simulation_id (str, optional): The ID of the simulation. Defaults to None.
@@ -55,10 +55,10 @@ class TinyFactory:
         self.name = f&#34;Factory {utils.fresh_id(self.__class__.__name__)}&#34; # we need a name, but no point in making it customizable
         self.simulation_id = simulation_id
 
-        TinyFactory.add_factory(self)
+        BaseFactory.add_factory(self)
     
     def __repr__(self):
-        return f&#34;TinyFactory(name=&#39;{self.name}&#39;)&#34;
+        return f&#34;BaseFactory(name=&#39;{self.name}&#39;)&#34;
     
     @staticmethod
     def set_simulation_for_free_factories(simulation):
@@ -66,7 +66,7 @@ class TinyFactory:
         Sets the simulation if it is None. This allows free environments to be captured by specific simulation scopes
         if desired.
         &#34;&#34;&#34;
-        for factory in TinyFactory.all_factories.values():
+        for factory in BaseFactory.all_factories.values():
             if factory.simulation_id is None:
                 simulation.add_factory(factory)
 
@@ -76,10 +76,10 @@ class TinyFactory:
         Adds a factory to the list of all factories. Factory names must be unique,
         so if an factory with the same name already exists, an error is raised.
         &#34;&#34;&#34;
-        if factory.name in TinyFactory.all_factories:
+        if factory.name in BaseFactory.all_factories:
             raise ValueError(f&#34;Factory names must be unique, but &#39;{factory.name}&#39; is already defined.&#34;)
         else:
-            TinyFactory.all_factories[factory.name] = factory
+            BaseFactory.all_factories[factory.name] = factory
     
     @classmethod
     def clear_factories(cls):
@@ -132,14 +132,14 @@ class TinyFactory:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory"><code class="flex name class">
-<span>class <span class="ident">TinyFactory</span></span>
+<dt id="openpersona.factory.base_factory.BaseFactory"><code class="flex name class">
+<span>class <span class="ident">BaseFactory</span></span>
 <span>(</span><span>simulation_id: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A base class for various types of factories. This is important because it makes it easier to extend the system, particularly
 regarding transaction caching.</p>
-<p>Initialize a TinyFactory instance.</p>
+<p>Initialize a BaseFactory instance.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>simulation_id</code></strong> :&ensp;<code>str</code>, optional</dt>
@@ -149,7 +149,7 @@ regarding transaction caching.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TinyFactory:
+<pre><code class="python">class BaseFactory:
     &#34;&#34;&#34;
     A base class for various types of factories. This is important because it makes it easier to extend the system, particularly 
     regarding transaction caching.
@@ -164,7 +164,7 @@ regarding transaction caching.</p>
     
     def __init__(self, simulation_id:str=None) -&gt; None:
         &#34;&#34;&#34;
-        Initialize a TinyFactory instance.
+        Initialize a BaseFactory instance.
 
         Args:
             simulation_id (str, optional): The ID of the simulation. Defaults to None.
@@ -172,10 +172,10 @@ regarding transaction caching.</p>
         self.name = f&#34;Factory {utils.fresh_id(self.__class__.__name__)}&#34; # we need a name, but no point in making it customizable
         self.simulation_id = simulation_id
 
-        TinyFactory.add_factory(self)
+        BaseFactory.add_factory(self)
     
     def __repr__(self):
-        return f&#34;TinyFactory(name=&#39;{self.name}&#39;)&#34;
+        return f&#34;BaseFactory(name=&#39;{self.name}&#39;)&#34;
     
     @staticmethod
     def set_simulation_for_free_factories(simulation):
@@ -183,7 +183,7 @@ regarding transaction caching.</p>
         Sets the simulation if it is None. This allows free environments to be captured by specific simulation scopes
         if desired.
         &#34;&#34;&#34;
-        for factory in TinyFactory.all_factories.values():
+        for factory in BaseFactory.all_factories.values():
             if factory.simulation_id is None:
                 simulation.add_factory(factory)
 
@@ -193,10 +193,10 @@ regarding transaction caching.</p>
         Adds a factory to the list of all factories. Factory names must be unique,
         so if an factory with the same name already exists, an error is raised.
         &#34;&#34;&#34;
-        if factory.name in TinyFactory.all_factories:
+        if factory.name in BaseFactory.all_factories:
             raise ValueError(f&#34;Factory names must be unique, but &#39;{factory.name}&#39; is already defined.&#34;)
         else:
-            TinyFactory.all_factories[factory.name] = factory
+            BaseFactory.all_factories[factory.name] = factory
     
     @classmethod
     def clear_factories(cls):
@@ -240,22 +240,22 @@ regarding transaction caching.</p>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.factory.tiny_person_factory.TinyPersonFactory" href="tiny_person_factory.html#tinytroupe.factory.tiny_person_factory.TinyPersonFactory">TinyPersonFactory</a></li>
+<li><a title="openpersona.factory.persona_factory.PersonaFactory" href="persona_factory.html#openpersona.factory.persona_factory.PersonaFactory">PersonaFactory</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory.all_factories"><code class="name">var <span class="ident">all_factories</span></code></dt>
+<dt id="openpersona.factory.base_factory.BaseFactory.all_factories"><code class="name">var <span class="ident">all_factories</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory.randomizer"><code class="name">var <span class="ident">randomizer</span></code></dt>
+<dt id="openpersona.factory.base_factory.BaseFactory.randomizer"><code class="name">var <span class="ident">randomizer</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory.add_factory"><code class="name flex">
+<dt id="openpersona.factory.base_factory.BaseFactory.add_factory"><code class="name flex">
 <span>def <span class="ident">add_factory</span></span>(<span>factory)</span>
 </code></dt>
 <dd>
@@ -271,13 +271,13 @@ def add_factory(factory):
     Adds a factory to the list of all factories. Factory names must be unique,
     so if an factory with the same name already exists, an error is raised.
     &#34;&#34;&#34;
-    if factory.name in TinyFactory.all_factories:
+    if factory.name in BaseFactory.all_factories:
         raise ValueError(f&#34;Factory names must be unique, but &#39;{factory.name}&#39; is already defined.&#34;)
     else:
-        TinyFactory.all_factories[factory.name] = factory</code></pre>
+        BaseFactory.all_factories[factory.name] = factory</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory.clear_factories"><code class="name flex">
+<dt id="openpersona.factory.base_factory.BaseFactory.clear_factories"><code class="name flex">
 <span>def <span class="ident">clear_factories</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -295,7 +295,7 @@ def clear_factories(cls):
     cls._clear_factories()</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory.set_simulation_for_free_factories"><code class="name flex">
+<dt id="openpersona.factory.base_factory.BaseFactory.set_simulation_for_free_factories"><code class="name flex">
 <span>def <span class="ident">set_simulation_for_free_factories</span></span>(<span>simulation)</span>
 </code></dt>
 <dd>
@@ -311,7 +311,7 @@ def set_simulation_for_free_factories(simulation):
     Sets the simulation if it is None. This allows free environments to be captured by specific simulation scopes
     if desired.
     &#34;&#34;&#34;
-    for factory in TinyFactory.all_factories.values():
+    for factory in BaseFactory.all_factories.values():
         if factory.simulation_id is None:
             simulation.add_factory(factory)</code></pre>
 </details>
@@ -319,7 +319,7 @@ def set_simulation_for_free_factories(simulation):
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory.decode_complete_state"><code class="name flex">
+<dt id="openpersona.factory.base_factory.BaseFactory.decode_complete_state"><code class="name flex">
 <span>def <span class="ident">decode_complete_state</span></span>(<span>self, state: dict)</span>
 </code></dt>
 <dd>
@@ -338,7 +338,7 @@ def set_simulation_for_free_factories(simulation):
     return self</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.factory.tiny_factory.TinyFactory.encode_complete_state"><code class="name flex">
+<dt id="openpersona.factory.base_factory.BaseFactory.encode_complete_state"><code class="name flex">
 <span>def <span class="ident">encode_complete_state</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
@@ -369,21 +369,21 @@ def set_simulation_for_free_factories(simulation):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.factory" href="index.html">tinytroupe.factory</a></code></li>
+<li><code><a title="openpersona.factory" href="index.html">openpersona.factory</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.factory.tiny_factory.TinyFactory" href="#tinytroupe.factory.tiny_factory.TinyFactory">TinyFactory</a></code></h4>
+<h4><code><a title="openpersona.factory.base_factory.BaseFactory" href="#openpersona.factory.base_factory.BaseFactory">BaseFactory</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.factory.tiny_factory.TinyFactory.add_factory" href="#tinytroupe.factory.tiny_factory.TinyFactory.add_factory">add_factory</a></code></li>
-<li><code><a title="tinytroupe.factory.tiny_factory.TinyFactory.all_factories" href="#tinytroupe.factory.tiny_factory.TinyFactory.all_factories">all_factories</a></code></li>
-<li><code><a title="tinytroupe.factory.tiny_factory.TinyFactory.clear_factories" href="#tinytroupe.factory.tiny_factory.TinyFactory.clear_factories">clear_factories</a></code></li>
-<li><code><a title="tinytroupe.factory.tiny_factory.TinyFactory.decode_complete_state" href="#tinytroupe.factory.tiny_factory.TinyFactory.decode_complete_state">decode_complete_state</a></code></li>
-<li><code><a title="tinytroupe.factory.tiny_factory.TinyFactory.encode_complete_state" href="#tinytroupe.factory.tiny_factory.TinyFactory.encode_complete_state">encode_complete_state</a></code></li>
-<li><code><a title="tinytroupe.factory.tiny_factory.TinyFactory.randomizer" href="#tinytroupe.factory.tiny_factory.TinyFactory.randomizer">randomizer</a></code></li>
-<li><code><a title="tinytroupe.factory.tiny_factory.TinyFactory.set_simulation_for_free_factories" href="#tinytroupe.factory.tiny_factory.TinyFactory.set_simulation_for_free_factories">set_simulation_for_free_factories</a></code></li>
+<li><code><a title="openpersona.factory.base_factory.BaseFactory.add_factory" href="#openpersona.factory.base_factory.BaseFactory.add_factory">add_factory</a></code></li>
+<li><code><a title="openpersona.factory.base_factory.BaseFactory.all_factories" href="#openpersona.factory.base_factory.BaseFactory.all_factories">all_factories</a></code></li>
+<li><code><a title="openpersona.factory.base_factory.BaseFactory.clear_factories" href="#openpersona.factory.base_factory.BaseFactory.clear_factories">clear_factories</a></code></li>
+<li><code><a title="openpersona.factory.base_factory.BaseFactory.decode_complete_state" href="#openpersona.factory.base_factory.BaseFactory.decode_complete_state">decode_complete_state</a></code></li>
+<li><code><a title="openpersona.factory.base_factory.BaseFactory.encode_complete_state" href="#openpersona.factory.base_factory.BaseFactory.encode_complete_state">encode_complete_state</a></code></li>
+<li><code><a title="openpersona.factory.base_factory.BaseFactory.randomizer" href="#openpersona.factory.base_factory.BaseFactory.randomizer">randomizer</a></code></li>
+<li><code><a title="openpersona.factory.base_factory.BaseFactory.set_simulation_for_free_factories" href="#openpersona.factory.base_factory.BaseFactory.set_simulation_for_free_factories">set_simulation_for_free_factories</a></code></li>
 </ul>
 </li>
 </ul>

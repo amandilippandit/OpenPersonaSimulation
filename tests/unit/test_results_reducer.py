@@ -2,16 +2,16 @@ import pytest
 import logging
 import pandas as pd
 from unittest.mock import Mock, patch
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.extraction.results_reducer import ResultsReducer
-from tinytroupe.examples import create_oscar_the_architect, create_lisa_the_data_scientist
-from tinytroupe.agent import TinyPerson
+from openpersona.extraction.results_reducer import ResultsReducer
+from openpersona.examples import create_oscar_the_architect, create_lisa_the_data_scientist
+from openpersona.agent import Persona
 from testing_utils import *
 
 def test_results_reducer_initialization():

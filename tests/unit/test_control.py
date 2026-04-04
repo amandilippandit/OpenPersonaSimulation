@@ -5,21 +5,21 @@ import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
 
-from tinytroupe.examples import create_oscar_the_architect, create_lisa_the_data_scientist
-from tinytroupe.agent import TinyPerson, TinyToolUse
-from tinytroupe.environment import TinyWorld
-from tinytroupe.control import Simulation
-import tinytroupe.control as control
-from tinytroupe.factory import TinyPersonFactory
-from tinytroupe.enrichment import TinyEnricher
-from tinytroupe.extraction import ArtifactExporter
-from tinytroupe.tools import TinyWordProcessor
+from openpersona.examples import create_oscar_the_architect, create_lisa_the_data_scientist
+from openpersona.agent import Persona, ToolUseFaculty
+from openpersona.environment import World
+from openpersona.control import Simulation
+import openpersona.control as control
+from openpersona.factory import PersonaFactory
+from openpersona.enrichment import Enricher
+from openpersona.extraction import ArtifactExporter
+from openpersona.tools import DocWriter
 
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import importlib
 
@@ -42,8 +42,8 @@ def test_begin_checkpoint_end_with_agent_only(setup):
 
 
     exporter = ArtifactExporter(base_output_folder="./synthetic_data_exports_3/")
-    enricher = TinyEnricher()
-    tooluse_faculty = TinyToolUse(tools=[TinyWordProcessor(exporter=exporter, enricher=enricher)])
+    enricher = Enricher()
+    tooluse_faculty = ToolUseFaculty(tools=[DocWriter(exporter=exporter, enricher=enricher)])
 
     agent_1 = create_oscar_the_architect()
     agent_1.add_mental_faculties([tooluse_faculty])
@@ -82,7 +82,7 @@ def test_begin_checkpoint_end_with_world(setup):
     control.begin("control_test_world.cache.json")
     assert control._current_simulations["default"].status == Simulation.STATUS_STARTED, "The simulation should be started at this point."
 
-    world = TinyWorld("Test World", [create_oscar_the_architect(), create_lisa_the_data_scientist()])
+    world = World("Test World", [create_oscar_the_architect(), create_lisa_the_data_scientist()])
 
     world.make_everyone_accessible()
 
@@ -116,7 +116,7 @@ def test_begin_checkpoint_end_with_factory(setup):
         control.begin("control_test_personfactory.cache.json")
         assert control._current_simulations["default"].status == Simulation.STATUS_STARTED, "The simulation should be started at this point."    
         
-        factory = TinyPersonFactory("We are interested in experts in the production of the traditional Gazpacho soup.")
+        factory = PersonaFactory("We are interested in experts in the production of the traditional Gazpacho soup.")
 
         assert control._current_simulations["default"].cached_trace is not None, "There should be a cached trace at this point."
         assert control._current_simulations["default"].execution_trace is not None, "There should be an execution trace at this point."
@@ -192,7 +192,7 @@ def test_begin_checkpoint_end_with_factory_multiple_people(setup):
         control.begin("control_test_personfactory_multiple.cache.json")
         assert control._current_simulations["default"].status == Simulation.STATUS_STARTED, "The simulation should be started at this point."    
         
-        factory = TinyPersonFactory("We are interested in experts in the production of the traditional Gazpacho soup.")
+        factory = PersonaFactory("We are interested in experts in the production of the traditional Gazpacho soup.")
 
         assert control._current_simulations["default"].cached_trace is not None, "There should be a cached trace at this point."
         assert control._current_simulations["default"].execution_trace is not None, "There should be an execution trace at this point."
@@ -283,7 +283,7 @@ def test_begin_checkpoint_end_with_factory_demography(setup):
         """
         
         # Use the demographic data from USA population file
-        factory = TinyPersonFactory.create_factory_from_demography(
+        factory = PersonaFactory.create_factory_from_demography(
             "./examples/information/populations/usa.json", 
             population_size=3,
             additional_demographic_specification=additional_demographic_specification,

@@ -1,27 +1,27 @@
 import pytest
 import logging
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
-import tinytroupe
-from tinytroupe.agent import TinyPerson, TinyToolUse
-from tinytroupe.environment import TinyWorld, TinySocialNetwork
-from tinytroupe.factory import TinyPersonFactory
-from tinytroupe.extraction import ResultsExtractor
+import openpersona
+from openpersona.agent import Persona, ToolUseFaculty
+from openpersona.environment import World, SocialNetwork
+from openpersona.factory import PersonaFactory
+from openpersona.extraction import ResultsExtractor
 
-from tinytroupe.enrichment import TinyEnricher
-from tinytroupe.extraction import ArtifactExporter
-from tinytroupe.tools import TinyWordProcessor
+from openpersona.enrichment import Enricher
+from openpersona.extraction import ArtifactExporter
+from openpersona.tools import DocWriter
 
-from tinytroupe.examples import create_lisa_the_data_scientist, create_oscar_the_architect, create_marcos_the_physician
-import tinytroupe.control as control
-from tinytroupe.control import Simulation
+from openpersona.examples import create_lisa_the_data_scientist, create_oscar_the_architect, create_marcos_the_physician
+import openpersona.control as control
+from openpersona.control import Simulation
 
 from testing_utils import *
 
@@ -63,8 +63,8 @@ class TestBasicScenarios:
         data_export_folder = f"{EXPORT_BASE_FOLDER}/test_tool_usage_1"
 
         exporter = ArtifactExporter(base_output_folder=data_export_folder)
-        enricher = TinyEnricher()
-        tooluse_faculty = TinyToolUse(tools=[TinyWordProcessor(exporter=exporter, enricher=enricher)])
+        enricher = Enricher()
+        tooluse_faculty = ToolUseFaculty(tools=[DocWriter(exporter=exporter, enricher=enricher)])
 
         lisa = create_lisa_the_data_scientist()
 

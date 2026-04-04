@@ -3,14 +3,14 @@ import logging
 import tempfile
 import os
 import json
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.experimentation.in_place_experiment_runner import InPlaceExperimentRunner
+from openpersona.experimentation.in_place_experiment_runner import InPlaceExperimentRunner
 from testing_utils import *
 
 @pytest.fixture

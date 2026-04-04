@@ -4,15 +4,15 @@ import sys
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, '..')
 sys.path.insert(0, '../../')
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 
 from testing_utils import *
 
-from tinytroupe.steering import Intervention
-from tinytroupe.experimentation import ABRandomizer
-from tinytroupe.experimentation import Proposition, check_proposition
-from tinytroupe.examples import create_oscar_the_architect, create_oscar_the_architect_2, create_lisa_the_data_scientist, create_lisa_the_data_scientist_2
-from tinytroupe.environment import TinyWorld
+from openpersona.steering import Intervention
+from openpersona.experimentation import ABRandomizer
+from openpersona.experimentation import Proposition, check_proposition
+from openpersona.examples import create_oscar_the_architect, create_oscar_the_architect_2, create_lisa_the_data_scientist, create_lisa_the_data_scientist_2
+from openpersona.environment import World
 
 
 def test_intervention_1(setup):
@@ -30,7 +30,7 @@ def test_intervention_1(setup):
         .set_textual_precondition("Oscar is talking about travel.")\
         .set_effect(lambda target: target.think("Ok, enough of travel. Now I'll IMMEDIATLY talk about my favorite movies, RIGHT NOW, I'm suddenly in a hurry."))\
     
-    world = TinyWorld("Test World", [oscar], interventions=[intervention])
+    world = World("Test World", [oscar], interventions=[intervention])
 
     world.run(2)
 
@@ -91,7 +91,7 @@ def test_intervention_batch_iteration(setup):
     assert as_list_result == interventions_list
 
 def test_intervention_batch_in_world(setup):
-    """Test that a batch can be used directly with TinyWorld"""
+    """Test that a batch can be used directly with World"""
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     
@@ -107,7 +107,7 @@ def test_intervention_batch_in_world(setup):
         .set_effect(lambda target: target.think("I will switch to TALK about my hobbies IMMEDIATELY before issuing DONE. I'll start NOW, without any delay, not waiting another turn, talking about them like this: 'Let me tell you about my hobbies (...)'."))
     
     # Create world with the batch directly (should work with iteration)
-    world = TinyWorld("Test World", [oscar, lisa], interventions=batch)
+    world = World("Test World", [oscar, lisa], interventions=batch)
     
     world.run(2)
     

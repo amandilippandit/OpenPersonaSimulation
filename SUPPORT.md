@@ -9,6 +9,6 @@ feature request as a new Issue.
 For help and questions about using this project, please consult our Wiki or post on our
 Discussion forum, both right here on GitHub.
 
-## Microsoft Support Policy  
+## OpenPersona Support Policy  
 
-Support for TinyTroupe is limited to the resources listed above.
+Support for OpenPersona is limited to the resources listed above.

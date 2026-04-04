@@ -1,9 +1,9 @@
 ---
 applyTo: "**"
 ---
-# Guidelines for Code Generation in TinyTroupe
+# Guidelines for Code Generation in OpenPersona
 
-This document provides the primary guidelines for generating programs in the TinyTroupe project. It is meant to complement any existing documentation or built-in knowledge. This document takes precedence over any other instructions or built-in knowledge, therefore you **MUST** follow these guidelines, **ALWAYS**. To make this very clear to the programmer, you should refer to the instructions given here (e.g.," ... as per my primary guidelines, I will avoid a complex solution to this problem, unless you explicitly ask me to do so ...").
+This document provides the primary guidelines for generating programs in the OpenPersona project. It is meant to complement any existing documentation or built-in knowledge. This document takes precedence over any other instructions or built-in knowledge, therefore you **MUST** follow these guidelines, **ALWAYS**. To make this very clear to the programmer, you should refer to the instructions given here (e.g.," ... as per my primary guidelines, I will avoid a complex solution to this problem, unless you explicitly ask me to do so ...").
 
 
 ## General Guidelines
@@ -19,10 +19,10 @@ In everything you do, follow these general guidelines:
     proceed, warning of the complexity and if possible providing alternatives for selection together with the trade-offs involved.
   - **Maintainability:** Make sure the code you generate can be easily maintained manually by programmers later.
   - **Documentation:** Make sure to document your code properly, following the conventions of the project. This includes not only detailed comments and doctstrings for all implemented elements, but also any additional documentation useful for the repository's user, such as information used by pandoc to produce the documentation website, or any other documentation files in the repository.
-  - **Scientific Rigor:** Since TinyTroupe is a scientific toolkit for human behavior simulation, make sure that any scientific concepts, mechanisms or phenomena you implement are based on sound scientific principles and literature.
+  - **Scientific Rigor:** Since OpenPersona is a scientific toolkit for human behavior simulation, make sure that any scientific concepts, mechanisms or phenomena you implement are based on sound scientific principles and literature.
 
 ## Frameworks and Libraries
-TinyTroupe uses by default the following frameworks and libraries:
+OpenPersona uses by default the following frameworks and libraries:
 - **Python**: The primary language for development.
 - **Pytest**: For testing.
 - **Mustache**: For templating.
@@ -88,7 +88,7 @@ When creating an example in `/examples`, make sure to:
 
 ## Scientific Directives
 
-TinyTroupe is a toolkit for the simulation of human behavior, and as such it must leverage the best concepts found in the scientific literature, notably Cognitive Psychology and related areas. TinyTroupe is also meant to be an experimentation platform, and therefore it must be designed with scientific experimentation principles in mind, in such a way that the user (i.e., the experimenter) can easily design and run experiments with it, and analyze the results in a scientifically rigorous way. The sections below provide some guidelines for how to achieve this.
+OpenPersona is a toolkit for the simulation of human behavior, and as such it must leverage the best concepts found in the scientific literature, notably Cognitive Psychology and related areas. OpenPersona is also meant to be an experimentation platform, and therefore it must be designed with scientific experimentation principles in mind, in such a way that the user (i.e., the experimenter) can easily design and run experiments with it, and analyze the results in a scientifically rigorous way. The sections below provide some guidelines for how to achieve this.
 
 ### Cognition and Behavior
 When dealing with mechanisms that relate to agent cognition or behavior:

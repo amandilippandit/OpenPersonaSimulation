@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.extraction.results_reducer API documentation</title>
+<title>openpersona.extraction.results_reducer API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.extraction.results_reducer</code></h1>
+<h1 class="title">Module <code>openpersona.extraction.results_reducer</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -28,8 +28,8 @@
 </summary>
 <pre><code class="python">import pandas as pd
 
-from tinytroupe.extraction import logger
-from tinytroupe.agent import TinyPerson
+from openpersona.extraction import logger
+from openpersona.agent import Persona
 
 
 class ResultsReducer:
@@ -45,7 +45,7 @@ class ResultsReducer:
         
         self.rules[trigger] = func
     
-    def reduce_agent(self, agent: TinyPerson) -&gt; list:
+    def reduce_agent(self, agent: Persona) -&gt; list:
         reduction = []
         for message in agent.episodic_memory.retrieve_all():
             if message[&#39;role&#39;] == &#39;system&#39;:
@@ -59,7 +59,7 @@ class ResultsReducer:
                 stimulus_timestamp = message[&#39;simulation_timestamp&#39;]
 
                 if stimulus_type in self.rules:
-                    extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=TinyPerson.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
+                    extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=Persona.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
                     if extracted is not None:
                         reduction.append(extracted)
 
@@ -72,13 +72,13 @@ class ResultsReducer:
                     action_timestamp = message[&#39;simulation_timestamp&#39;]
                     
                     if action_type in self.rules:
-                        extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=TinyPerson.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
+                        extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=Persona.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
                         if extracted is not None:
                             reduction.append(extracted)
             
         return reduction
 
-    def reduce_agent_to_dataframe(self, agent: TinyPerson, column_names: list=None) -&gt; pd.DataFrame:
+    def reduce_agent_to_dataframe(self, agent: Persona, column_names: list=None) -&gt; pd.DataFrame:
         reduction = self.reduce_agent(agent)
         return pd.DataFrame(reduction, columns=column_names)</code></pre>
 </details>
@@ -92,7 +92,7 @@ class ResultsReducer:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.extraction.results_reducer.ResultsReducer"><code class="flex name class">
+<dt id="openpersona.extraction.results_reducer.ResultsReducer"><code class="flex name class">
 <span>class <span class="ident">ResultsReducer</span></span>
 </code></dt>
 <dd>
@@ -114,7 +114,7 @@ class ResultsReducer:
         
         self.rules[trigger] = func
     
-    def reduce_agent(self, agent: TinyPerson) -&gt; list:
+    def reduce_agent(self, agent: Persona) -&gt; list:
         reduction = []
         for message in agent.episodic_memory.retrieve_all():
             if message[&#39;role&#39;] == &#39;system&#39;:
@@ -128,7 +128,7 @@ class ResultsReducer:
                 stimulus_timestamp = message[&#39;simulation_timestamp&#39;]
 
                 if stimulus_type in self.rules:
-                    extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=TinyPerson.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
+                    extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=Persona.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
                     if extracted is not None:
                         reduction.append(extracted)
 
@@ -141,19 +141,19 @@ class ResultsReducer:
                     action_timestamp = message[&#39;simulation_timestamp&#39;]
                     
                     if action_type in self.rules:
-                        extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=TinyPerson.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
+                        extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=Persona.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
                         if extracted is not None:
                             reduction.append(extracted)
             
         return reduction
 
-    def reduce_agent_to_dataframe(self, agent: TinyPerson, column_names: list=None) -&gt; pd.DataFrame:
+    def reduce_agent_to_dataframe(self, agent: Persona, column_names: list=None) -&gt; pd.DataFrame:
         reduction = self.reduce_agent(agent)
         return pd.DataFrame(reduction, columns=column_names)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.extraction.results_reducer.ResultsReducer.add_reduction_rule"><code class="name flex">
+<dt id="openpersona.extraction.results_reducer.ResultsReducer.add_reduction_rule"><code class="name flex">
 <span>def <span class="ident">add_reduction_rule</span></span>(<span>self, trigger: str, func: <built-in function callable>)</span>
 </code></dt>
 <dd>
@@ -169,8 +169,8 @@ class ResultsReducer:
     self.rules[trigger] = func</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.results_reducer.ResultsReducer.reduce_agent"><code class="name flex">
-<span>def <span class="ident">reduce_agent</span></span>(<span>self, agent: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>) ‑> list</span>
+<dt id="openpersona.extraction.results_reducer.ResultsReducer.reduce_agent"><code class="name flex">
+<span>def <span class="ident">reduce_agent</span></span>(<span>self, agent: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -178,7 +178,7 @@ class ResultsReducer:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reduce_agent(self, agent: TinyPerson) -&gt; list:
+<pre><code class="python">def reduce_agent(self, agent: Persona) -&gt; list:
     reduction = []
     for message in agent.episodic_memory.retrieve_all():
         if message[&#39;role&#39;] == &#39;system&#39;:
@@ -192,7 +192,7 @@ class ResultsReducer:
             stimulus_timestamp = message[&#39;simulation_timestamp&#39;]
 
             if stimulus_type in self.rules:
-                extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=TinyPerson.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
+                extracted = self.rules[stimulus_type](focus_agent=agent, source_agent=Persona.get_agent_by_name(stimulus_source), target_agent=agent, kind=&#39;stimulus&#39;, event=stimulus_type, content=stimulus_content, timestamp=stimulus_timestamp)
                 if extracted is not None:
                     reduction.append(extracted)
 
@@ -205,15 +205,15 @@ class ResultsReducer:
                 action_timestamp = message[&#39;simulation_timestamp&#39;]
                 
                 if action_type in self.rules:
-                    extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=TinyPerson.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
+                    extracted = self.rules[action_type](focus_agent=agent, source_agent=agent, target_agent=Persona.get_agent_by_name(action_target), kind=&#39;action&#39;, event=action_type, content=action_content, timestamp=action_timestamp)
                     if extracted is not None:
                         reduction.append(extracted)
         
     return reduction</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.extraction.results_reducer.ResultsReducer.reduce_agent_to_dataframe"><code class="name flex">
-<span>def <span class="ident">reduce_agent_to_dataframe</span></span>(<span>self, agent: <a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a>, column_names: list = None) ‑> pandas.core.frame.DataFrame</span>
+<dt id="openpersona.extraction.results_reducer.ResultsReducer.reduce_agent_to_dataframe"><code class="name flex">
+<span>def <span class="ident">reduce_agent_to_dataframe</span></span>(<span>self, agent: <a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a>, column_names: list = None) ‑> pandas.core.frame.DataFrame</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -221,7 +221,7 @@ class ResultsReducer:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reduce_agent_to_dataframe(self, agent: TinyPerson, column_names: list=None) -&gt; pd.DataFrame:
+<pre><code class="python">def reduce_agent_to_dataframe(self, agent: Persona, column_names: list=None) -&gt; pd.DataFrame:
     reduction = self.reduce_agent(agent)
     return pd.DataFrame(reduction, columns=column_names)</code></pre>
 </details>
@@ -239,17 +239,17 @@ class ResultsReducer:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.extraction" href="index.html">tinytroupe.extraction</a></code></li>
+<li><code><a title="openpersona.extraction" href="index.html">openpersona.extraction</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.extraction.results_reducer.ResultsReducer" href="#tinytroupe.extraction.results_reducer.ResultsReducer">ResultsReducer</a></code></h4>
+<h4><code><a title="openpersona.extraction.results_reducer.ResultsReducer" href="#openpersona.extraction.results_reducer.ResultsReducer">ResultsReducer</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.extraction.results_reducer.ResultsReducer.add_reduction_rule" href="#tinytroupe.extraction.results_reducer.ResultsReducer.add_reduction_rule">add_reduction_rule</a></code></li>
-<li><code><a title="tinytroupe.extraction.results_reducer.ResultsReducer.reduce_agent" href="#tinytroupe.extraction.results_reducer.ResultsReducer.reduce_agent">reduce_agent</a></code></li>
-<li><code><a title="tinytroupe.extraction.results_reducer.ResultsReducer.reduce_agent_to_dataframe" href="#tinytroupe.extraction.results_reducer.ResultsReducer.reduce_agent_to_dataframe">reduce_agent_to_dataframe</a></code></li>
+<li><code><a title="openpersona.extraction.results_reducer.ResultsReducer.add_reduction_rule" href="#openpersona.extraction.results_reducer.ResultsReducer.add_reduction_rule">add_reduction_rule</a></code></li>
+<li><code><a title="openpersona.extraction.results_reducer.ResultsReducer.reduce_agent" href="#openpersona.extraction.results_reducer.ResultsReducer.reduce_agent">reduce_agent</a></code></li>
+<li><code><a title="openpersona.extraction.results_reducer.ResultsReducer.reduce_agent_to_dataframe" href="#openpersona.extraction.results_reducer.ResultsReducer.reduce_agent_to_dataframe">reduce_agent_to_dataframe</a></code></li>
 </ul>
 </li>
 </ul>

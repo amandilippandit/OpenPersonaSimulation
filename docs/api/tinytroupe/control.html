@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.control API documentation</title>
+<title>openpersona.control API documentation</title>
 <meta name="description" content="Simulation controlling mechanisms." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.control</code></h1>
+<h1 class="title">Module <code>openpersona.control</code></h1>
 </header>
 <section id="section-intro">
 <p>Simulation controlling mechanisms.</p>
@@ -36,14 +36,14 @@ import tempfile
 import threading
 import traceback
 
-import tinytroupe
-import tinytroupe.utils as utils
+import openpersona
+import openpersona.utils as utils
 
 import uuid
 
 
 import logging
-logger = logging.getLogger(&#34;tinytroupe&#34;)
+logger = logging.getLogger(&#34;openpersona&#34;)
 
 # to protect from race conditions when running in parallel
 concurrent_execution_lock = threading.Lock()
@@ -61,13 +61,13 @@ class Simulation:
 
         self.environments = []
 
-        self.factories = [] # e.g., TinyPersonFactory instances
+        self.factories = [] # e.g., PersonaFactory instances
         self.name_to_factory = {} # {factory_name: factory, ...}
 
         self.name_to_environment = {} # {environment_name: environment, ...}
         self.status = Simulation.STATUS_STOPPED
 
-        self.cache_path = f&#34;./tinytroupe-{id}.cache.json&#34; # default cache path
+        self.cache_path = f&#34;./openpersona-{id}.cache.json&#34; # default cache path
         
         # should we always automatically checkpoint at the every transaction?
         self.auto_checkpoint = False
@@ -117,10 +117,10 @@ class Simulation:
         logger.debug(f&#34;Starting simulation, cache_path={cache_path}, auto_checkpoint={auto_checkpoint}.&#34;)
 
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
-        from tinytroupe.factory.tiny_person_factory import TinyPersonFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
+        from openpersona.factory.persona_factory import PersonaFactory
 
         if self.status == Simulation.STATUS_STOPPED:
             self.status = Simulation.STATUS_STARTED
@@ -134,10 +134,10 @@ class Simulation:
         self.auto_checkpoint = auto_checkpoint
 
         # clear the agents, environments and other simulated entities, we&#39;ll track them from now on
-        TinyPerson.clear_agents()
-        TinyWorld.clear_environments()
-        TinyFactory.clear_factories()
-        TinyPersonFactory.clear_factories()
+        Persona.clear_agents()
+        World.clear_environments()
+        BaseFactory.clear_factories()
+        PersonaFactory.clear_factories()
 
         # All automated fresh ids will start from 0 again for this simulation
         utils.reset_fresh_id()
@@ -487,8 +487,8 @@ class Simulation:
             state (dict): The state to decode.
         &#34;&#34;&#34;
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
+        from openpersona.agent import Persona
+        from openpersona.environment import World
 
         logger.debug(f&#34;Decoding simulation state: {state[&#39;factories&#39;]}&#34;)
         logger.debug(f&#34;Registered factories: {self.name_to_factory}&#34;)
@@ -506,7 +506,7 @@ class Simulation:
             try:
                 environment = self.name_to_environment[environment_state[&#34;name&#34;]]
                 environment.decode_complete_state(environment_state)
-                if TinyWorld.communication_display:
+                if World.communication_display:
                     environment.pop_and_display_latest_communications()
 
             except Exception as e:
@@ -521,7 +521,7 @@ class Simulation:
                 
                 # The agent has not yet been decoded because it is not in any environment. So, decode it.
                 if agent.environment is None:
-                    if TinyPerson.communication_display:
+                    if Persona.communication_display:
                         agent.pop_and_display_latest_communications()
             except Exception as e:
                 raise ValueError(f&#34;Agent {agent_state[&#39;name&#39;]} is not in the simulation, thus cannot be decoded there.&#34;) from e        
@@ -531,9 +531,9 @@ class Transaction:
 
     def __init__(self, obj_under_transaction, simulation, function, *args, **kwargs):
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
 
         self.obj_under_transaction = obj_under_transaction
         self.simulation = simulation
@@ -553,22 +553,22 @@ class Transaction:
                 
                 logger.debug(f&#34;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Object {obj_under_transaction} is already captured by simulation {simulation.id}.&#34;)
             else:
-                # if is a TinyPerson, add the agent to the simulation
-                if isinstance(obj_under_transaction, TinyPerson):
+                # if is a Persona, add the agent to the simulation
+                if isinstance(obj_under_transaction, Persona):
                     simulation.add_agent(obj_under_transaction)
                     logger.debug(f&#34;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Added agent {obj_under_transaction} to simulation {simulation.id}.&#34;)
 
-                # if is a TinyWorld, add the environment to the simulation
-                elif isinstance(obj_under_transaction, TinyWorld):
+                # if is a World, add the environment to the simulation
+                elif isinstance(obj_under_transaction, World):
                     simulation.add_environment(obj_under_transaction)
                 
-                # if is a TinyFactory, add the factory to the simulation
-                elif isinstance(obj_under_transaction, TinyFactory):
+                # if is a BaseFactory, add the factory to the simulation
+                elif isinstance(obj_under_transaction, BaseFactory):
                     simulation.add_factory(obj_under_transaction)
                     logger.debug(f&#34;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Added factory {obj_under_transaction} to simulation {simulation.id}.&#34;)
 
                 else:
-                    raise ValueError(f&#34;Object {obj_under_transaction} (type = {type(obj_under_transaction)}) is not a TinyPerson or TinyWorld instance, and cannot be captured by the simulation.&#34;)
+                    raise ValueError(f&#34;Object {obj_under_transaction} (type = {type(obj_under_transaction)}) is not a Persona or World instance, and cannot be captured by the simulation.&#34;)
                 
         
     def execute(self, begin_parallel=False, parallel_id=None):
@@ -603,7 +603,7 @@ class Transaction:
                     state = self.simulation.cached_trace[self.simulation._execution_trace_position()][3] # state
                     self.simulation._decode_simulation_state(state)
                     
-                    # Output encoding/decoding is used to preserve references to TinyPerson and TinyWorld instances
+                    # Output encoding/decoding is used to preserve references to Persona and World instances
                     # mainly. Scalar values (int, float, str, bool) and composite values (list, dict) are 
                     # encoded/decoded as is.
                     encoded_output = self.simulation.cached_trace[self.simulation._execution_trace_position()][2] # output
@@ -694,28 +694,28 @@ class Transaction:
         Encodes the given function output.
         &#34;&#34;&#34;
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
 
         # if the output is a supported object, encode it
         if output is None:
             return None
-        elif isinstance(output, TinyPerson):
-            return {&#34;type&#34;: &#34;TinyPersonRef&#34;, &#34;name&#34;: output.name}
-        elif isinstance(output, TinyWorld):
-            return {&#34;type&#34;: &#34;TinyWorldRef&#34;, &#34;name&#34;: output.name}
-        elif isinstance(output, TinyFactory):
-            return {&#34;type&#34;: &#34;TinyFactoryRef&#34;, &#34;name&#34;: output.name}
+        elif isinstance(output, Persona):
+            return {&#34;type&#34;: &#34;PersonaRef&#34;, &#34;name&#34;: output.name}
+        elif isinstance(output, World):
+            return {&#34;type&#34;: &#34;WorldRef&#34;, &#34;name&#34;: output.name}
+        elif isinstance(output, BaseFactory):
+            return {&#34;type&#34;: &#34;BaseFactoryRef&#34;, &#34;name&#34;: output.name}
         elif isinstance(output, list):
             encoded_list = []
             for item in output:
-                if isinstance(item, TinyPerson):
-                    encoded_list.append({&#34;type&#34;: &#34;TinyPersonRef&#34;, &#34;name&#34;: item.name})
-                elif isinstance(item, TinyWorld):
-                    encoded_list.append({&#34;type&#34;: &#34;TinyWorldRef&#34;, &#34;name&#34;: item.name})
-                elif isinstance(item, TinyFactory):
-                    encoded_list.append({&#34;type&#34;: &#34;TinyFactoryRef&#34;, &#34;name&#34;: item.name})
+                if isinstance(item, Persona):
+                    encoded_list.append({&#34;type&#34;: &#34;PersonaRef&#34;, &#34;name&#34;: item.name})
+                elif isinstance(item, World):
+                    encoded_list.append({&#34;type&#34;: &#34;WorldRef&#34;, &#34;name&#34;: item.name})
+                elif isinstance(item, BaseFactory):
+                    encoded_list.append({&#34;type&#34;: &#34;BaseFactoryRef&#34;, &#34;name&#34;: item.name})
                 else:
                     encoded_list.append({&#34;type&#34;: &#34;JSON&#34;, &#34;value&#34;: item})
             return {&#34;type&#34;: &#34;List&#34;, &#34;value&#34;: encoded_list}
@@ -729,27 +729,27 @@ class Transaction:
         Decodes the given encoded function output.
         &#34;&#34;&#34;
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
 
         if encoded_output is None:
             return None
-        elif encoded_output[&#34;type&#34;] == &#34;TinyPersonRef&#34;:
-            return TinyPerson.get_agent_by_name(encoded_output[&#34;name&#34;])
-        elif encoded_output[&#34;type&#34;] == &#34;TinyWorldRef&#34;:
-            return TinyWorld.get_environment_by_name(encoded_output[&#34;name&#34;])
-        elif encoded_output[&#34;type&#34;] == &#34;TinyFactoryRef&#34;:
-            return TinyFactory.get_factory_by_name(encoded_output[&#34;name&#34;])
+        elif encoded_output[&#34;type&#34;] == &#34;PersonaRef&#34;:
+            return Persona.get_agent_by_name(encoded_output[&#34;name&#34;])
+        elif encoded_output[&#34;type&#34;] == &#34;WorldRef&#34;:
+            return World.get_environment_by_name(encoded_output[&#34;name&#34;])
+        elif encoded_output[&#34;type&#34;] == &#34;BaseFactoryRef&#34;:
+            return BaseFactory.get_factory_by_name(encoded_output[&#34;name&#34;])
         elif encoded_output[&#34;type&#34;] == &#34;List&#34;:
             decoded_list = []
             for item in encoded_output[&#34;value&#34;]:
-                if item[&#34;type&#34;] == &#34;TinyPersonRef&#34;:
-                    decoded_list.append(TinyPerson.get_agent_by_name(item[&#34;name&#34;]))
-                elif item[&#34;type&#34;] == &#34;TinyWorldRef&#34;:
-                    decoded_list.append(TinyWorld.get_environment_by_name(item[&#34;name&#34;]))
-                elif item[&#34;type&#34;] == &#34;TinyFactoryRef&#34;:
-                    decoded_list.append(TinyFactory.get_factory_by_name(item[&#34;name&#34;]))
+                if item[&#34;type&#34;] == &#34;PersonaRef&#34;:
+                    decoded_list.append(Persona.get_agent_by_name(item[&#34;name&#34;]))
+                elif item[&#34;type&#34;] == &#34;WorldRef&#34;:
+                    decoded_list.append(World.get_environment_by_name(item[&#34;name&#34;]))
+                elif item[&#34;type&#34;] == &#34;BaseFactoryRef&#34;:
+                    decoded_list.append(BaseFactory.get_factory_by_name(item[&#34;name&#34;]))
                 else:
                     decoded_list.append(item[&#34;value&#34;])
             return decoded_list
@@ -877,7 +877,7 @@ reset() # initialize the control state</code></pre>
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="tinytroupe.control.begin"><code class="name flex">
+<dt id="openpersona.control.begin"><code class="name flex">
 <span>def <span class="ident">begin</span></span>(<span>cache_path=None, id='default', auto_checkpoint=False)</span>
 </code></dt>
 <dd>
@@ -898,7 +898,7 @@ reset() # initialize the control state</code></pre>
         raise ValueError(f&#34;Simulation is already started under id {_current_simulation_id}. Currently only one simulation can be started at a time.&#34;)   </code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.cache_hits"><code class="name flex">
+<dt id="openpersona.control.cache_hits"><code class="name flex">
 <span>def <span class="ident">cache_hits</span></span>(<span>id='default')</span>
 </code></dt>
 <dd>
@@ -914,7 +914,7 @@ reset() # initialize the control state</code></pre>
     return _simulation(id).cache_hits</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.cache_misses"><code class="name flex">
+<dt id="openpersona.control.cache_misses"><code class="name flex">
 <span>def <span class="ident">cache_misses</span></span>(<span>id='default')</span>
 </code></dt>
 <dd>
@@ -930,7 +930,7 @@ reset() # initialize the control state</code></pre>
     return _simulation(id).cache_misses</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.checkpoint"><code class="name flex">
+<dt id="openpersona.control.checkpoint"><code class="name flex">
 <span>def <span class="ident">checkpoint</span></span>(<span>id='default')</span>
 </code></dt>
 <dd>
@@ -946,7 +946,7 @@ reset() # initialize the control state</code></pre>
     _simulation(id).checkpoint()</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.current_simulation"><code class="name flex">
+<dt id="openpersona.control.current_simulation"><code class="name flex">
 <span>def <span class="ident">current_simulation</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -966,7 +966,7 @@ reset() # initialize the control state</code></pre>
         return None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.end"><code class="name flex">
+<dt id="openpersona.control.end"><code class="name flex">
 <span>def <span class="ident">end</span></span>(<span>id='default')</span>
 </code></dt>
 <dd>
@@ -984,7 +984,7 @@ reset() # initialize the control state</code></pre>
     _current_simulation_id = None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.reset"><code class="name flex">
+<dt id="openpersona.control.reset"><code class="name flex">
 <span>def <span class="ident">reset</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -1006,7 +1006,7 @@ reset() # initialize the control state</code></pre>
     _current_simulation_id = None</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.transactional"><code class="name flex">
+<dt id="openpersona.control.transactional"><code class="name flex">
 <span>def <span class="ident">transactional</span></span>(<span>parallel=False)</span>
 </code></dt>
 <dd>
@@ -1044,7 +1044,7 @@ reset() # initialize the control state</code></pre>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.control.CacheOutOfSync"><code class="flex name class">
+<dt id="openpersona.control.CacheOutOfSync"><code class="flex name class">
 <span>class <span class="ident">CacheOutOfSync</span></span>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
@@ -1066,7 +1066,7 @@ reset() # initialize the control state</code></pre>
 <li>builtins.BaseException</li>
 </ul>
 </dd>
-<dt id="tinytroupe.control.ExecutionCached"><code class="flex name class">
+<dt id="openpersona.control.ExecutionCached"><code class="flex name class">
 <span>class <span class="ident">ExecutionCached</span></span>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
@@ -1088,7 +1088,7 @@ reset() # initialize the control state</code></pre>
 <li>builtins.BaseException</li>
 </ul>
 </dd>
-<dt id="tinytroupe.control.Simulation"><code class="flex name class">
+<dt id="openpersona.control.Simulation"><code class="flex name class">
 <span>class <span class="ident">Simulation</span></span>
 <span>(</span><span>id='default', cached_trace: list = None)</span>
 </code></dt>
@@ -1111,13 +1111,13 @@ reset() # initialize the control state</code></pre>
 
         self.environments = []
 
-        self.factories = [] # e.g., TinyPersonFactory instances
+        self.factories = [] # e.g., PersonaFactory instances
         self.name_to_factory = {} # {factory_name: factory, ...}
 
         self.name_to_environment = {} # {environment_name: environment, ...}
         self.status = Simulation.STATUS_STOPPED
 
-        self.cache_path = f&#34;./tinytroupe-{id}.cache.json&#34; # default cache path
+        self.cache_path = f&#34;./openpersona-{id}.cache.json&#34; # default cache path
         
         # should we always automatically checkpoint at the every transaction?
         self.auto_checkpoint = False
@@ -1167,10 +1167,10 @@ reset() # initialize the control state</code></pre>
         logger.debug(f&#34;Starting simulation, cache_path={cache_path}, auto_checkpoint={auto_checkpoint}.&#34;)
 
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
-        from tinytroupe.factory.tiny_person_factory import TinyPersonFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
+        from openpersona.factory.persona_factory import PersonaFactory
 
         if self.status == Simulation.STATUS_STOPPED:
             self.status = Simulation.STATUS_STARTED
@@ -1184,10 +1184,10 @@ reset() # initialize the control state</code></pre>
         self.auto_checkpoint = auto_checkpoint
 
         # clear the agents, environments and other simulated entities, we&#39;ll track them from now on
-        TinyPerson.clear_agents()
-        TinyWorld.clear_environments()
-        TinyFactory.clear_factories()
-        TinyPersonFactory.clear_factories()
+        Persona.clear_agents()
+        World.clear_environments()
+        BaseFactory.clear_factories()
+        PersonaFactory.clear_factories()
 
         # All automated fresh ids will start from 0 again for this simulation
         utils.reset_fresh_id()
@@ -1537,8 +1537,8 @@ reset() # initialize the control state</code></pre>
             state (dict): The state to decode.
         &#34;&#34;&#34;
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
+        from openpersona.agent import Persona
+        from openpersona.environment import World
 
         logger.debug(f&#34;Decoding simulation state: {state[&#39;factories&#39;]}&#34;)
         logger.debug(f&#34;Registered factories: {self.name_to_factory}&#34;)
@@ -1556,7 +1556,7 @@ reset() # initialize the control state</code></pre>
             try:
                 environment = self.name_to_environment[environment_state[&#34;name&#34;]]
                 environment.decode_complete_state(environment_state)
-                if TinyWorld.communication_display:
+                if World.communication_display:
                     environment.pop_and_display_latest_communications()
 
             except Exception as e:
@@ -1571,25 +1571,25 @@ reset() # initialize the control state</code></pre>
                 
                 # The agent has not yet been decoded because it is not in any environment. So, decode it.
                 if agent.environment is None:
-                    if TinyPerson.communication_display:
+                    if Persona.communication_display:
                         agent.pop_and_display_latest_communications()
             except Exception as e:
                 raise ValueError(f&#34;Agent {agent_state[&#39;name&#39;]} is not in the simulation, thus cannot be decoded there.&#34;) from e        </code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.control.Simulation.STATUS_STARTED"><code class="name">var <span class="ident">STATUS_STARTED</span></code></dt>
+<dt id="openpersona.control.Simulation.STATUS_STARTED"><code class="name">var <span class="ident">STATUS_STARTED</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="tinytroupe.control.Simulation.STATUS_STOPPED"><code class="name">var <span class="ident">STATUS_STOPPED</span></code></dt>
+<dt id="openpersona.control.Simulation.STATUS_STOPPED"><code class="name">var <span class="ident">STATUS_STOPPED</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.control.Simulation.add_agent"><code class="name flex">
+<dt id="openpersona.control.Simulation.add_agent"><code class="name flex">
 <span>def <span class="ident">add_agent</span></span>(<span>self, agent)</span>
 </code></dt>
 <dd>
@@ -1609,7 +1609,7 @@ reset() # initialize the control state</code></pre>
     self.name_to_agent[agent.name] = agent</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.add_environment"><code class="name flex">
+<dt id="openpersona.control.Simulation.add_environment"><code class="name flex">
 <span>def <span class="ident">add_environment</span></span>(<span>self, environment)</span>
 </code></dt>
 <dd>
@@ -1629,7 +1629,7 @@ reset() # initialize the control state</code></pre>
     self.name_to_environment[environment.name] = environment</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.add_factory"><code class="name flex">
+<dt id="openpersona.control.Simulation.add_factory"><code class="name flex">
 <span>def <span class="ident">add_factory</span></span>(<span>self, factory)</span>
 </code></dt>
 <dd>
@@ -1649,7 +1649,7 @@ reset() # initialize the control state</code></pre>
     self.name_to_factory[factory.name] = factory</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.begin"><code class="name flex">
+<dt id="openpersona.control.Simulation.begin"><code class="name flex">
 <span>def <span class="ident">begin</span></span>(<span>self, cache_path: str = None, auto_checkpoint: bool = False)</span>
 </code></dt>
 <dd>
@@ -1679,10 +1679,10 @@ defaults to the default cache path defined in the class.</dd>
     logger.debug(f&#34;Starting simulation, cache_path={cache_path}, auto_checkpoint={auto_checkpoint}.&#34;)
 
     # local import to avoid circular dependencies
-    from tinytroupe.agent import TinyPerson
-    from tinytroupe.environment import TinyWorld
-    from tinytroupe.factory.tiny_factory import TinyFactory
-    from tinytroupe.factory.tiny_person_factory import TinyPersonFactory
+    from openpersona.agent import Persona
+    from openpersona.environment import World
+    from openpersona.factory.base_factory import BaseFactory
+    from openpersona.factory.persona_factory import PersonaFactory
 
     if self.status == Simulation.STATUS_STOPPED:
         self.status = Simulation.STATUS_STARTED
@@ -1696,10 +1696,10 @@ defaults to the default cache path defined in the class.</dd>
     self.auto_checkpoint = auto_checkpoint
 
     # clear the agents, environments and other simulated entities, we&#39;ll track them from now on
-    TinyPerson.clear_agents()
-    TinyWorld.clear_environments()
-    TinyFactory.clear_factories()
-    TinyPersonFactory.clear_factories()
+    Persona.clear_agents()
+    World.clear_environments()
+    BaseFactory.clear_factories()
+    PersonaFactory.clear_factories()
 
     # All automated fresh ids will start from 0 again for this simulation
     utils.reset_fresh_id()
@@ -1709,7 +1709,7 @@ defaults to the default cache path defined in the class.</dd>
         self._load_cache_file(self.cache_path)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.begin_parallel_transactions"><code class="name flex">
+<dt id="openpersona.control.Simulation.begin_parallel_transactions"><code class="name flex">
 <span>def <span class="ident">begin_parallel_transactions</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1729,7 +1729,7 @@ defaults to the default cache path defined in the class.</dd>
         self.cached_trace.append({})</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.begin_transaction"><code class="name flex">
+<dt id="openpersona.control.Simulation.begin_transaction"><code class="name flex">
 <span>def <span class="ident">begin_transaction</span></span>(<span>self, id=None)</span>
 </code></dt>
 <dd>
@@ -1747,7 +1747,7 @@ defaults to the default cache path defined in the class.</dd>
         self._clear_communications_buffers() # TODO &lt;----------------------------------------------------------------</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.checkpoint"><code class="name flex">
+<dt id="openpersona.control.Simulation.checkpoint"><code class="name flex">
 <span>def <span class="ident">checkpoint</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1768,7 +1768,7 @@ defaults to the default cache path defined in the class.</dd>
         logger.debug(&#34;No unsaved cache changes to save to file.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.end"><code class="name flex">
+<dt id="openpersona.control.Simulation.end"><code class="name flex">
 <span>def <span class="ident">end</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1789,7 +1789,7 @@ defaults to the default cache path defined in the class.</dd>
         raise ValueError(&#34;Simulation is already stopped.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.end_parallel_transactions"><code class="name flex">
+<dt id="openpersona.control.Simulation.end_parallel_transactions"><code class="name flex">
 <span>def <span class="ident">end_parallel_transactions</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1805,7 +1805,7 @@ defaults to the default cache path defined in the class.</dd>
     self._under_parallel_transactions = False</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.end_transaction"><code class="name flex">
+<dt id="openpersona.control.Simulation.end_transaction"><code class="name flex">
 <span>def <span class="ident">end_transaction</span></span>(<span>self, id=None)</span>
 </code></dt>
 <dd>
@@ -1822,7 +1822,7 @@ defaults to the default cache path defined in the class.</dd>
         self._under_transaction[id] = False</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.is_under_parallel_transactions"><code class="name flex">
+<dt id="openpersona.control.Simulation.is_under_parallel_transactions"><code class="name flex">
 <span>def <span class="ident">is_under_parallel_transactions</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1838,7 +1838,7 @@ defaults to the default cache path defined in the class.</dd>
     return self._under_parallel_transactions</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.control.Simulation.is_under_transaction"><code class="name flex">
+<dt id="openpersona.control.Simulation.is_under_transaction"><code class="name flex">
 <span>def <span class="ident">is_under_transaction</span></span>(<span>self, id=None)</span>
 </code></dt>
 <dd>
@@ -1857,7 +1857,7 @@ defaults to the default cache path defined in the class.</dd>
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.control.SkipTransaction"><code class="flex name class">
+<dt id="openpersona.control.SkipTransaction"><code class="flex name class">
 <span>class <span class="ident">SkipTransaction</span></span>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
@@ -1876,7 +1876,7 @@ defaults to the default cache path defined in the class.</dd>
 <li>builtins.BaseException</li>
 </ul>
 </dd>
-<dt id="tinytroupe.control.Transaction"><code class="flex name class">
+<dt id="openpersona.control.Transaction"><code class="flex name class">
 <span>class <span class="ident">Transaction</span></span>
 <span>(</span><span>obj_under_transaction, simulation, function, *args, **kwargs)</span>
 </code></dt>
@@ -1890,9 +1890,9 @@ defaults to the default cache path defined in the class.</dd>
 
     def __init__(self, obj_under_transaction, simulation, function, *args, **kwargs):
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
 
         self.obj_under_transaction = obj_under_transaction
         self.simulation = simulation
@@ -1912,22 +1912,22 @@ defaults to the default cache path defined in the class.</dd>
                 
                 logger.debug(f&#34;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Object {obj_under_transaction} is already captured by simulation {simulation.id}.&#34;)
             else:
-                # if is a TinyPerson, add the agent to the simulation
-                if isinstance(obj_under_transaction, TinyPerson):
+                # if is a Persona, add the agent to the simulation
+                if isinstance(obj_under_transaction, Persona):
                     simulation.add_agent(obj_under_transaction)
                     logger.debug(f&#34;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Added agent {obj_under_transaction} to simulation {simulation.id}.&#34;)
 
-                # if is a TinyWorld, add the environment to the simulation
-                elif isinstance(obj_under_transaction, TinyWorld):
+                # if is a World, add the environment to the simulation
+                elif isinstance(obj_under_transaction, World):
                     simulation.add_environment(obj_under_transaction)
                 
-                # if is a TinyFactory, add the factory to the simulation
-                elif isinstance(obj_under_transaction, TinyFactory):
+                # if is a BaseFactory, add the factory to the simulation
+                elif isinstance(obj_under_transaction, BaseFactory):
                     simulation.add_factory(obj_under_transaction)
                     logger.debug(f&#34;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Added factory {obj_under_transaction} to simulation {simulation.id}.&#34;)
 
                 else:
-                    raise ValueError(f&#34;Object {obj_under_transaction} (type = {type(obj_under_transaction)}) is not a TinyPerson or TinyWorld instance, and cannot be captured by the simulation.&#34;)
+                    raise ValueError(f&#34;Object {obj_under_transaction} (type = {type(obj_under_transaction)}) is not a Persona or World instance, and cannot be captured by the simulation.&#34;)
                 
         
     def execute(self, begin_parallel=False, parallel_id=None):
@@ -1962,7 +1962,7 @@ defaults to the default cache path defined in the class.</dd>
                     state = self.simulation.cached_trace[self.simulation._execution_trace_position()][3] # state
                     self.simulation._decode_simulation_state(state)
                     
-                    # Output encoding/decoding is used to preserve references to TinyPerson and TinyWorld instances
+                    # Output encoding/decoding is used to preserve references to Persona and World instances
                     # mainly. Scalar values (int, float, str, bool) and composite values (list, dict) are 
                     # encoded/decoded as is.
                     encoded_output = self.simulation.cached_trace[self.simulation._execution_trace_position()][2] # output
@@ -2053,28 +2053,28 @@ defaults to the default cache path defined in the class.</dd>
         Encodes the given function output.
         &#34;&#34;&#34;
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
 
         # if the output is a supported object, encode it
         if output is None:
             return None
-        elif isinstance(output, TinyPerson):
-            return {&#34;type&#34;: &#34;TinyPersonRef&#34;, &#34;name&#34;: output.name}
-        elif isinstance(output, TinyWorld):
-            return {&#34;type&#34;: &#34;TinyWorldRef&#34;, &#34;name&#34;: output.name}
-        elif isinstance(output, TinyFactory):
-            return {&#34;type&#34;: &#34;TinyFactoryRef&#34;, &#34;name&#34;: output.name}
+        elif isinstance(output, Persona):
+            return {&#34;type&#34;: &#34;PersonaRef&#34;, &#34;name&#34;: output.name}
+        elif isinstance(output, World):
+            return {&#34;type&#34;: &#34;WorldRef&#34;, &#34;name&#34;: output.name}
+        elif isinstance(output, BaseFactory):
+            return {&#34;type&#34;: &#34;BaseFactoryRef&#34;, &#34;name&#34;: output.name}
         elif isinstance(output, list):
             encoded_list = []
             for item in output:
-                if isinstance(item, TinyPerson):
-                    encoded_list.append({&#34;type&#34;: &#34;TinyPersonRef&#34;, &#34;name&#34;: item.name})
-                elif isinstance(item, TinyWorld):
-                    encoded_list.append({&#34;type&#34;: &#34;TinyWorldRef&#34;, &#34;name&#34;: item.name})
-                elif isinstance(item, TinyFactory):
-                    encoded_list.append({&#34;type&#34;: &#34;TinyFactoryRef&#34;, &#34;name&#34;: item.name})
+                if isinstance(item, Persona):
+                    encoded_list.append({&#34;type&#34;: &#34;PersonaRef&#34;, &#34;name&#34;: item.name})
+                elif isinstance(item, World):
+                    encoded_list.append({&#34;type&#34;: &#34;WorldRef&#34;, &#34;name&#34;: item.name})
+                elif isinstance(item, BaseFactory):
+                    encoded_list.append({&#34;type&#34;: &#34;BaseFactoryRef&#34;, &#34;name&#34;: item.name})
                 else:
                     encoded_list.append({&#34;type&#34;: &#34;JSON&#34;, &#34;value&#34;: item})
             return {&#34;type&#34;: &#34;List&#34;, &#34;value&#34;: encoded_list}
@@ -2088,27 +2088,27 @@ defaults to the default cache path defined in the class.</dd>
         Decodes the given encoded function output.
         &#34;&#34;&#34;
         # local import to avoid circular dependencies
-        from tinytroupe.agent import TinyPerson
-        from tinytroupe.environment import TinyWorld
-        from tinytroupe.factory.tiny_factory import TinyFactory
+        from openpersona.agent import Persona
+        from openpersona.environment import World
+        from openpersona.factory.base_factory import BaseFactory
 
         if encoded_output is None:
             return None
-        elif encoded_output[&#34;type&#34;] == &#34;TinyPersonRef&#34;:
-            return TinyPerson.get_agent_by_name(encoded_output[&#34;name&#34;])
-        elif encoded_output[&#34;type&#34;] == &#34;TinyWorldRef&#34;:
-            return TinyWorld.get_environment_by_name(encoded_output[&#34;name&#34;])
-        elif encoded_output[&#34;type&#34;] == &#34;TinyFactoryRef&#34;:
-            return TinyFactory.get_factory_by_name(encoded_output[&#34;name&#34;])
+        elif encoded_output[&#34;type&#34;] == &#34;PersonaRef&#34;:
+            return Persona.get_agent_by_name(encoded_output[&#34;name&#34;])
+        elif encoded_output[&#34;type&#34;] == &#34;WorldRef&#34;:
+            return World.get_environment_by_name(encoded_output[&#34;name&#34;])
+        elif encoded_output[&#34;type&#34;] == &#34;BaseFactoryRef&#34;:
+            return BaseFactory.get_factory_by_name(encoded_output[&#34;name&#34;])
         elif encoded_output[&#34;type&#34;] == &#34;List&#34;:
             decoded_list = []
             for item in encoded_output[&#34;value&#34;]:
-                if item[&#34;type&#34;] == &#34;TinyPersonRef&#34;:
-                    decoded_list.append(TinyPerson.get_agent_by_name(item[&#34;name&#34;]))
-                elif item[&#34;type&#34;] == &#34;TinyWorldRef&#34;:
-                    decoded_list.append(TinyWorld.get_environment_by_name(item[&#34;name&#34;]))
-                elif item[&#34;type&#34;] == &#34;TinyFactoryRef&#34;:
-                    decoded_list.append(TinyFactory.get_factory_by_name(item[&#34;name&#34;]))
+                if item[&#34;type&#34;] == &#34;PersonaRef&#34;:
+                    decoded_list.append(Persona.get_agent_by_name(item[&#34;name&#34;]))
+                elif item[&#34;type&#34;] == &#34;WorldRef&#34;:
+                    decoded_list.append(World.get_environment_by_name(item[&#34;name&#34;]))
+                elif item[&#34;type&#34;] == &#34;BaseFactoryRef&#34;:
+                    decoded_list.append(BaseFactory.get_factory_by_name(item[&#34;name&#34;]))
                 else:
                     decoded_list.append(item[&#34;value&#34;])
             return decoded_list
@@ -2119,7 +2119,7 @@ defaults to the default cache path defined in the class.</dd>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.control.Transaction.execute"><code class="name flex">
+<dt id="openpersona.control.Transaction.execute"><code class="name flex">
 <span>def <span class="ident">execute</span></span>(<span>self, begin_parallel=False, parallel_id=None)</span>
 </code></dt>
 <dd>
@@ -2160,7 +2160,7 @@ defaults to the default cache path defined in the class.</dd>
                 state = self.simulation.cached_trace[self.simulation._execution_trace_position()][3] # state
                 self.simulation._decode_simulation_state(state)
                 
-                # Output encoding/decoding is used to preserve references to TinyPerson and TinyWorld instances
+                # Output encoding/decoding is used to preserve references to Persona and World instances
                 # mainly. Scalar values (int, float, str, bool) and composite values (list, dict) are 
                 # encoded/decoded as is.
                 encoded_output = self.simulation.cached_trace[self.simulation._execution_trace_position()][2] # output
@@ -2243,55 +2243,55 @@ defaults to the default cache path defined in the class.</dd>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe" href="index.html">tinytroupe</a></code></li>
+<li><code><a title="openpersona" href="index.html">openpersona</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
-<li><code><a title="tinytroupe.control.begin" href="#tinytroupe.control.begin">begin</a></code></li>
-<li><code><a title="tinytroupe.control.cache_hits" href="#tinytroupe.control.cache_hits">cache_hits</a></code></li>
-<li><code><a title="tinytroupe.control.cache_misses" href="#tinytroupe.control.cache_misses">cache_misses</a></code></li>
-<li><code><a title="tinytroupe.control.checkpoint" href="#tinytroupe.control.checkpoint">checkpoint</a></code></li>
-<li><code><a title="tinytroupe.control.current_simulation" href="#tinytroupe.control.current_simulation">current_simulation</a></code></li>
-<li><code><a title="tinytroupe.control.end" href="#tinytroupe.control.end">end</a></code></li>
-<li><code><a title="tinytroupe.control.reset" href="#tinytroupe.control.reset">reset</a></code></li>
-<li><code><a title="tinytroupe.control.transactional" href="#tinytroupe.control.transactional">transactional</a></code></li>
+<li><code><a title="openpersona.control.begin" href="#openpersona.control.begin">begin</a></code></li>
+<li><code><a title="openpersona.control.cache_hits" href="#openpersona.control.cache_hits">cache_hits</a></code></li>
+<li><code><a title="openpersona.control.cache_misses" href="#openpersona.control.cache_misses">cache_misses</a></code></li>
+<li><code><a title="openpersona.control.checkpoint" href="#openpersona.control.checkpoint">checkpoint</a></code></li>
+<li><code><a title="openpersona.control.current_simulation" href="#openpersona.control.current_simulation">current_simulation</a></code></li>
+<li><code><a title="openpersona.control.end" href="#openpersona.control.end">end</a></code></li>
+<li><code><a title="openpersona.control.reset" href="#openpersona.control.reset">reset</a></code></li>
+<li><code><a title="openpersona.control.transactional" href="#openpersona.control.transactional">transactional</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.control.CacheOutOfSync" href="#tinytroupe.control.CacheOutOfSync">CacheOutOfSync</a></code></h4>
+<h4><code><a title="openpersona.control.CacheOutOfSync" href="#openpersona.control.CacheOutOfSync">CacheOutOfSync</a></code></h4>
 </li>
 <li>
-<h4><code><a title="tinytroupe.control.ExecutionCached" href="#tinytroupe.control.ExecutionCached">ExecutionCached</a></code></h4>
+<h4><code><a title="openpersona.control.ExecutionCached" href="#openpersona.control.ExecutionCached">ExecutionCached</a></code></h4>
 </li>
 <li>
-<h4><code><a title="tinytroupe.control.Simulation" href="#tinytroupe.control.Simulation">Simulation</a></code></h4>
+<h4><code><a title="openpersona.control.Simulation" href="#openpersona.control.Simulation">Simulation</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.control.Simulation.STATUS_STARTED" href="#tinytroupe.control.Simulation.STATUS_STARTED">STATUS_STARTED</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.STATUS_STOPPED" href="#tinytroupe.control.Simulation.STATUS_STOPPED">STATUS_STOPPED</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.add_agent" href="#tinytroupe.control.Simulation.add_agent">add_agent</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.add_environment" href="#tinytroupe.control.Simulation.add_environment">add_environment</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.add_factory" href="#tinytroupe.control.Simulation.add_factory">add_factory</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.begin" href="#tinytroupe.control.Simulation.begin">begin</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.begin_parallel_transactions" href="#tinytroupe.control.Simulation.begin_parallel_transactions">begin_parallel_transactions</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.begin_transaction" href="#tinytroupe.control.Simulation.begin_transaction">begin_transaction</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.checkpoint" href="#tinytroupe.control.Simulation.checkpoint">checkpoint</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.end" href="#tinytroupe.control.Simulation.end">end</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.end_parallel_transactions" href="#tinytroupe.control.Simulation.end_parallel_transactions">end_parallel_transactions</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.end_transaction" href="#tinytroupe.control.Simulation.end_transaction">end_transaction</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.is_under_parallel_transactions" href="#tinytroupe.control.Simulation.is_under_parallel_transactions">is_under_parallel_transactions</a></code></li>
-<li><code><a title="tinytroupe.control.Simulation.is_under_transaction" href="#tinytroupe.control.Simulation.is_under_transaction">is_under_transaction</a></code></li>
+<li><code><a title="openpersona.control.Simulation.STATUS_STARTED" href="#openpersona.control.Simulation.STATUS_STARTED">STATUS_STARTED</a></code></li>
+<li><code><a title="openpersona.control.Simulation.STATUS_STOPPED" href="#openpersona.control.Simulation.STATUS_STOPPED">STATUS_STOPPED</a></code></li>
+<li><code><a title="openpersona.control.Simulation.add_agent" href="#openpersona.control.Simulation.add_agent">add_agent</a></code></li>
+<li><code><a title="openpersona.control.Simulation.add_environment" href="#openpersona.control.Simulation.add_environment">add_environment</a></code></li>
+<li><code><a title="openpersona.control.Simulation.add_factory" href="#openpersona.control.Simulation.add_factory">add_factory</a></code></li>
+<li><code><a title="openpersona.control.Simulation.begin" href="#openpersona.control.Simulation.begin">begin</a></code></li>
+<li><code><a title="openpersona.control.Simulation.begin_parallel_transactions" href="#openpersona.control.Simulation.begin_parallel_transactions">begin_parallel_transactions</a></code></li>
+<li><code><a title="openpersona.control.Simulation.begin_transaction" href="#openpersona.control.Simulation.begin_transaction">begin_transaction</a></code></li>
+<li><code><a title="openpersona.control.Simulation.checkpoint" href="#openpersona.control.Simulation.checkpoint">checkpoint</a></code></li>
+<li><code><a title="openpersona.control.Simulation.end" href="#openpersona.control.Simulation.end">end</a></code></li>
+<li><code><a title="openpersona.control.Simulation.end_parallel_transactions" href="#openpersona.control.Simulation.end_parallel_transactions">end_parallel_transactions</a></code></li>
+<li><code><a title="openpersona.control.Simulation.end_transaction" href="#openpersona.control.Simulation.end_transaction">end_transaction</a></code></li>
+<li><code><a title="openpersona.control.Simulation.is_under_parallel_transactions" href="#openpersona.control.Simulation.is_under_parallel_transactions">is_under_parallel_transactions</a></code></li>
+<li><code><a title="openpersona.control.Simulation.is_under_transaction" href="#openpersona.control.Simulation.is_under_transaction">is_under_transaction</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.control.SkipTransaction" href="#tinytroupe.control.SkipTransaction">SkipTransaction</a></code></h4>
+<h4><code><a title="openpersona.control.SkipTransaction" href="#openpersona.control.SkipTransaction">SkipTransaction</a></code></h4>
 </li>
 <li>
-<h4><code><a title="tinytroupe.control.Transaction" href="#tinytroupe.control.Transaction">Transaction</a></code></h4>
+<h4><code><a title="openpersona.control.Transaction" href="#openpersona.control.Transaction">Transaction</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.control.Transaction.execute" href="#tinytroupe.control.Transaction.execute">execute</a></code></li>
+<li><code><a title="openpersona.control.Transaction.execute" href="#openpersona.control.Transaction.execute">execute</a></code></li>
 </ul>
 </li>
 </ul>

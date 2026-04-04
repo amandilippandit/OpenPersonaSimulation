@@ -3,18 +3,18 @@ import textwrap
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 
 # Insert paths at the beginning of sys.path (position 0)
 sys.path.insert(0, "..")
 sys.path.insert(0, "../../")
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 
 from testing_utils import *
 
-from tinytroupe.enrichment.tiny_styler import TinyStyler
+from openpersona.enrichment.styler import Styler
 
 
 def test_apply_style():
@@ -31,7 +31,7 @@ def test_apply_style():
     style = "casual"
 
     # Call the method with the actual LLM
-    styler = TinyStyler()
+    styler = Styler()
     result = styler.apply_style(
         content=content_to_style, style=style, content_type="report", verbose=True
     )
@@ -97,7 +97,7 @@ def test_apply_style_with_different_styles():
     styles = ["technical", "professional", "enthusiastic"]
     results = {}
 
-    styler = TinyStyler()
+    styler = Styler()
     for style in styles:
         results[style] = styler.apply_style(content=content_to_style, style=style)
         # Basic validation
@@ -142,7 +142,7 @@ def test_apply_style_with_different_styles():
 def test_context_cache_usage():
     """Test that context cache is properly used when enabled."""
     # Create styler with context caching enabled
-    styler = TinyStyler(use_past_results_in_context=True)
+    styler = Styler(use_past_results_in_context=True)
     # First styling
     first_content = "The team completed the project ahead of schedule."
     first_style = "formal"
@@ -176,7 +176,7 @@ def test_temperature_parameter():
     style = "creative"
 
     # Generate outputs with default temperature (1.0) since gpt-5-mini only supports this
-    styler = TinyStyler()
+    styler = Styler()
     results = [
         styler.apply_style(content=content_to_style, style=style, temperature=1.0)
         for _ in range(2)

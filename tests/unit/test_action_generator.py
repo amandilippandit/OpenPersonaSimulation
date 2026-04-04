@@ -4,19 +4,19 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
 
-sys.path.insert(0, "../../tinytroupe/")
+sys.path.insert(0, "../../openpersona/")
 sys.path.insert(0, "../../")
 sys.path.insert(0, "..")
 
 from testing_utils import *
 
-from tinytroupe.agent import TinyPerson
-from tinytroupe.agent.action_generator import ActionGenerator
-from tinytroupe.examples import (
+from openpersona.agent import Persona
+from openpersona.agent.action_generator import ActionGenerator
+from openpersona.examples import (
     create_lisa_the_data_scientist,
     create_oscar_the_architect,
 )
@@ -29,10 +29,10 @@ from tinytroupe.examples import (
 def cleanup_agents():
     """Clean up agents before and after each test to avoid name conflicts."""
     # Clean up before test
-    TinyPerson.all_agents.clear()
+    Persona.all_agents.clear()
     yield
     # Clean up after test
-    TinyPerson.all_agents.clear()
+    Persona.all_agents.clear()
 
 def create_unique_oscar(suffix=""):
     """Create Oscar with a unique name to avoid conflicts."""
@@ -40,8 +40,8 @@ def create_unique_oscar(suffix=""):
     if suffix:
         oscar.name = f"Oscar{suffix}"
         # Update the agent registry
-        TinyPerson.all_agents.pop("Oscar", None)
-        TinyPerson.all_agents[oscar.name] = oscar
+        Persona.all_agents.pop("Oscar", None)
+        Persona.all_agents[oscar.name] = oscar
     return oscar
 
 def create_unique_lisa(suffix=""):
@@ -50,8 +50,8 @@ def create_unique_lisa(suffix=""):
     if suffix:
         lisa.name = f"Lisa{suffix}"
         # Update the agent registry
-        TinyPerson.all_agents.pop("Lisa Carter", None)
-        TinyPerson.all_agents[lisa.name] = lisa
+        Persona.all_agents.pop("Lisa Carter", None)
+        Persona.all_agents[lisa.name] = lisa
     return lisa
 
 def safe_get_action_content(actions, index=-2):
@@ -298,7 +298,7 @@ def test_action_generator_initialization():
 
 @pytest.mark.core
 def test_action_generator_with_agent(setup):
-    """Test ActionGenerator integration with TinyPerson agents using real API."""
+    """Test ActionGenerator integration with Persona agents using real API."""
 
     agent = create_unique_oscar("_with_agent")
     generator = ActionGenerator(max_attempts=1, enable_quality_checks=False)

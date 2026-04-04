@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.utils.json API documentation</title>
+<title>openpersona.utils.json API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.utils.json</code></h1>
+<h1 class="title">Module <code>openpersona.utils.json</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -30,7 +30,7 @@
 import copy
 from pydantic import BaseModel
 
-from tinytroupe.utils import logger
+from openpersona.utils import logger
 
 class JsonSerializableRegistry:
     &#34;&#34;&#34;
@@ -330,7 +330,7 @@ def remove_duplicate_items(lst):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="tinytroupe.utils.json.merge_dicts"><code class="name flex">
+<dt id="openpersona.utils.json.merge_dicts"><code class="name flex">
 <span>def <span class="ident">merge_dicts</span></span>(<span>current, additions, overwrite=False, error_on_conflict=True, remove_duplicates=True)</span>
 </code></dt>
 <dd>
@@ -410,7 +410,7 @@ def remove_duplicate_items(lst):
     return merged</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.json.post_init"><code class="name flex">
+<dt id="openpersona.utils.json.post_init"><code class="name flex">
 <span>def <span class="ident">post_init</span></span>(<span>cls)</span>
 </code></dt>
 <dd>
@@ -436,7 +436,7 @@ The method must be named <code>_post_init</code>.</p></div>
     return cls</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.json.remove_duplicate_items"><code class="name flex">
+<dt id="openpersona.utils.json.remove_duplicate_items"><code class="name flex">
 <span>def <span class="ident">remove_duplicate_items</span></span>(<span>lst)</span>
 </code></dt>
 <dd>
@@ -481,7 +481,7 @@ Handles unhashable elements by using a list comprehension.</p>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.utils.json.JsonSerializableRegistry"><code class="flex name class">
+<dt id="openpersona.utils.json.JsonSerializableRegistry"><code class="flex name class">
 <span>class <span class="ident">JsonSerializableRegistry</span></span>
 </code></dt>
 <dd>
@@ -687,25 +687,25 @@ Handles unhashable elements by using a list comprehension.</p>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.action_generator.ActionGenerator" href="../agent/action_generator.html#tinytroupe.agent.action_generator.ActionGenerator">ActionGenerator</a></li>
-<li><a title="tinytroupe.agent.grounding.GroundingConnector" href="../agent/grounding.html#tinytroupe.agent.grounding.GroundingConnector">GroundingConnector</a></li>
-<li><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty" href="../agent/mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty">TinyMentalFaculty</a></li>
-<li><a title="tinytroupe.agent.tiny_person.TinyPerson" href="../agent/tiny_person.html#tinytroupe.agent.tiny_person.TinyPerson">TinyPerson</a></li>
-<li><a title="tinytroupe.enrichment.tiny_enricher.TinyEnricher" href="../enrichment/tiny_enricher.html#tinytroupe.enrichment.tiny_enricher.TinyEnricher">TinyEnricher</a></li>
-<li><a title="tinytroupe.enrichment.tiny_styler.TinyStyler" href="../enrichment/tiny_styler.html#tinytroupe.enrichment.tiny_styler.TinyStyler">TinyStyler</a></li>
-<li><a title="tinytroupe.extraction.artifact_exporter.ArtifactExporter" href="../extraction/artifact_exporter.html#tinytroupe.extraction.artifact_exporter.ArtifactExporter">ArtifactExporter</a></li>
-<li><a title="tinytroupe.tools.tiny_tool.TinyTool" href="../tools/tiny_tool.html#tinytroupe.tools.tiny_tool.TinyTool">TinyTool</a></li>
+<li><a title="openpersona.agent.action_generator.ActionGenerator" href="../agent/action_generator.html#openpersona.agent.action_generator.ActionGenerator">ActionGenerator</a></li>
+<li><a title="openpersona.agent.grounding.GroundingConnector" href="../agent/grounding.html#openpersona.agent.grounding.GroundingConnector">GroundingConnector</a></li>
+<li><a title="openpersona.agent.mental_faculty.MentalFaculty" href="../agent/mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty">MentalFaculty</a></li>
+<li><a title="openpersona.agent.persona.Persona" href="../agent/persona.html#openpersona.agent.persona.Persona">Persona</a></li>
+<li><a title="openpersona.enrichment.enricher.Enricher" href="../enrichment/enricher.html#openpersona.enrichment.enricher.Enricher">Enricher</a></li>
+<li><a title="openpersona.enrichment.styler.Styler" href="../enrichment/styler.html#openpersona.enrichment.styler.Styler">Styler</a></li>
+<li><a title="openpersona.extraction.artifact_exporter.ArtifactExporter" href="../extraction/artifact_exporter.html#openpersona.extraction.artifact_exporter.ArtifactExporter">ArtifactExporter</a></li>
+<li><a title="openpersona.tools.sim_tool.SimTool" href="../tools/sim_tool.html#openpersona.tools.sim_tool.SimTool">SimTool</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.utils.json.JsonSerializableRegistry.class_mapping"><code class="name">var <span class="ident">class_mapping</span></code></dt>
+<dt id="openpersona.utils.json.JsonSerializableRegistry.class_mapping"><code class="name">var <span class="ident">class_mapping</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="tinytroupe.utils.json.JsonSerializableRegistry.from_json"><code class="name flex">
+<dt id="openpersona.utils.json.JsonSerializableRegistry.from_json"><code class="name flex">
 <span>def <span class="ident">from_json</span></span>(<span>json_dict_or_path, suppress: list = None, serialization_type_field_name='json_serializable_class_name', post_init_params: dict = None)</span>
 </code></dt>
 <dd>
@@ -793,7 +793,7 @@ def from_json(cls, json_dict_or_path, suppress: list = None,
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.utils.json.JsonSerializableRegistry.to_json"><code class="name flex">
+<dt id="openpersona.utils.json.JsonSerializableRegistry.to_json"><code class="name flex">
 <span>def <span class="ident">to_json</span></span>(<span>self, include: list = None, suppress: list = None, file_path: str = None, serialization_type_field_name='json_serializable_class_name') ‑> dict</span>
 </code></dt>
 <dd>
@@ -889,24 +889,24 @@ def from_json(cls, json_dict_or_path, suppress: list = None,
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.utils" href="index.html">tinytroupe.utils</a></code></li>
+<li><code><a title="openpersona.utils" href="index.html">openpersona.utils</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="tinytroupe.utils.json.merge_dicts" href="#tinytroupe.utils.json.merge_dicts">merge_dicts</a></code></li>
-<li><code><a title="tinytroupe.utils.json.post_init" href="#tinytroupe.utils.json.post_init">post_init</a></code></li>
-<li><code><a title="tinytroupe.utils.json.remove_duplicate_items" href="#tinytroupe.utils.json.remove_duplicate_items">remove_duplicate_items</a></code></li>
+<li><code><a title="openpersona.utils.json.merge_dicts" href="#openpersona.utils.json.merge_dicts">merge_dicts</a></code></li>
+<li><code><a title="openpersona.utils.json.post_init" href="#openpersona.utils.json.post_init">post_init</a></code></li>
+<li><code><a title="openpersona.utils.json.remove_duplicate_items" href="#openpersona.utils.json.remove_duplicate_items">remove_duplicate_items</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></code></h4>
+<h4><code><a title="openpersona.utils.json.JsonSerializableRegistry" href="#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.utils.json.JsonSerializableRegistry.class_mapping" href="#tinytroupe.utils.json.JsonSerializableRegistry.class_mapping">class_mapping</a></code></li>
-<li><code><a title="tinytroupe.utils.json.JsonSerializableRegistry.from_json" href="#tinytroupe.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
-<li><code><a title="tinytroupe.utils.json.JsonSerializableRegistry.to_json" href="#tinytroupe.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
+<li><code><a title="openpersona.utils.json.JsonSerializableRegistry.class_mapping" href="#openpersona.utils.json.JsonSerializableRegistry.class_mapping">class_mapping</a></code></li>
+<li><code><a title="openpersona.utils.json.JsonSerializableRegistry.from_json" href="#openpersona.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
+<li><code><a title="openpersona.utils.json.JsonSerializableRegistry.to_json" href="#openpersona.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
 </ul>
 </li>
 </ul>

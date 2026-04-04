@@ -9,8 +9,8 @@ import os
 import tempfile
 import pytest
 
-from tinytroupe.clients.openai_client import LLMCacheBase, OpenAIClient
-from tinytroupe.clients.ollama_client import OllamaClient
+from openpersona.clients.openai_client import LLMCacheBase, OpenAIClient
+from openpersona.clients.ollama_client import OllamaClient
 
 
 class TestLLMCacheBase:

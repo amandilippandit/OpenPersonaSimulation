@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.agent.memory API documentation</title>
+<title>openpersona.agent.memory API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.agent.memory</code></h1>
+<h1 class="title">Module <code>openpersona.agent.memory</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -32,17 +32,17 @@ from typing import Any, Union
 
 from llama_index.core import Document
 
-import tinytroupe.utils as utils
-from tinytroupe.agent import logger
-from tinytroupe.agent.grounding import BaseSemanticGroundingConnector
-from tinytroupe.agent.mental_faculty import TinyMentalFaculty
+import openpersona.utils as utils
+from openpersona.agent import logger
+from openpersona.agent.grounding import BaseSemanticGroundingConnector
+from openpersona.agent.mental_faculty import MentalFaculty
 
 #######################################################################################################################
 # Memory mechanisms
 #######################################################################################################################
 
 
-class TinyMemory(TinyMentalFaculty):
+class AgentMemory(MentalFaculty):
     &#34;&#34;&#34;
     Base class for different types of memory.
     &#34;&#34;&#34;
@@ -248,7 +248,7 @@ class TinyMemory(TinyMentalFaculty):
         return [memory for memory in memories if memory[&#34;type&#34;] in item_types]
 
 
-class EpisodicMemory(TinyMemory):
+class EpisodicMemory(AgentMemory):
     &#34;&#34;&#34;
     Provides episodic memory capabilities to an agent. Cognitively, episodic memory is the ability to remember specific events,
     or episodes, in the past. This class provides a simple implementation of episodic memory, where the agent can store and retrieve
@@ -503,7 +503,7 @@ class EpisodicMemory(TinyMemory):
 
 
 @utils.post_init
-class SemanticMemory(TinyMemory):
+class SemanticMemory(AgentMemory):
     &#34;&#34;&#34;
     In Cognitive Psychology, semantic memory is the memory of meanings, understandings, and other concept-based knowledge unrelated to specific
     experiences. It is not ordered temporally, and it is not about remembering specific events or episodes. This class provides a simple implementation
@@ -993,7 +993,7 @@ class ReflectionConsolidator(MemoryProcessor):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tinytroupe.agent.memory.EpisodicConsolidator"><code class="flex name class">
+<dt id="openpersona.agent.memory.EpisodicConsolidator"><code class="flex name class">
 <span>class <span class="ident">EpisodicConsolidator</span></span>
 </code></dt>
 <dd>
@@ -1198,19 +1198,19 @@ class ReflectionConsolidator(MemoryProcessor):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.memory.MemoryProcessor" href="#tinytroupe.agent.memory.MemoryProcessor">MemoryProcessor</a></li>
+<li><a title="openpersona.agent.memory.MemoryProcessor" href="#openpersona.agent.memory.MemoryProcessor">MemoryProcessor</a></li>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.agent.memory.MemoryProcessor" href="#tinytroupe.agent.memory.MemoryProcessor">MemoryProcessor</a></b></code>:
+<li><code><b><a title="openpersona.agent.memory.MemoryProcessor" href="#openpersona.agent.memory.MemoryProcessor">MemoryProcessor</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.agent.memory.MemoryProcessor.count_memory_content_words" href="#tinytroupe.agent.memory.MemoryProcessor.count_memory_content_words">count_memory_content_words</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.MemoryProcessor.process" href="#tinytroupe.agent.memory.MemoryProcessor.process">process</a></code></li>
+<li><code><a title="openpersona.agent.memory.MemoryProcessor.count_memory_content_words" href="#openpersona.agent.memory.MemoryProcessor.count_memory_content_words">count_memory_content_words</a></code></li>
+<li><code><a title="openpersona.agent.memory.MemoryProcessor.process" href="#openpersona.agent.memory.MemoryProcessor.process">process</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory"><code class="flex name class">
+<dt id="openpersona.agent.memory.EpisodicMemory"><code class="flex name class">
 <span>class <span class="ident">EpisodicMemory</span></span>
 <span>(</span><span>fixed_prefix_length: int = 20, lookback_length: int = 100)</span>
 </code></dt>
@@ -1231,7 +1231,7 @@ messages from memory.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class EpisodicMemory(TinyMemory):
+<pre><code class="python">class EpisodicMemory(AgentMemory):
     &#34;&#34;&#34;
     Provides episodic memory capabilities to an agent. Cognitively, episodic memory is the ability to remember specific events,
     or episodes, in the past. This class provides a simple implementation of episodic memory, where the agent can store and retrieve
@@ -1486,20 +1486,20 @@ messages from memory.</p>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.memory.TinyMemory" href="#tinytroupe.agent.memory.TinyMemory">TinyMemory</a></li>
-<li><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty">TinyMentalFaculty</a></li>
-<li><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
+<li><a title="openpersona.agent.memory.AgentMemory" href="#openpersona.agent.memory.AgentMemory">AgentMemory</a></li>
+<li><a title="openpersona.agent.mental_faculty.MentalFaculty" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty">MentalFaculty</a></li>
+<li><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.MEMORY_BLOCK_OMISSION_INFO"><code class="name">var <span class="ident">MEMORY_BLOCK_OMISSION_INFO</span></code></dt>
+<dt id="openpersona.agent.memory.EpisodicMemory.MEMORY_BLOCK_OMISSION_INFO"><code class="name">var <span class="ident">MEMORY_BLOCK_OMISSION_INFO</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.clear"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.clear"><code class="name flex">
 <span>def <span class="ident">clear</span></span>(<span>self, max_prefix_to_clear: int = None, max_suffix_to_clear: int = None)</span>
 </code></dt>
 <dd>
@@ -1544,7 +1544,7 @@ it clears all values from memory.</p>
         self.memory = []</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.commit_episode"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.commit_episode"><code class="name flex">
 <span>def <span class="ident">commit_episode</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1561,7 +1561,7 @@ it clears all values from memory.</p>
     self.episodic_buffer = []</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.count"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.count"><code class="name flex">
 <span>def <span class="ident">count</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
@@ -1577,7 +1577,7 @@ it clears all values from memory.</p>
     return len(self._memory_with_current_buffer())</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.get_current_episode"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.get_current_episode"><code class="name flex">
 <span>def <span class="ident">get_current_episode</span></span>(<span>self, item_types: list = None) ‑> list</span>
 </code></dt>
 <dd>
@@ -1615,7 +1615,7 @@ it clears all values from memory.</p>
     return result</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.retrieve_first"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.retrieve_first"><code class="name flex">
 <span>def <span class="ident">retrieve_first</span></span>(<span>self, n: int, include_omission_info: bool = True, item_type: str = None) ‑> list</span>
 </code></dt>
 <dd>
@@ -1656,7 +1656,7 @@ it clears all values from memory.</p>
     return memories[:n] + omisssion_info</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.retrieve_last"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.retrieve_last"><code class="name flex">
 <span>def <span class="ident">retrieve_last</span></span>(<span>self, n: int = None, include_omission_info: bool = True, item_type: str = None) ‑> list</span>
 </code></dt>
 <dd>
@@ -1699,7 +1699,7 @@ it clears all values from memory.</p>
     return omisssion_info + memories</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.retrieve_recent"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.retrieve_recent"><code class="name flex">
 <span>def <span class="ident">retrieve_recent</span></span>(<span>self, include_omission_info: bool = True, item_type: str = None) ‑> list</span>
 </code></dt>
 <dd>
@@ -1752,7 +1752,7 @@ it clears all values from memory.</p>
         return fixed_prefix + memories[-remaining_lookback:]</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.EpisodicMemory.retrieve_relevant"><code class="name flex">
+<dt id="openpersona.agent.memory.EpisodicMemory.retrieve_relevant"><code class="name flex">
 <span>def <span class="ident">retrieve_relevant</span></span>(<span>self, relevance_target: str, top_k: int) ‑> list</span>
 </code></dt>
 <dd>
@@ -1771,25 +1771,25 @@ it clears all values from memory.</p>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.agent.memory.TinyMemory" href="#tinytroupe.agent.memory.TinyMemory">TinyMemory</a></b></code>:
+<li><code><b><a title="openpersona.agent.memory.AgentMemory" href="#openpersona.agent.memory.AgentMemory">AgentMemory</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.actions_constraints_prompt" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.actions_definitions_prompt" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.filter_by_item_type" href="#tinytroupe.agent.memory.TinyMemory.filter_by_item_type">filter_by_item_type</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.filter_by_item_types" href="#tinytroupe.agent.memory.TinyMemory.filter_by_item_types">filter_by_item_types</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.from_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.process_action" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.process_action">process_action</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve" href="#tinytroupe.agent.memory.TinyMemory.retrieve">retrieve</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve_all" href="#tinytroupe.agent.memory.TinyMemory.retrieve_all">retrieve_all</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.store" href="#tinytroupe.agent.memory.TinyMemory.store">store</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.store_all" href="#tinytroupe.agent.memory.TinyMemory.store_all">store_all</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.summarize_relevant_via_full_scan" href="#tinytroupe.agent.memory.TinyMemory.summarize_relevant_via_full_scan">summarize_relevant_via_full_scan</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.to_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.actions_constraints_prompt" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.actions_definitions_prompt" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.filter_by_item_type" href="#openpersona.agent.memory.AgentMemory.filter_by_item_type">filter_by_item_type</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.filter_by_item_types" href="#openpersona.agent.memory.AgentMemory.filter_by_item_types">filter_by_item_types</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.from_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.process_action" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.process_action">process_action</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve" href="#openpersona.agent.memory.AgentMemory.retrieve">retrieve</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve_all" href="#openpersona.agent.memory.AgentMemory.retrieve_all">retrieve_all</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.store" href="#openpersona.agent.memory.AgentMemory.store">store</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.store_all" href="#openpersona.agent.memory.AgentMemory.store_all">store_all</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.summarize_relevant_via_full_scan" href="#openpersona.agent.memory.AgentMemory.summarize_relevant_via_full_scan">summarize_relevant_via_full_scan</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.to_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="tinytroupe.agent.memory.MemoryProcessor"><code class="flex name class">
+<dt id="openpersona.agent.memory.MemoryProcessor"><code class="flex name class">
 <span>class <span class="ident">MemoryProcessor</span></span>
 </code></dt>
 <dd>
@@ -1857,12 +1857,12 @@ it clears all values from memory.</p>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.memory.EpisodicConsolidator" href="#tinytroupe.agent.memory.EpisodicConsolidator">EpisodicConsolidator</a></li>
-<li><a title="tinytroupe.agent.memory.ReflectionConsolidator" href="#tinytroupe.agent.memory.ReflectionConsolidator">ReflectionConsolidator</a></li>
+<li><a title="openpersona.agent.memory.EpisodicConsolidator" href="#openpersona.agent.memory.EpisodicConsolidator">EpisodicConsolidator</a></li>
+<li><a title="openpersona.agent.memory.ReflectionConsolidator" href="#openpersona.agent.memory.ReflectionConsolidator">ReflectionConsolidator</a></li>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="tinytroupe.agent.memory.MemoryProcessor.count_memory_content_words"><code class="name flex">
+<dt id="openpersona.agent.memory.MemoryProcessor.count_memory_content_words"><code class="name flex">
 <span>def <span class="ident">count_memory_content_words</span></span>(<span>memories) ‑> int</span>
 </code></dt>
 <dd>
@@ -1910,7 +1910,7 @@ def count_memory_content_words(memories) -&gt; int:
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.agent.memory.MemoryProcessor.process"><code class="name flex">
+<dt id="openpersona.agent.memory.MemoryProcessor.process"><code class="name flex">
 <span>def <span class="ident">process</span></span>(<span>self, memories: list, timestamp: str = None, context: Union[str, list, dict] = None, persona: Union[str, dict] = None, sequential: bool = True) ‑> list</span>
 </code></dt>
 <dd>
@@ -1968,7 +1968,7 @@ def count_memory_content_words(memories) -&gt; int:
 </dd>
 </dl>
 </dd>
-<dt id="tinytroupe.agent.memory.ReflectionConsolidator"><code class="flex name class">
+<dt id="openpersona.agent.memory.ReflectionConsolidator"><code class="flex name class">
 <span>class <span class="ident">ReflectionConsolidator</span></span>
 </code></dt>
 <dd>
@@ -2020,19 +2020,19 @@ def count_memory_content_words(memories) -&gt; int:
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.memory.MemoryProcessor" href="#tinytroupe.agent.memory.MemoryProcessor">MemoryProcessor</a></li>
+<li><a title="openpersona.agent.memory.MemoryProcessor" href="#openpersona.agent.memory.MemoryProcessor">MemoryProcessor</a></li>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.agent.memory.MemoryProcessor" href="#tinytroupe.agent.memory.MemoryProcessor">MemoryProcessor</a></b></code>:
+<li><code><b><a title="openpersona.agent.memory.MemoryProcessor" href="#openpersona.agent.memory.MemoryProcessor">MemoryProcessor</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.agent.memory.MemoryProcessor.count_memory_content_words" href="#tinytroupe.agent.memory.MemoryProcessor.count_memory_content_words">count_memory_content_words</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.MemoryProcessor.process" href="#tinytroupe.agent.memory.MemoryProcessor.process">process</a></code></li>
+<li><code><a title="openpersona.agent.memory.MemoryProcessor.count_memory_content_words" href="#openpersona.agent.memory.MemoryProcessor.count_memory_content_words">count_memory_content_words</a></code></li>
+<li><code><a title="openpersona.agent.memory.MemoryProcessor.process" href="#openpersona.agent.memory.MemoryProcessor.process">process</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="tinytroupe.agent.memory.SemanticMemory"><code class="flex name class">
+<dt id="openpersona.agent.memory.SemanticMemory"><code class="flex name class">
 <span>class <span class="ident">SemanticMemory</span></span>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
@@ -2045,7 +2045,7 @@ of semantic memory, where the agent can store and retrieve semantic information.
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@utils.post_init
-class SemanticMemory(TinyMemory):
+class SemanticMemory(AgentMemory):
     &#34;&#34;&#34;
     In Cognitive Psychology, semantic memory is the memory of meanings, understandings, and other concept-based knowledge unrelated to specific
     experiences. It is not ordered temporally, and it is not about remembering specific events or episodes. This class provides a simple implementation
@@ -2227,41 +2227,41 @@ class SemanticMemory(TinyMemory):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.memory.TinyMemory" href="#tinytroupe.agent.memory.TinyMemory">TinyMemory</a></li>
-<li><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty">TinyMentalFaculty</a></li>
-<li><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
+<li><a title="openpersona.agent.memory.AgentMemory" href="#openpersona.agent.memory.AgentMemory">AgentMemory</a></li>
+<li><a title="openpersona.agent.mental_faculty.MentalFaculty" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty">MentalFaculty</a></li>
+<li><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="tinytroupe.agent.memory.SemanticMemory.serializable_attributes"><code class="name">var <span class="ident">serializable_attributes</span></code></dt>
+<dt id="openpersona.agent.memory.SemanticMemory.serializable_attributes"><code class="name">var <span class="ident">serializable_attributes</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.agent.memory.TinyMemory" href="#tinytroupe.agent.memory.TinyMemory">TinyMemory</a></b></code>:
+<li><code><b><a title="openpersona.agent.memory.AgentMemory" href="#openpersona.agent.memory.AgentMemory">AgentMemory</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.actions_constraints_prompt" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.actions_definitions_prompt" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.filter_by_item_type" href="#tinytroupe.agent.memory.TinyMemory.filter_by_item_type">filter_by_item_type</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.filter_by_item_types" href="#tinytroupe.agent.memory.TinyMemory.filter_by_item_types">filter_by_item_types</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.from_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.process_action" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.process_action">process_action</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve" href="#tinytroupe.agent.memory.TinyMemory.retrieve">retrieve</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve_all" href="#tinytroupe.agent.memory.TinyMemory.retrieve_all">retrieve_all</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve_recent" href="#tinytroupe.agent.memory.TinyMemory.retrieve_recent">retrieve_recent</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve_relevant" href="#tinytroupe.agent.memory.TinyMemory.retrieve_relevant">retrieve_relevant</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.store" href="#tinytroupe.agent.memory.TinyMemory.store">store</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.store_all" href="#tinytroupe.agent.memory.TinyMemory.store_all">store_all</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.summarize_relevant_via_full_scan" href="#tinytroupe.agent.memory.TinyMemory.summarize_relevant_via_full_scan">summarize_relevant_via_full_scan</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.to_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.actions_constraints_prompt" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.actions_definitions_prompt" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.filter_by_item_type" href="#openpersona.agent.memory.AgentMemory.filter_by_item_type">filter_by_item_type</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.filter_by_item_types" href="#openpersona.agent.memory.AgentMemory.filter_by_item_types">filter_by_item_types</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.from_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.process_action" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.process_action">process_action</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve" href="#openpersona.agent.memory.AgentMemory.retrieve">retrieve</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve_all" href="#openpersona.agent.memory.AgentMemory.retrieve_all">retrieve_all</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve_recent" href="#openpersona.agent.memory.AgentMemory.retrieve_recent">retrieve_recent</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve_relevant" href="#openpersona.agent.memory.AgentMemory.retrieve_relevant">retrieve_relevant</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.store" href="#openpersona.agent.memory.AgentMemory.store">store</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.store_all" href="#openpersona.agent.memory.AgentMemory.store_all">store_all</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.summarize_relevant_via_full_scan" href="#openpersona.agent.memory.AgentMemory.summarize_relevant_via_full_scan">summarize_relevant_via_full_scan</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.to_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory"><code class="flex name class">
-<span>class <span class="ident">TinyMemory</span></span>
+<dt id="openpersona.agent.memory.AgentMemory"><code class="flex name class">
+<span>class <span class="ident">AgentMemory</span></span>
 <span>(</span><span>name: str, requires_faculties: list = None)</span>
 </code></dt>
 <dd>
@@ -2278,7 +2278,7 @@ class SemanticMemory(TinyMemory):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TinyMemory(TinyMentalFaculty):
+<pre><code class="python">class AgentMemory(MentalFaculty):
     &#34;&#34;&#34;
     Base class for different types of memory.
     &#34;&#34;&#34;
@@ -2485,17 +2485,17 @@ class SemanticMemory(TinyMemory):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty">TinyMentalFaculty</a></li>
-<li><a title="tinytroupe.utils.json.JsonSerializableRegistry" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
+<li><a title="openpersona.agent.mental_faculty.MentalFaculty" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty">MentalFaculty</a></li>
+<li><a title="openpersona.utils.json.JsonSerializableRegistry" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry">JsonSerializableRegistry</a></li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="tinytroupe.agent.memory.EpisodicMemory" href="#tinytroupe.agent.memory.EpisodicMemory">EpisodicMemory</a></li>
-<li><a title="tinytroupe.agent.memory.SemanticMemory" href="#tinytroupe.agent.memory.SemanticMemory">SemanticMemory</a></li>
+<li><a title="openpersona.agent.memory.EpisodicMemory" href="#openpersona.agent.memory.EpisodicMemory">EpisodicMemory</a></li>
+<li><a title="openpersona.agent.memory.SemanticMemory" href="#openpersona.agent.memory.SemanticMemory">SemanticMemory</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="tinytroupe.agent.memory.TinyMemory.filter_by_item_type"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.filter_by_item_type"><code class="name flex">
 <span>def <span class="ident">filter_by_item_type</span></span>(<span>self, memories: list, item_type: str) ‑> list</span>
 </code></dt>
 <dd>
@@ -2530,7 +2530,7 @@ class SemanticMemory(TinyMemory):
     return [memory for memory in memories if memory[&#34;type&#34;] == item_type]</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.filter_by_item_types"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.filter_by_item_types"><code class="name flex">
 <span>def <span class="ident">filter_by_item_types</span></span>(<span>self, memories: list, item_types: list) ‑> list</span>
 </code></dt>
 <dd>
@@ -2565,7 +2565,7 @@ class SemanticMemory(TinyMemory):
     return [memory for memory in memories if memory[&#34;type&#34;] in item_types]</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.retrieve"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.retrieve"><code class="name flex">
 <span>def <span class="ident">retrieve</span></span>(<span>self, first_n: int, last_n: int, include_omission_info: bool = True, item_type: str = None) ‑> list</span>
 </code></dt>
 <dd>
@@ -2612,7 +2612,7 @@ class SemanticMemory(TinyMemory):
     raise NotImplementedError(&#34;Subclasses must implement this method.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.retrieve_all"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.retrieve_all"><code class="name flex">
 <span>def <span class="ident">retrieve_all</span></span>(<span>self, item_type: str = None) ‑> list</span>
 </code></dt>
 <dd>
@@ -2636,7 +2636,7 @@ class SemanticMemory(TinyMemory):
     raise NotImplementedError(&#34;Subclasses must implement this method.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.retrieve_recent"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.retrieve_recent"><code class="name flex">
 <span>def <span class="ident">retrieve_recent</span></span>(<span>self, item_type: str = None) ‑> list</span>
 </code></dt>
 <dd>
@@ -2660,7 +2660,7 @@ class SemanticMemory(TinyMemory):
     raise NotImplementedError(&#34;Subclasses must implement this method.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.retrieve_relevant"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.retrieve_relevant"><code class="name flex">
 <span>def <span class="ident">retrieve_relevant</span></span>(<span>self, relevance_target: str, top_k=20) ‑> list</span>
 </code></dt>
 <dd>
@@ -2676,7 +2676,7 @@ class SemanticMemory(TinyMemory):
     raise NotImplementedError(&#34;Subclasses must implement this method.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.store"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.store"><code class="name flex">
 <span>def <span class="ident">store</span></span>(<span>self, value: dict) ‑> None</span>
 </code></dt>
 <dd>
@@ -2692,7 +2692,7 @@ class SemanticMemory(TinyMemory):
     self._store(self._preprocess_value_for_storage(value))</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.store_all"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.store_all"><code class="name flex">
 <span>def <span class="ident">store_all</span></span>(<span>self, values: list) ‑> None</span>
 </code></dt>
 <dd>
@@ -2711,7 +2711,7 @@ class SemanticMemory(TinyMemory):
         self.store(value)</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.agent.memory.TinyMemory.summarize_relevant_via_full_scan"><code class="name flex">
+<dt id="openpersona.agent.memory.AgentMemory.summarize_relevant_via_full_scan"><code class="name flex">
 <span>def <span class="ident">summarize_relevant_via_full_scan</span></span>(<span>self, relevance_target: str, batch_size: int = 20, item_type: str = None) ‑> str</span>
 </code></dt>
 <dd>
@@ -2840,13 +2840,13 @@ Also, a too large value may lead to prompt length overflows, though current mode
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty">TinyMentalFaculty</a></b></code>:
+<li><code><b><a title="openpersona.agent.mental_faculty.MentalFaculty" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty">MentalFaculty</a></b></code>:
 <ul class="hlist">
-<li><code><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_constraints_prompt" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
-<li><code><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_definitions_prompt" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
-<li><code><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty.from_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
-<li><code><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty.process_action" href="mental_faculty.html#tinytroupe.agent.mental_faculty.TinyMentalFaculty.process_action">process_action</a></code></li>
-<li><code><a title="tinytroupe.agent.mental_faculty.TinyMentalFaculty.to_json" href="../utils/json.html#tinytroupe.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
+<li><code><a title="openpersona.agent.mental_faculty.MentalFaculty.actions_constraints_prompt" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.actions_constraints_prompt">actions_constraints_prompt</a></code></li>
+<li><code><a title="openpersona.agent.mental_faculty.MentalFaculty.actions_definitions_prompt" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.actions_definitions_prompt">actions_definitions_prompt</a></code></li>
+<li><code><a title="openpersona.agent.mental_faculty.MentalFaculty.from_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.from_json">from_json</a></code></li>
+<li><code><a title="openpersona.agent.mental_faculty.MentalFaculty.process_action" href="mental_faculty.html#openpersona.agent.mental_faculty.MentalFaculty.process_action">process_action</a></code></li>
+<li><code><a title="openpersona.agent.mental_faculty.MentalFaculty.to_json" href="../utils/json.html#openpersona.utils.json.JsonSerializableRegistry.to_json">to_json</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2862,56 +2862,56 @@ Also, a too large value may lead to prompt length overflows, though current mode
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.agent" href="index.html">tinytroupe.agent</a></code></li>
+<li><code><a title="openpersona.agent" href="index.html">openpersona.agent</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tinytroupe.agent.memory.EpisodicConsolidator" href="#tinytroupe.agent.memory.EpisodicConsolidator">EpisodicConsolidator</a></code></h4>
+<h4><code><a title="openpersona.agent.memory.EpisodicConsolidator" href="#openpersona.agent.memory.EpisodicConsolidator">EpisodicConsolidator</a></code></h4>
 </li>
 <li>
-<h4><code><a title="tinytroupe.agent.memory.EpisodicMemory" href="#tinytroupe.agent.memory.EpisodicMemory">EpisodicMemory</a></code></h4>
+<h4><code><a title="openpersona.agent.memory.EpisodicMemory" href="#openpersona.agent.memory.EpisodicMemory">EpisodicMemory</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.MEMORY_BLOCK_OMISSION_INFO" href="#tinytroupe.agent.memory.EpisodicMemory.MEMORY_BLOCK_OMISSION_INFO">MEMORY_BLOCK_OMISSION_INFO</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.clear" href="#tinytroupe.agent.memory.EpisodicMemory.clear">clear</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.commit_episode" href="#tinytroupe.agent.memory.EpisodicMemory.commit_episode">commit_episode</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.count" href="#tinytroupe.agent.memory.EpisodicMemory.count">count</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.get_current_episode" href="#tinytroupe.agent.memory.EpisodicMemory.get_current_episode">get_current_episode</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.retrieve_first" href="#tinytroupe.agent.memory.EpisodicMemory.retrieve_first">retrieve_first</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.retrieve_last" href="#tinytroupe.agent.memory.EpisodicMemory.retrieve_last">retrieve_last</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.retrieve_recent" href="#tinytroupe.agent.memory.EpisodicMemory.retrieve_recent">retrieve_recent</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.EpisodicMemory.retrieve_relevant" href="#tinytroupe.agent.memory.EpisodicMemory.retrieve_relevant">retrieve_relevant</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.MEMORY_BLOCK_OMISSION_INFO" href="#openpersona.agent.memory.EpisodicMemory.MEMORY_BLOCK_OMISSION_INFO">MEMORY_BLOCK_OMISSION_INFO</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.clear" href="#openpersona.agent.memory.EpisodicMemory.clear">clear</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.commit_episode" href="#openpersona.agent.memory.EpisodicMemory.commit_episode">commit_episode</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.count" href="#openpersona.agent.memory.EpisodicMemory.count">count</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.get_current_episode" href="#openpersona.agent.memory.EpisodicMemory.get_current_episode">get_current_episode</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.retrieve_first" href="#openpersona.agent.memory.EpisodicMemory.retrieve_first">retrieve_first</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.retrieve_last" href="#openpersona.agent.memory.EpisodicMemory.retrieve_last">retrieve_last</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.retrieve_recent" href="#openpersona.agent.memory.EpisodicMemory.retrieve_recent">retrieve_recent</a></code></li>
+<li><code><a title="openpersona.agent.memory.EpisodicMemory.retrieve_relevant" href="#openpersona.agent.memory.EpisodicMemory.retrieve_relevant">retrieve_relevant</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.agent.memory.MemoryProcessor" href="#tinytroupe.agent.memory.MemoryProcessor">MemoryProcessor</a></code></h4>
+<h4><code><a title="openpersona.agent.memory.MemoryProcessor" href="#openpersona.agent.memory.MemoryProcessor">MemoryProcessor</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.agent.memory.MemoryProcessor.count_memory_content_words" href="#tinytroupe.agent.memory.MemoryProcessor.count_memory_content_words">count_memory_content_words</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.MemoryProcessor.process" href="#tinytroupe.agent.memory.MemoryProcessor.process">process</a></code></li>
+<li><code><a title="openpersona.agent.memory.MemoryProcessor.count_memory_content_words" href="#openpersona.agent.memory.MemoryProcessor.count_memory_content_words">count_memory_content_words</a></code></li>
+<li><code><a title="openpersona.agent.memory.MemoryProcessor.process" href="#openpersona.agent.memory.MemoryProcessor.process">process</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.agent.memory.ReflectionConsolidator" href="#tinytroupe.agent.memory.ReflectionConsolidator">ReflectionConsolidator</a></code></h4>
+<h4><code><a title="openpersona.agent.memory.ReflectionConsolidator" href="#openpersona.agent.memory.ReflectionConsolidator">ReflectionConsolidator</a></code></h4>
 </li>
 <li>
-<h4><code><a title="tinytroupe.agent.memory.SemanticMemory" href="#tinytroupe.agent.memory.SemanticMemory">SemanticMemory</a></code></h4>
+<h4><code><a title="openpersona.agent.memory.SemanticMemory" href="#openpersona.agent.memory.SemanticMemory">SemanticMemory</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.agent.memory.SemanticMemory.serializable_attributes" href="#tinytroupe.agent.memory.SemanticMemory.serializable_attributes">serializable_attributes</a></code></li>
+<li><code><a title="openpersona.agent.memory.SemanticMemory.serializable_attributes" href="#openpersona.agent.memory.SemanticMemory.serializable_attributes">serializable_attributes</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="tinytroupe.agent.memory.TinyMemory" href="#tinytroupe.agent.memory.TinyMemory">TinyMemory</a></code></h4>
+<h4><code><a title="openpersona.agent.memory.AgentMemory" href="#openpersona.agent.memory.AgentMemory">AgentMemory</a></code></h4>
 <ul class="">
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.filter_by_item_type" href="#tinytroupe.agent.memory.TinyMemory.filter_by_item_type">filter_by_item_type</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.filter_by_item_types" href="#tinytroupe.agent.memory.TinyMemory.filter_by_item_types">filter_by_item_types</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve" href="#tinytroupe.agent.memory.TinyMemory.retrieve">retrieve</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve_all" href="#tinytroupe.agent.memory.TinyMemory.retrieve_all">retrieve_all</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve_recent" href="#tinytroupe.agent.memory.TinyMemory.retrieve_recent">retrieve_recent</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.retrieve_relevant" href="#tinytroupe.agent.memory.TinyMemory.retrieve_relevant">retrieve_relevant</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.store" href="#tinytroupe.agent.memory.TinyMemory.store">store</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.store_all" href="#tinytroupe.agent.memory.TinyMemory.store_all">store_all</a></code></li>
-<li><code><a title="tinytroupe.agent.memory.TinyMemory.summarize_relevant_via_full_scan" href="#tinytroupe.agent.memory.TinyMemory.summarize_relevant_via_full_scan">summarize_relevant_via_full_scan</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.filter_by_item_type" href="#openpersona.agent.memory.AgentMemory.filter_by_item_type">filter_by_item_type</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.filter_by_item_types" href="#openpersona.agent.memory.AgentMemory.filter_by_item_types">filter_by_item_types</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve" href="#openpersona.agent.memory.AgentMemory.retrieve">retrieve</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve_all" href="#openpersona.agent.memory.AgentMemory.retrieve_all">retrieve_all</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve_recent" href="#openpersona.agent.memory.AgentMemory.retrieve_recent">retrieve_recent</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.retrieve_relevant" href="#openpersona.agent.memory.AgentMemory.retrieve_relevant">retrieve_relevant</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.store" href="#openpersona.agent.memory.AgentMemory.store">store</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.store_all" href="#openpersona.agent.memory.AgentMemory.store_all">store_all</a></code></li>
+<li><code><a title="openpersona.agent.memory.AgentMemory.summarize_relevant_via_full_scan" href="#openpersona.agent.memory.AgentMemory.summarize_relevant_via_full_scan">summarize_relevant_via_full_scan</a></code></li>
 </ul>
 </li>
 </ul>

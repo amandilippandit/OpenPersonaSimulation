@@ -8,8 +8,8 @@ import os
 import pytest
 from pydantic import BaseModel
 
-from tinytroupe.clients import client, force_api_cache
-from tinytroupe import config_manager
+from openpersona.clients import client, force_api_cache
+from openpersona import config_manager
 
 
 class TestAPICacheIntegration:

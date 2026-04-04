@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>tinytroupe.utils.semantics API documentation</title>
+<title>openpersona.utils.semantics API documentation</title>
 <meta name="description" content="Semantic-related mechanisms." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tinytroupe.utils.semantics</code></h1>
+<h1 class="title">Module <code>openpersona.utils.semantics</code></h1>
 </header>
 <section id="section-intro">
 <p>Semantic-related mechanisms.</p>
@@ -30,7 +30,7 @@
 <pre><code class="python">&#34;&#34;&#34;
 Semantic-related mechanisms.
 &#34;&#34;&#34;
-from tinytroupe.utils import llm
+from openpersona.utils import llm
 
 @llm()
 def correct_according_to_rule(observation, rules) -&gt; str:
@@ -302,7 +302,7 @@ def compute_semantic_proximity(text1: str, text2: str, context: str = None) -&gt
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="tinytroupe.utils.semantics.accumulate_based_on_query"><code class="name flex">
+<dt id="openpersona.utils.semantics.accumulate_based_on_query"><code class="name flex">
 <span>def <span class="ident">accumulate_based_on_query</span></span>(<span>query: str, new_entry: str, current_accumulation: str, context=None) ‑> str</span>
 </code></dt>
 <dd>
@@ -385,7 +385,7 @@ def accumulate_based_on_query(query: str, new_entry:str, current_accumulation:st
     # llm decorator will handle the body of this function</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.semantics.combine_texts"><code class="name flex">
+<dt id="openpersona.utils.semantics.combine_texts"><code class="name flex">
 <span>def <span class="ident">combine_texts</span></span>(<span>*texts) ‑> str</span>
 </code></dt>
 <dd>
@@ -438,7 +438,7 @@ def combine_texts(*texts) -&gt; str:
     # llm decorator will handle the body of this function</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.semantics.compute_semantic_proximity"><code class="name flex">
+<dt id="openpersona.utils.semantics.compute_semantic_proximity"><code class="name flex">
 <span>def <span class="ident">compute_semantic_proximity</span></span>(<span>text1: str, text2: str, context: str = None) ‑> float</span>
 </code></dt>
 <dd>
@@ -496,7 +496,7 @@ def compute_semantic_proximity(text1: str, text2: str, context: str = None) -&gt
     # llm decorator will handle the body of this function</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.semantics.correct_according_to_rule"><code class="name flex">
+<dt id="openpersona.utils.semantics.correct_according_to_rule"><code class="name flex">
 <span>def <span class="ident">correct_according_to_rule</span></span>(<span>observation, rules) ‑> str</span>
 </code></dt>
 <dd>
@@ -556,7 +556,7 @@ def correct_according_to_rule(observation, rules) -&gt; str:
     # llm decorator will handle the body of this function</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.semantics.extract_information_from_text"><code class="name flex">
+<dt id="openpersona.utils.semantics.extract_information_from_text"><code class="name flex">
 <span>def <span class="ident">extract_information_from_text</span></span>(<span>query: str, text: str, context: str = None) ‑> str</span>
 </code></dt>
 <dd>
@@ -605,7 +605,7 @@ def extract_information_from_text(query: str, text: str, context:str=None) -&gt;
     # llm decorator will handle the body of this function</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.semantics.extract_observed_vs_expected_rules"><code class="name flex">
+<dt id="openpersona.utils.semantics.extract_observed_vs_expected_rules"><code class="name flex">
 <span>def <span class="ident">extract_observed_vs_expected_rules</span></span>(<span>description)</span>
 </code></dt>
 <dd>
@@ -714,7 +714,7 @@ def extract_observed_vs_expected_rules(description):
     # llm decorator will handle the body of this function</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.semantics.formulate_corrective_rule"><code class="name flex">
+<dt id="openpersona.utils.semantics.formulate_corrective_rule"><code class="name flex">
 <span>def <span class="ident">formulate_corrective_rule</span></span>(<span>feedback) ‑> str</span>
 </code></dt>
 <dd>
@@ -774,7 +774,7 @@ def formulate_corrective_rule(feedback) -&gt; str:
     # llm decorator will handle the body of this function</code></pre>
 </details>
 </dd>
-<dt id="tinytroupe.utils.semantics.restructure_as_observed_vs_expected"><code class="name flex">
+<dt id="openpersona.utils.semantics.restructure_as_observed_vs_expected"><code class="name flex">
 <span>def <span class="ident">restructure_as_observed_vs_expected</span></span>(<span>description) ‑> str</span>
 </code></dt>
 <dd>
@@ -879,19 +879,19 @@ def restructure_as_observed_vs_expected(description) -&gt; str:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="tinytroupe.utils" href="index.html">tinytroupe.utils</a></code></li>
+<li><code><a title="openpersona.utils" href="index.html">openpersona.utils</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="tinytroupe.utils.semantics.accumulate_based_on_query" href="#tinytroupe.utils.semantics.accumulate_based_on_query">accumulate_based_on_query</a></code></li>
-<li><code><a title="tinytroupe.utils.semantics.combine_texts" href="#tinytroupe.utils.semantics.combine_texts">combine_texts</a></code></li>
-<li><code><a title="tinytroupe.utils.semantics.compute_semantic_proximity" href="#tinytroupe.utils.semantics.compute_semantic_proximity">compute_semantic_proximity</a></code></li>
-<li><code><a title="tinytroupe.utils.semantics.correct_according_to_rule" href="#tinytroupe.utils.semantics.correct_according_to_rule">correct_according_to_rule</a></code></li>
-<li><code><a title="tinytroupe.utils.semantics.extract_information_from_text" href="#tinytroupe.utils.semantics.extract_information_from_text">extract_information_from_text</a></code></li>
-<li><code><a title="tinytroupe.utils.semantics.extract_observed_vs_expected_rules" href="#tinytroupe.utils.semantics.extract_observed_vs_expected_rules">extract_observed_vs_expected_rules</a></code></li>
-<li><code><a title="tinytroupe.utils.semantics.formulate_corrective_rule" href="#tinytroupe.utils.semantics.formulate_corrective_rule">formulate_corrective_rule</a></code></li>
-<li><code><a title="tinytroupe.utils.semantics.restructure_as_observed_vs_expected" href="#tinytroupe.utils.semantics.restructure_as_observed_vs_expected">restructure_as_observed_vs_expected</a></code></li>
+<li><code><a title="openpersona.utils.semantics.accumulate_based_on_query" href="#openpersona.utils.semantics.accumulate_based_on_query">accumulate_based_on_query</a></code></li>
+<li><code><a title="openpersona.utils.semantics.combine_texts" href="#openpersona.utils.semantics.combine_texts">combine_texts</a></code></li>
+<li><code><a title="openpersona.utils.semantics.compute_semantic_proximity" href="#openpersona.utils.semantics.compute_semantic_proximity">compute_semantic_proximity</a></code></li>
+<li><code><a title="openpersona.utils.semantics.correct_according_to_rule" href="#openpersona.utils.semantics.correct_according_to_rule">correct_according_to_rule</a></code></li>
+<li><code><a title="openpersona.utils.semantics.extract_information_from_text" href="#openpersona.utils.semantics.extract_information_from_text">extract_information_from_text</a></code></li>
+<li><code><a title="openpersona.utils.semantics.extract_observed_vs_expected_rules" href="#openpersona.utils.semantics.extract_observed_vs_expected_rules">extract_observed_vs_expected_rules</a></code></li>
+<li><code><a title="openpersona.utils.semantics.formulate_corrective_rule" href="#openpersona.utils.semantics.formulate_corrective_rule">formulate_corrective_rule</a></code></li>
+<li><code><a title="openpersona.utils.semantics.restructure_as_observed_vs_expected" href="#openpersona.utils.semantics.restructure_as_observed_vs_expected">restructure_as_observed_vs_expected</a></code></li>
 </ul>
 </li>
 </ul>

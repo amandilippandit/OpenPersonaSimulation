@@ -1,15 +1,15 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/') # ensures that the package is imported from the parent directory, not the Python installation
+sys.path.insert(0, '../../openpersona/') # ensures that the package is imported from the parent directory, not the Python installation
 sys.path.insert(0, '../../') # ensures that the package is imported from the parent directory, not the Python installation
 sys.path.insert(0, '..') # ensures that the package is imported from the parent directory, not the Python installation
 
-from tinytroupe.examples import create_oscar_the_architect, create_lisa_the_data_scientist
-from tinytroupe.environment import TinyWorld
-from tinytroupe.extraction.results_reporter import ResultsReporter
+from openpersona.examples import create_oscar_the_architect, create_lisa_the_data_scientist
+from openpersona.environment import World
+from openpersona.extraction.results_reporter import ResultsReporter
 
 from testing_utils import *
 
@@ -50,8 +50,8 @@ def test_report_from_agents(setup):
     # Make assertions more flexible for LLM-generated content
     assert "Oscar" in consolidated_report or "Lisa" in consolidated_report, "Consolidated report should mention the agents"
     
-    # Test with TinyWorld input
-    world = TinyWorld("Test World", agents)
+    # Test with World input
+    world = World("Test World", agents)
     world_report = reporter.report_from_agents(
         world,
         reporting_task="Describe your role in the simulation.",

@@ -5,16 +5,16 @@ import numpy as np
 from collections import Counter
 from unittest.mock import Mock, patch
 
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')  # ensures that the package is imported from the parent directory
+sys.path.insert(0, '../../openpersona/')  # ensures that the package is imported from the parent directory
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.profiling import Profiler
-from tinytroupe.agent import TinyPerson
-from tinytroupe.examples import create_oscar_the_architect, create_lisa_the_data_scientist
+from openpersona.profiling import Profiler
+from openpersona.agent import Persona
+from openpersona.examples import create_oscar_the_architect, create_lisa_the_data_scientist
 
 from testing_utils import *
 
@@ -128,7 +128,7 @@ class TestProfiler:
         assert profiler._get_nested_attribute(agent, "nonexistent") is None
         assert profiler._get_nested_attribute(agent, "occupation.nonexistent") is None
         
-        # Test with mock TinyPerson having a .get() method
+        # Test with mock Persona having a .get() method
         class MockAgent:
             def get(self, path):
                 data = {
@@ -412,13 +412,13 @@ class TestProfiler:
         # Should handle mixed types gracefully
         assert len(profiler.agents) == 3
 
-    @pytest.mark.skipif(TinyPerson is None, reason="TinyPerson not available")
+    @pytest.mark.skipif(Persona is None, reason="Persona not available")
     def test_tinyperson_integration(self, profiler):
-        """Test integration with actual TinyPerson objects."""
+        """Test integration with actual Persona objects."""
         # Clear any existing agents to avoid name conflicts
-        TinyPerson.clear_agents()
+        Persona.clear_agents()
         
-        # Create TinyPerson objects
+        # Create Persona objects
         oscar = create_oscar_the_architect()
         lisa = create_lisa_the_data_scientist()
         
@@ -429,7 +429,7 @@ class TestProfiler:
         
         assert len(profiler.agents) == 2
         
-        # Check that TinyPerson-specific data was extracted
+        # Check that Persona-specific data was extracted
         # Agents are stored as-is, not converted to dicts
         assert hasattr(profiler.agents[0], 'get') or isinstance(profiler.agents[0], dict)
 
@@ -481,7 +481,7 @@ class TestProfiler:
                 self._data = data
                 
             def get(self, path):
-                """Mock TinyPerson.get() method with dot notation support"""
+                """Mock Persona.get() method with dot notation support"""
                 keys = path.split('.')
                 value = self._data
                 for key in keys:

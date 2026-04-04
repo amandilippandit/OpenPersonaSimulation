@@ -1,22 +1,22 @@
 import pytest
 import logging
-logger = logging.getLogger("tinytroupe")
+logger = logging.getLogger("openpersona")
 
 import sys
-sys.path.insert(0, '../../tinytroupe/')
+sys.path.insert(0, '../../openpersona/')
 sys.path.insert(0, '../../')
 sys.path.insert(0, '..')
 
-from tinytroupe.environment.tiny_social_network import TinySocialNetwork
-from tinytroupe.examples import create_oscar_the_architect, create_lisa_the_data_scientist, create_marcos_the_physician
-from tinytroupe.agent import TinyPerson
+from openpersona.environment.social_network import SocialNetwork
+from openpersona.examples import create_oscar_the_architect, create_lisa_the_data_scientist, create_marcos_the_physician
+from openpersona.agent import Persona
 from testing_utils import *
 
-def test_tiny_social_network_initialization(setup):
-    """Test TinySocialNetwork initialization."""
+def test_social_network_initialization(setup):
+    """Test SocialNetwork initialization."""
     
     # Test default initialization
-    network = TinySocialNetwork("Test Network")
+    network = SocialNetwork("Test Network")
     assert network.name == "Test Network"
     assert network.broadcast_if_no_target == True
     assert hasattr(network, 'relations')
@@ -24,14 +24,14 @@ def test_tiny_social_network_initialization(setup):
     assert len(network.relations) == 0
     
     # Test initialization with custom parameters
-    network = TinySocialNetwork("Custom Network", broadcast_if_no_target=False)
+    network = SocialNetwork("Custom Network", broadcast_if_no_target=False)
     assert network.name == "Custom Network"
     assert network.broadcast_if_no_target == False
 
-def test_tiny_social_network_add_relation(setup):
+def test_social_network_add_relation(setup):
     """Test adding relations between agents."""
     
-    network = TinySocialNetwork("Relation Test")
+    network = SocialNetwork("Relation Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     
@@ -47,10 +47,10 @@ def test_tiny_social_network_add_relation(setup):
     assert oscar in network.agents
     assert lisa in network.agents
 
-def test_tiny_social_network_multiple_relations(setup):
+def test_social_network_multiple_relations(setup):
     """Test adding multiple relations and multiple agents."""
     
-    network = TinySocialNetwork("Multiple Relations Test")
+    network = SocialNetwork("Multiple Relations Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     marcos = create_marcos_the_physician()
@@ -79,10 +79,10 @@ def test_tiny_social_network_multiple_relations(setup):
     assert lisa in network.agents
     assert marcos in network.agents
 
-def test_tiny_social_network_is_in_relation_with(setup):
+def test_social_network_is_in_relation_with(setup):
     """Test checking if agents are in relations."""
     
-    network = TinySocialNetwork("Relation Check Test")
+    network = SocialNetwork("Relation Check Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     marcos = create_marcos_the_physician()
@@ -106,10 +106,10 @@ def test_tiny_social_network_is_in_relation_with(setup):
     assert network.is_in_relation_with(lisa, marcos) == True  # They have a friends relation
     assert network.is_in_relation_with(oscar, marcos) == False  # No relation between them
 
-def test_tiny_social_network_agent_accessibility(setup):
+def test_social_network_agent_accessibility(setup):
     """Test that relations affect agent accessibility."""
     
-    network = TinySocialNetwork("Accessibility Test")
+    network = SocialNetwork("Accessibility Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     marcos = create_marcos_the_physician()
@@ -126,7 +126,7 @@ def test_tiny_social_network_agent_accessibility(setup):
     network._update_agents_contexts()
     
     # Now oscar and lisa should be accessible to each other
-    # (Exact verification depends on TinyPerson.accessible_agents implementation)
+    # (Exact verification depends on Persona.accessible_agents implementation)
     assert oscar in lisa.accessible_agents
     assert lisa in oscar.accessible_agents
     
@@ -134,10 +134,10 @@ def test_tiny_social_network_agent_accessibility(setup):
     assert marcos not in oscar.accessible_agents
     assert marcos not in lisa.accessible_agents
 
-def test_tiny_social_network_reach_out_action(setup):
+def test_social_network_reach_out_action(setup):
     """Test that agents can communicate when they have relations."""
     
-    network = TinySocialNetwork("Reach Out Test")
+    network = SocialNetwork("Reach Out Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     marcos = create_marcos_the_physician()
@@ -157,10 +157,10 @@ def test_tiny_social_network_reach_out_action(setup):
     assert lisa in oscar.accessible_agents, "Lisa should be accessible to Oscar"
     assert oscar in lisa.accessible_agents, "Oscar should be accessible to Lisa"
 
-def test_tiny_social_network_step_function(setup):
+def test_social_network_step_function(setup):
     """Test the network step function."""
     
-    network = TinySocialNetwork("Step Test")
+    network = SocialNetwork("Step Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     
@@ -173,10 +173,10 @@ def test_tiny_social_network_step_function(setup):
     assert oscar in lisa.accessible_agents
     assert lisa in oscar.accessible_agents
 
-def test_tiny_social_network_serialization(setup):
-    """Test TinySocialNetwork serialization/deserialization."""
+def test_social_network_serialization(setup):
+    """Test SocialNetwork serialization/deserialization."""
     
-    network = TinySocialNetwork("Serialization Test")
+    network = SocialNetwork("Serialization Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     
@@ -189,10 +189,10 @@ def test_tiny_social_network_serialization(setup):
     assert "colleagues" in network.relations
     assert "friends" in network.relations
 
-def test_tiny_social_network_chaining(setup):
+def test_social_network_chaining(setup):
     """Test method chaining for add_relation."""
     
-    network = TinySocialNetwork("Chaining Test")
+    network = SocialNetwork("Chaining Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     marcos = create_marcos_the_physician()
@@ -211,10 +211,10 @@ def test_tiny_social_network_chaining(setup):
     assert "friends" in network.relations
     assert "acquaintances" in network.relations
 
-def test_tiny_social_network_edge_cases(setup):
+def test_social_network_edge_cases(setup):
     """Test edge cases and error handling."""
     
-    network = TinySocialNetwork("Edge Cases Test")
+    network = SocialNetwork("Edge Cases Test")
     oscar = create_oscar_the_architect()
     
     # Test adding relation with same agent (self-relation)
@@ -230,10 +230,10 @@ def test_tiny_social_network_edge_cases(setup):
     # Should have two entries for the same relation
     assert len(network.relations["colleagues"]) == 2
 
-def test_tiny_social_network_empty_relations(setup):
+def test_social_network_empty_relations(setup):
     """Test network behavior with no relations."""
     
-    network = TinySocialNetwork("Empty Relations Test")
+    network = SocialNetwork("Empty Relations Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     
@@ -250,10 +250,10 @@ def test_tiny_social_network_empty_relations(setup):
     # Test step with no relations
     network._step()  # Should not crash
 
-def test_tiny_social_network_nonexistent_relation_check(setup):
+def test_social_network_nonexistent_relation_check(setup):
     """Test checking for relations that don't exist."""
     
-    network = TinySocialNetwork("Nonexistent Relation Test")
+    network = SocialNetwork("Nonexistent Relation Test")
     oscar = create_oscar_the_architect()
     lisa = create_lisa_the_data_scientist()
     
@@ -267,10 +267,10 @@ def test_tiny_social_network_nonexistent_relation_check(setup):
     assert network.is_in_relation_with(oscar, marcos, "colleagues") == False
     assert network.is_in_relation_with(oscar, marcos) == False
 
-def test_tiny_social_network_large_scale(setup):
+def test_social_network_large_scale(setup):
     """Test network with many agents and relations."""
     
-    network = TinySocialNetwork("Large Scale Test")
+    network = SocialNetwork("Large Scale Test")
     
     # Create multiple unique agents
     agents = []
