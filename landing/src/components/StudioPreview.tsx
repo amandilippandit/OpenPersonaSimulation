@@ -249,18 +249,12 @@ export default function StudioPreview() {
           {/* LEFT: Chat conversation + input */}
           <div className="flex flex-col border-r border-slate-100">
             <div className="flex-1 p-5 md:p-6 space-y-5">
-              {/* User message — avatar right, orange-tinted bubble, right-aligned row */}
+              {/* User message — no avatar, right-aligned */}
               <div
-                className={`flex flex-row-reverse gap-3 transition-all duration-500 ${
+                className={`flex justify-end transition-all duration-500 ${
                   stage >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                 }`}
               >
-                <div className="w-7 h-7 rounded-full bg-orange-100 border border-orange-200 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-3.5 h-3.5 text-orange-600" viewBox="0 0 16 16" fill="none">
-                    <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M2.5 14a5.5 5.5 0 0111 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                </div>
                 <div className="flex flex-col items-end gap-2 max-w-[85%]">
                   <div className="rounded-lg bg-orange-50/70 border border-orange-100 px-3 py-2">
                     <div
