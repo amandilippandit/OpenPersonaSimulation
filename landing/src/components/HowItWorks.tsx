@@ -1,152 +1,220 @@
+"use client";
+
 import RevealOnScroll from "./RevealOnScroll";
+
+// --- Step 1: Audience chips fanned out ---
+function AudienceVisual() {
+  const chips = [
+    { initials: "MC", name: "Maya", tag: "Gen Z", rotate: -8, offset: -36, z: 1, accent: false },
+    { initials: "BT", name: "Ben", tag: "Value", rotate: -2, offset: -12, z: 2, accent: false },
+    { initials: "PK", name: "Priya", tag: "Luxury", rotate: 3, offset: 12, z: 4, accent: true },
+    { initials: "DW", name: "David", tag: "Early", rotate: 9, offset: 36, z: 3, accent: false },
+  ];
+  return (
+    <div className="relative h-36 flex items-center justify-center overflow-hidden">
+      {chips.map((chip, i) => (
+        <div
+          key={chip.initials}
+          className="absolute transition-transform"
+          style={{
+            transform: `translateX(${chip.offset}px) rotate(${chip.rotate}deg)`,
+            zIndex: chip.z,
+          }}
+        >
+          <div
+            className={`w-[88px] rounded-lg border px-2 py-2 shadow-md ${
+              chip.accent
+                ? "bg-orange-50 border-orange-300"
+                : "bg-white border-slate-200"
+            }`}
+          >
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <div
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-bold ${
+                  chip.accent ? "bg-orange-500 text-white" : "bg-slate-100 text-slate-600"
+                }`}
+              >
+                {chip.initials}
+              </div>
+              <span className="text-[10px] font-semibold text-slate-900">{chip.name}</span>
+            </div>
+            <div
+              className={`inline-block px-1.5 py-0.5 rounded text-[8px] font-mono ${
+                chip.accent ? "bg-white text-orange-700" : "bg-slate-50 text-slate-500"
+              }`}
+            >
+              {chip.tag}
+            </div>
+          </div>
+        </div>
+      ))}
+      {/* Ambient dots */}
+      <div className="absolute top-2 left-4 w-1 h-1 rounded-full bg-slate-200" />
+      <div className="absolute top-4 right-6 w-1 h-1 rounded-full bg-slate-200" />
+      <div className="absolute bottom-3 right-4 w-1 h-1 rounded-full bg-slate-300" />
+    </div>
+  );
+}
+
+// --- Step 2: Broadcast ripples ---
+function BroadcastVisual() {
+  return (
+    <div className="relative h-36 flex items-center justify-center">
+      <svg viewBox="0 0 200 140" className="w-full h-full">
+        <defs>
+          <radialGradient id="broadcastGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#f97316" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        {/* Ripples */}
+        {[0, 1, 2].map((i) => (
+          <circle
+            key={i}
+            cx="100"
+            cy="70"
+            r="20"
+            fill="none"
+            stroke="#f97316"
+            strokeWidth="0.8"
+            opacity="0.3"
+            style={{
+              animation: `ripple 3s cubic-bezier(0.16, 1, 0.3, 1) ${i * 1}s infinite`,
+            }}
+          />
+        ))}
+        {/* Outer ring of recipient dots */}
+        {Array.from({ length: 12 }).map((_, i) => {
+          const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
+          const x = 100 + Math.cos(angle) * 55;
+          const y = 70 + Math.sin(angle) * 45;
+          return (
+            <g key={i}>
+              <line
+                x1="100"
+                y1="70"
+                x2={x}
+                y2={y}
+                stroke="#e2e8f0"
+                strokeWidth="0.5"
+                strokeDasharray="1 2"
+              />
+              <circle
+                cx={x}
+                cy={y}
+                r="3"
+                fill={i === 4 ? "#f97316" : i === 8 ? "#64748b" : "#cbd5e1"}
+              />
+            </g>
+          );
+        })}
+        {/* Central ad card */}
+        <g>
+          <rect x="75" y="52" width="50" height="36" rx="4" fill="url(#broadcastGrad)" />
+          <rect
+            x="75"
+            y="52"
+            width="50"
+            height="36"
+            rx="4"
+            fill="#0f172a"
+            stroke="#1e293b"
+          />
+          <text x="100" y="68" textAnchor="middle" fontSize="6" fill="#f97316" fontFamily="JetBrains Mono, monospace" fontWeight="600">AD</text>
+          <rect x="82" y="72" width="36" height="1.5" rx="0.75" fill="#475569" />
+          <rect x="82" y="76" width="28" height="1.5" rx="0.75" fill="#334155" />
+          <rect x="82" y="80" width="32" height="1.5" rx="0.75" fill="#334155" />
+        </g>
+        {/* Pulse center dot */}
+        <circle cx="100" cy="70" r="2" fill="#f97316" />
+      </svg>
+    </div>
+  );
+}
+
+// --- Step 3: Insight dashboard ---
+function InsightsVisual() {
+  const bars = [
+    { label: "luxury", value: 86, color: "bg-emerald-400" },
+    { label: "early", value: 72, color: "bg-blue-400" },
+    { label: "gen z", value: 64, color: "bg-orange-400" },
+    { label: "value", value: 32, color: "bg-amber-400" },
+  ];
+  return (
+    <div className="relative h-36 flex items-center justify-center p-2">
+      <div className="w-full rounded-lg border border-slate-200 bg-white shadow-sm p-3">
+        {/* Headline metric */}
+        <div className="flex items-baseline justify-between mb-3 pb-2.5 border-b border-slate-100">
+          <div>
+            <div className="text-[8px] font-mono text-slate-400 uppercase tracking-wider leading-none mb-1">
+              avg intent
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-xl font-mono font-bold text-slate-900 tabular-nums leading-none">
+                6.3
+              </span>
+              <span className="text-[10px] font-mono text-slate-400">/10</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-100">
+            <svg className="w-2 h-2 text-emerald-600" viewBox="0 0 8 8" fill="none">
+              <path d="M1 5l2-2 4 4M3 3h4v4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+            </svg>
+            <span className="text-[8px] font-mono text-emerald-700 font-semibold">+12%</span>
+          </div>
+        </div>
+        {/* Segment bars */}
+        <div className="space-y-1.5">
+          {bars.map((b) => (
+            <div key={b.label} className="flex items-center gap-2">
+              <span className="text-[9px] font-mono text-slate-500 w-10 truncate">{b.label}</span>
+              <div className="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className={`h-full ${b.color} rounded-full`}
+                  style={{ width: `${b.value}%` }}
+                />
+              </div>
+              <span className="text-[9px] font-mono font-semibold text-slate-700 tabular-nums w-6 text-right">
+                {(b.value / 10).toFixed(1)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const STEPS = [
   {
     num: "01",
     tag: "define",
-    title: "build your audience",
-    desc: "Compose consumers from demographic data, behavioral segments, and real-world profiles. Load pre-built personas or generate from scratch.",
-    code: `from openpersona import Persona
-
-maya = Persona("Maya Chen")
-maya.define("age", 24)
-maya.define("location", "Los Angeles")
-maya.define("segment", "Gen Z Creator")
-maya.define("income", "$55k")
-maya.define("channels", ["TikTok", "IG"])
-maya.define("price_sensitivity", "medium")`,
-    preview: {
-      kind: "persona",
-      data: {
-        initials: "MC",
-        name: "Maya Chen, 24",
-        segment: "Gen Z Creator",
-        attrs: [
-          { label: "LA", icon: "⊙" },
-          { label: "$55k", icon: "◉" },
-          { label: "TikTok · IG", icon: "∷" },
-        ],
-      },
-    },
+    title: "cast your audience",
+    desc: "Compose consumers from real demographic data and behavioral segments. Load pre-built personas or generate new ones at scale.",
+    visual: <AudienceVisual />,
+    accent: "bg-blue-500",
   },
   {
     num: "02",
     tag: "broadcast",
-    title: "show them content",
-    desc: "Deliver your ad, landing page, or campaign copy to every persona. Each consumer reacts independently based on who they are.",
-    code: `from openpersona import World
-
-ad_copy = """Sleep Better Tonight.
-Meet ZenMatt — $899 · 90-night trial"""
-
-world = World("focus_group", audience)
-world.broadcast(ad_copy)
-world.run(steps=3)  # 3 rounds of reactions`,
-    preview: {
-      kind: "broadcast",
-      data: null,
-    },
+    title: "deliver content",
+    desc: "Send your ad, landing page, or campaign to every consumer simultaneously. Each reacts independently based on who they are.",
+    visual: <BroadcastVisual />,
+    accent: "bg-orange-500",
   },
   {
     num: "03",
-    tag: "extract",
-    title: "extract insights",
-    desc: "Pull structured feedback: purchase intent, price perception, channel fit, concerns — broken down by segment.",
-    code: `from openpersona import Extractor
-
-results = Extractor().extract(
-    audience,
-    fields=[
-        "intent_1_to_10",
-        "top_concern",
-        "would_share",
-    ]
-)`,
-    preview: {
-      kind: "results",
-      data: null,
-    },
+    tag: "distill",
+    title: "read the signal",
+    desc: "Pull structured, segment-aware feedback: purchase intent, price perception, top concerns, channel fit — ready for your team.",
+    visual: <InsightsVisual />,
+    accent: "bg-emerald-500",
   },
 ];
 
-const ACCENTS: Record<string, string> = {
-  "01": "bg-blue-500",
-  "02": "bg-orange-500",
-  "03": "bg-emerald-500",
-};
-
-function PersonaPreview({ data }: { data: any }) {
-  return (
-    <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
-      <div className="flex items-center gap-2 mb-1.5">
-        <div className="w-7 h-7 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-[10px] font-bold text-orange-600 flex-shrink-0">
-          {data.initials}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-[11px] font-semibold text-slate-900 leading-tight truncate">{data.name}</div>
-          <div className="text-[9px] text-slate-500 font-mono truncate">{data.segment}</div>
-        </div>
-      </div>
-      <div className="flex flex-wrap gap-1">
-        {data.attrs.map((a: any) => (
-          <div key={a.label} className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-50 border border-slate-100">
-            <span className="text-[8px] text-slate-400">{a.icon}</span>
-            <span className="text-[9px] font-mono text-slate-600">{a.label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function BroadcastPreview() {
-  return (
-    <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
-      <div className="text-[8px] font-mono text-slate-400 uppercase tracking-wider mb-1.5">broadcasting</div>
-      <div className="text-[10px] text-slate-700 italic leading-snug mb-2 border-l-2 border-orange-300 pl-2">
-        Sleep Better Tonight. $899 · 90-night trial
-      </div>
-      <div className="flex items-center justify-between text-[9px] font-mono">
-        <span className="text-slate-500">→ 24 consumers</span>
-        <div className="flex gap-0.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse-dot" />
-          <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse-dot" style={{ animationDelay: "150ms" }} />
-          <span className="w-1.5 h-1.5 rounded-full bg-orange-300 animate-pulse-dot" style={{ animationDelay: "300ms" }} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ResultsPreview() {
-  const rows = [
-    { name: "Maya", intent: 6.4, color: "bg-blue-400" },
-    { name: "Priya", intent: 8.6, color: "bg-emerald-400" },
-    { name: "Ben", intent: 3.2, color: "bg-amber-400" },
-  ];
-  return (
-    <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
-      <div className="text-[8px] font-mono text-slate-400 uppercase tracking-wider mb-1.5">intent scores</div>
-      <div className="space-y-1.5">
-        {rows.map((r) => (
-          <div key={r.name} className="flex items-center gap-2">
-            <span className="text-[10px] text-slate-700 w-10 truncate">{r.name}</span>
-            <div className="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
-              <div className={`h-full ${r.color} rounded-full`} style={{ width: `${(r.intent / 10) * 100}%` }} />
-            </div>
-            <span className="text-[10px] font-mono font-semibold text-slate-900 tabular-nums w-6 text-right">
-              {r.intent.toFixed(1)}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function HowItWorks() {
   return (
-    <section className="relative px-6 py-32 border-t border-slate-200/70 bg-[#fafafa]">
+    <section id="how-it-works" className="relative px-6 py-32 border-t border-slate-200/70 bg-[#fafafa]">
       <div className="max-w-6xl mx-auto">
         <RevealOnScroll>
           <div className="mb-16 max-w-2xl">
@@ -160,39 +228,26 @@ export default function HowItWorks() {
         <div className="grid md:grid-cols-3 gap-4">
           {STEPS.map((step, i) => (
             <RevealOnScroll key={step.num} delay={i * 120}>
-              <div className="card-light p-6 h-full flex flex-col">
-                {/* Number + tag */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className={`w-1.5 h-1.5 rounded-full ${ACCENTS[step.num]}`} />
-                    <span className="text-xs font-mono text-slate-400">{step.num}</span>
+              <div className="card-light overflow-hidden h-full flex flex-col">
+                {/* Visual area (top) */}
+                <div className="relative bg-gradient-to-b from-slate-50 to-white border-b border-slate-100">
+                  {step.visual}
+                </div>
+
+                {/* Text content (bottom) */}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className={`w-1.5 h-1.5 rounded-full ${step.accent}`} />
+                      <span className="text-xs font-mono text-slate-400">{step.num}</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+                      {step.tag}
+                    </span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                    {step.tag}
-                  </span>
+                  <h3 className="text-lg font-mono text-slate-900 mb-2 leading-tight">{step.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
                 </div>
-
-                {/* Title + description */}
-                <h3 className="text-lg font-mono text-slate-900 mb-2 leading-tight">{step.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed mb-4 flex-grow">{step.desc}</p>
-
-                {/* Code */}
-                <pre className="text-[10px] font-mono text-slate-200 bg-slate-900 border border-slate-800 rounded-md p-3 overflow-x-auto leading-relaxed mb-3">
-                  <code>{step.code}</code>
-                </pre>
-
-                {/* Arrow + preview */}
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex-1 h-px bg-slate-200" />
-                  <svg className="w-3 h-3 text-slate-400" viewBox="0 0 12 12" fill="none">
-                    <path d="M6 2v8M3 7l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  <div className="flex-1 h-px bg-slate-200" />
-                </div>
-
-                {step.preview.kind === "persona" && <PersonaPreview data={step.preview.data} />}
-                {step.preview.kind === "broadcast" && <BroadcastPreview />}
-                {step.preview.kind === "results" && <ResultsPreview />}
               </div>
             </RevealOnScroll>
           ))}
