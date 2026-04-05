@@ -17,6 +17,7 @@ interface Profile {
   priceSensitivity: "high" | "medium" | "low";
   reaction: string;
   intentScore: number;
+  avatarId: number;
 }
 
 const PROFILES: Profile[] = [
@@ -24,73 +25,73 @@ const PROFILES: Profile[] = [
     initials: "JR", name: "Jordan Reyes", age: 27, location: "Los Angeles",
     segment: "Marathon Runner", income: "$78k", channels: "Strava · Instagram",
     priceSensitivity: "low", reaction: "Finally a brand that gets race-day prep",
-    intentScore: 8.7,
+    intentScore: 8.7, avatarId: 11,
   },
   {
     initials: "TM", name: "Tanya Mitchell", age: 34, location: "Denver",
     segment: "Weekend Warrior", income: "$92k", channels: "Instagram · YouTube",
     priceSensitivity: "medium", reaction: "Copy hits — but wait for a sale moment",
-    intentScore: 6.1,
+    intentScore: 6.1, avatarId: 9,
   },
   {
     initials: "MK", name: "Marcus Knight", age: 22, location: "Atlanta",
-    segment: "Sneakerhead",      income: "$42k", channels: "TikTok · Discord",
+    segment: "Sneakerhead", income: "$42k", channels: "TikTok · Discord",
     priceSensitivity: "medium", reaction: "If it drops limited I'm camping the app",
-    intentScore: 9.1,
+    intentScore: 9.1, avatarId: 12,
   },
   {
     initials: "AC", name: "Alex Chen", age: 29, location: "Brooklyn",
     segment: "Lifestyle Athlete", income: "$110k", channels: "Instagram · Podcasts",
     priceSensitivity: "low", reaction: "Love the mood. Feels earned, not hypey.",
-    intentScore: 8.2,
+    intentScore: 8.2, avatarId: 13,
   },
   {
     initials: "DW", name: "Diane Walker", age: 43, location: "Minneapolis",
     segment: "Budget Parent", income: "$64k", channels: "Search · Coupons",
     priceSensitivity: "high", reaction: "Not spending $140 on trainers for my kid",
-    intentScore: 2.8,
+    intentScore: 2.8, avatarId: 44,
   },
   {
     initials: "CB", name: "Chris Bell", age: 31, location: "Austin",
     segment: "Gym Regular", income: "$88k", channels: "YouTube · Reddit",
     priceSensitivity: "medium", reaction: "Need specs. Cushioning? Drop? Weight?",
-    intentScore: 5.9,
+    intentScore: 5.9, avatarId: 15,
   },
   {
     initials: "PS", name: "Priya Shah", age: 26, location: "San Francisco",
     segment: "Yoga Devotee", income: "$95k", channels: "Instagram · Email",
     priceSensitivity: "low", reaction: "Bold tone. Not sure it aligns with my practice.",
-    intentScore: 4.3,
+    intentScore: 4.3, avatarId: 47,
   },
   {
     initials: "RN", name: "Ryan Nakamura", age: 36, location: "Portland",
     segment: "Former Athlete", income: "$115k", channels: "Podcasts · Email",
     priceSensitivity: "medium", reaction: "The brand earned loyalty years ago. In.",
-    intentScore: 8.8,
+    intentScore: 8.8, avatarId: 33,
   },
   {
     initials: "MO", name: "Maya O'Connor", age: 19, location: "Chicago",
     segment: "Gen Z Fitness", income: "$28k", channels: "TikTok · Instagram",
     priceSensitivity: "high", reaction: "Obsessed with the ad but broke til payday",
-    intentScore: 6.8,
+    intentScore: 6.8, avatarId: 5,
   },
   {
     initials: "GS", name: "Greg Stevens", age: 52, location: "Phoenix",
     segment: "Walker / Casual", income: "$82k", channels: "TV · Facebook",
     priceSensitivity: "medium", reaction: "Looks like it's aimed at my kids, not me",
-    intentScore: 3.7,
+    intentScore: 3.7, avatarId: 52,
   },
   {
     initials: "ES", name: "Elena Santos", age: 38, location: "Miami",
     segment: "Wellness Mom", income: "$98k", channels: "Instagram · Podcasts",
     priceSensitivity: "medium", reaction: "Love the energy. Great gift for my husband.",
-    intentScore: 7.2,
+    intentScore: 7.2, avatarId: 36,
   },
   {
     initials: "NK", name: "Noah King", age: 30, location: "Seattle",
     segment: "Trail Runner", income: "$102k", channels: "Strava · Reddit",
     priceSensitivity: "low", reaction: "Would trust them for pavement, not trails",
-    intentScore: 6.4,
+    intentScore: 6.4, avatarId: 68,
   },
 ];
 
@@ -264,8 +265,14 @@ function RotatingGraph() {
         <div className="rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 overflow-hidden">
           {/* Header */}
           <div className="flex items-center gap-2.5 p-3 border-b border-slate-100">
-            <div className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-xs font-bold text-orange-600 flex-shrink-0">
-              {activeProfile.initials}
+            <div className="w-9 h-9 rounded-full overflow-hidden bg-orange-50 border border-orange-200 flex-shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://i.pravatar.cc/80?img=${activeProfile.avatarId}`}
+                alt={activeProfile.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-[13px] font-semibold text-slate-900 truncate leading-tight">
