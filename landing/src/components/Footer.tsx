@@ -33,6 +33,8 @@ const COLS = [
   },
 ];
 
+import Logo from "./Logo";
+
 export default function Footer() {
   return (
     <footer className="relative border-t border-slate-200/70 px-6 py-16 bg-[#fafafa]">
@@ -40,7 +42,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-5 h-5 rounded bg-gradient-to-br from-orange-400 to-orange-600" />
+              <Logo size={20} />
               <span className="text-sm font-semibold text-slate-900">openpersona</span>
             </div>
             <p className="text-xs text-slate-500 leading-relaxed">

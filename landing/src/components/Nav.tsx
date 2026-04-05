@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Logo from "./Logo";
 
 const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3000";
 
@@ -52,7 +53,7 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2 group">
-          <div className="w-6 h-6 rounded bg-gradient-to-br from-orange-400 to-orange-600 group-hover:from-orange-300 group-hover:to-orange-500 transition-colors" />
+          <Logo size={22} className="transition-transform group-hover:scale-110 group-hover:rotate-12" />
           <span className="text-sm font-semibold text-slate-900 group-hover:text-black transition-colors">
             openpersona
           </span>
