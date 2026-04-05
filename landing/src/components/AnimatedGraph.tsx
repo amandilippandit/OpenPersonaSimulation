@@ -359,26 +359,6 @@ export default function AnimatedGraph() {
     <div className="relative w-full max-w-5xl mx-auto aspect-[10/7]">
       <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} className="w-full h-full">
         <defs>
-          <radialGradient id="node-dark" cx="35%" cy="30%">
-            <stop offset="0%" stopColor="#64748b" />
-            <stop offset="60%" stopColor="#475569" />
-            <stop offset="100%" stopColor="#334155" />
-          </radialGradient>
-          <radialGradient id="node-mid" cx="35%" cy="30%">
-            <stop offset="0%" stopColor="#cbd5e1" />
-            <stop offset="60%" stopColor="#94a3b8" />
-            <stop offset="100%" stopColor="#64748b" />
-          </radialGradient>
-          <radialGradient id="node-light" cx="35%" cy="30%">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="60%" stopColor="#e2e8f0" />
-            <stop offset="100%" stopColor="#cbd5e1" />
-          </radialGradient>
-          <radialGradient id="node-active" cx="35%" cy="30%">
-            <stop offset="0%" stopColor="#fdba74" />
-            <stop offset="55%" stopColor="#f97316" />
-            <stop offset="100%" stopColor="#c2410c" />
-          </radialGradient>
           <filter id="activeGlow" x="-100%" y="-100%" width="300%" height="300%">
             <feGaussianBlur stdDeviation="8" result="blur" />
             <feMerge>
@@ -415,18 +395,21 @@ export default function AnimatedGraph() {
           })()}
         </g>
 
-        {/* Nodes — rendered back to front */}
+        {/* Nodes — flat solid fills, rendered back to front */}
         {sorted.map((node) => {
           const isActive = node.idx === currentIdx;
-          const profile = PROFILES[node.idx];
-          // Base radius with z-based scaling
           const baseRadius = 22;
           const radius = baseRadius * node.scale;
-          // Deterministic color selection (based on index for variety)
+          // Deterministic shade based on index (3 flat grays)
           const shadeIdx = node.idx % 3;
-          const gradientId =
-            shadeIdx === 0 ? "node-dark" : shadeIdx === 1 ? "node-mid" : "node-light";
-          const opacity = 0.3 + Math.max(0, (node.z + 1) / 2) * 0.7;
+          const fillColor = isActive
+            ? "#f97316"
+            : shadeIdx === 0
+              ? "#475569"   // slate-600
+              : shadeIdx === 1
+                ? "#94a3b8" // slate-400
+                : "#cbd5e1"; // slate-300
+          const opacity = 0.4 + Math.max(0, (node.z + 1) / 2) * 0.6;
 
           return (
             <g
@@ -439,9 +422,9 @@ export default function AnimatedGraph() {
                 <circle
                   cx={node.x}
                   cy={node.y}
-                  r={radius + 12}
-                  fill="#fb923c"
-                  opacity="0.2"
+                  r={radius + 14}
+                  fill="#f97316"
+                  opacity="0.18"
                   filter="url(#activeGlow)"
                 />
               )}
@@ -449,28 +432,9 @@ export default function AnimatedGraph() {
                 cx={node.x}
                 cy={node.y}
                 r={radius}
-                fill={isActive ? "url(#node-active)" : `url(#${gradientId})`}
+                fill={fillColor}
                 opacity={isActive ? 1 : opacity}
-                stroke={isActive ? "#ea580c" : "#94a3b8"}
-                strokeWidth={isActive ? 1.5 : 0.5}
-                strokeOpacity={isActive ? 0.5 : 0.3}
               />
-              {/* Initials for near/front nodes */}
-              {node.z > -0.1 && node.scale > 0.85 && (
-                <text
-                  x={node.x}
-                  y={node.y + 4}
-                  textAnchor="middle"
-                  fontSize={Math.max(9, 11 * node.scale)}
-                  fontFamily="JetBrains Mono, monospace"
-                  fontWeight="600"
-                  fill={isActive ? "#fff7ed" : shadeIdx === 2 ? "#475569" : "#f8fafc"}
-                  opacity={isActive ? 1 : opacity}
-                  style={{ pointerEvents: "none", userSelect: "none" }}
-                >
-                  {profile.initials}
-                </text>
-              )}
             </g>
           );
         })}
