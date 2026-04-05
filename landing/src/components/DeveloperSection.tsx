@@ -6,9 +6,10 @@ import RevealOnScroll from "./RevealOnScroll";
 const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3000";
 
 const TABS = [
-  { id: "pip", label: "pip", cmd: "pip install git+https://github.com/amandilippandit/OpenPersonaSimulation.git" },
-  { id: "uv", label: "uv", cmd: "uv pip install git+https://github.com/amandilippandit/OpenPersonaSimulation.git" },
-  { id: "clone", label: "git clone", cmd: "git clone https://github.com/amandilippandit/OpenPersonaSimulation" },
+  { id: "pip", label: "pip", cmd: "pip install openpersona" },
+  { id: "uv", label: "uv", cmd: "uv add openpersona" },
+  { id: "poetry", label: "poetry", cmd: "poetry add openpersona" },
+  { id: "clone", label: "git", cmd: "git clone https://github.com/amandilippandit/OpenPersonaSimulation" },
 ];
 
 const MODES = [
