@@ -48,12 +48,12 @@ export default function Nav() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   return (
-    <nav className="relative z-50 border-b border-ink-800/50 bg-ink-950/80 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2 group">
-          <div className="w-6 h-6 rounded bg-gradient-to-br from-indigo-400 to-purple-500 group-hover:from-indigo-300 group-hover:to-purple-400 transition-colors" />
-          <span className="text-sm font-semibold text-ink-300 group-hover:text-white transition-colors">
+          <div className="w-6 h-6 rounded bg-gradient-to-br from-orange-400 to-orange-600 group-hover:from-orange-300 group-hover:to-orange-500 transition-colors" />
+          <span className="text-sm font-semibold text-slate-900 group-hover:text-black transition-colors">
             openpersona
           </span>
         </a>
@@ -70,12 +70,12 @@ export default function Nav() {
               {item.href ? (
                 <a
                   href={item.href}
-                  className="px-3 py-2 text-ink-400 hover:text-white transition-colors"
+                  className="px-3 py-2 text-slate-500 hover:text-slate-900 transition-colors"
                 >
                   {item.label}
                 </a>
               ) : (
-                <button className="px-3 py-2 text-ink-400 hover:text-white transition-colors flex items-center gap-1">
+                <button className="px-3 py-2 text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1">
                   {item.label}
                   <svg
                     className={`w-3 h-3 transition-transform ${openMenu === item.label ? "rotate-180" : ""}`}
@@ -87,18 +87,17 @@ export default function Nav() {
                 </button>
               )}
 
-              {/* Dropdown */}
               {item.items && openMenu === item.label && (
-                <div className="absolute top-full left-0 mt-1 w-64 rounded-lg border border-ink-800 bg-ink-900/95 backdrop-blur-xl shadow-2xl overflow-hidden">
+                <div className="absolute top-full left-0 mt-1 w-64 rounded-lg border border-slate-200 bg-white shadow-xl shadow-slate-900/5 overflow-hidden">
                   {item.items.map((sub) => (
                     <a
                       key={sub.label}
                       href={sub.href}
-                      className="block px-4 py-3 hover:bg-ink-800/50 transition-colors"
+                      className="block px-4 py-3 hover:bg-slate-50 transition-colors"
                     >
-                      <div className="text-sm text-ink-200">{sub.label}</div>
+                      <div className="text-sm text-slate-900">{sub.label}</div>
                       {sub.description && (
-                        <div className="text-xs text-ink-500 mt-0.5">{sub.description}</div>
+                        <div className="text-xs text-slate-500 mt-0.5">{sub.description}</div>
                       )}
                     </a>
                   ))}
@@ -108,17 +107,17 @@ export default function Nav() {
           ))}
         </div>
 
-        {/* Right side actions */}
+        {/* Right side */}
         <div className="flex items-center gap-3">
           <a
             href="https://github.com/amandilippandit/OpenPersonaSimulation"
-            className="hidden sm:block text-sm text-ink-400 hover:text-white transition-colors"
+            className="hidden sm:block text-sm text-slate-500 hover:text-slate-900 transition-colors"
           >
             github
           </a>
           <a
             href={STUDIO_URL}
-            className="px-4 py-1.5 text-sm border border-ink-700 rounded-md text-ink-200 hover:border-ink-500 hover:text-white hover:bg-ink-900 transition-all"
+            className="px-4 py-1.5 text-sm border border-slate-300 rounded-md text-slate-900 hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all"
           >
             launch studio
           </a>

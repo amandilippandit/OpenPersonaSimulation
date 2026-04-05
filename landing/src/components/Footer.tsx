@@ -35,22 +35,22 @@ const COLS = [
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-ink-800/50 px-6 py-16">
+    <footer className="relative border-t border-slate-200/70 px-6 py-16 bg-[#fafafa]">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-5 h-5 rounded bg-gradient-to-br from-indigo-400 to-purple-500" />
-              <span className="text-sm font-semibold text-ink-200">openpersona</span>
+              <div className="w-5 h-5 rounded bg-gradient-to-br from-orange-400 to-orange-600" />
+              <span className="text-sm font-semibold text-slate-900">openpersona</span>
             </div>
-            <p className="text-xs text-ink-500 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed">
               synthetic consumer panels for marketing content testing.
             </p>
           </div>
 
           {COLS.map((col) => (
             <div key={col.heading}>
-              <div className="text-xs uppercase tracking-wider text-ink-500 mb-4">
+              <div className="text-xs uppercase tracking-wider text-slate-500 mb-4">
                 {col.heading}
               </div>
               <ul className="space-y-2.5">
@@ -58,7 +58,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-ink-400 hover:text-white transition-colors"
+                      className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
                     >
                       {link.label}
                     </a>
@@ -69,15 +69,15 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 border-t border-ink-800/50">
-          <div className="text-xs text-ink-600 font-mono">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 border-t border-slate-200/70">
+          <div className="text-xs text-slate-400 font-mono">
             © {new Date().getFullYear()} openpersona · mit license
           </div>
-          <div className="flex items-center gap-4 text-xs text-ink-600">
+          <div className="flex items-center gap-4 text-xs text-slate-400">
             <span>v0.7.0</span>
-            <span className="text-ink-800">·</span>
+            <span className="text-slate-300">·</span>
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
               system operational
             </span>
           </div>
