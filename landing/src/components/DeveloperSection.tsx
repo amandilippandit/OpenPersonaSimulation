@@ -89,12 +89,12 @@ export default function DeveloperSection() {
                 {/* Terminal block */}
                 <div className="terminal-light p-5 flex items-center justify-between gap-4 group">
                   <div className="flex items-center gap-3 flex-1 font-mono text-sm overflow-x-auto">
-                    <span className="text-slate-500 select-none">&gt;</span>
-                    <span className="text-slate-100 whitespace-nowrap">{currentCmd}</span>
+                    <span className="text-slate-400 select-none">&gt;</span>
+                    <span className="text-slate-900 whitespace-nowrap">{currentCmd}</span>
                   </div>
                   <button
                     onClick={handleCopy}
-                    className="text-slate-500 hover:text-slate-200 transition-colors p-1 -m-1 flex-shrink-0"
+                    className="text-slate-400 hover:text-slate-700 transition-colors p-1 -m-1 flex-shrink-0"
                     aria-label="Copy"
                   >
                     {copied ? (
@@ -117,12 +117,12 @@ export default function DeveloperSection() {
                 <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-3 font-mono">
                   point your AI agent at the docs
                 </div>
-                <div className="font-mono text-sm text-slate-100 space-y-2">
+                <div className="font-mono text-sm text-slate-900 space-y-2">
                   <div>
-                    <span className="text-slate-500">&gt;</span> Read openpersona docs and
+                    <span className="text-slate-400">&gt;</span> Read openpersona docs and
                     build me a focus group that tests ad copy
                   </div>
-                  <div className="text-slate-500 text-xs mt-3 pt-3 border-t border-slate-800">
+                  <div className="text-slate-500 text-xs mt-3 pt-3 border-t border-stone-300/60">
                     # Works with Claude Code, Cursor, Codex
                   </div>
                 </div>
@@ -136,11 +136,11 @@ export default function DeveloperSection() {
                 </div>
                 <a
                   href={STUDIO_URL}
-                  className="block font-mono text-sm text-slate-100 hover:text-white transition-colors"
+                  className="block font-mono text-sm text-slate-900 hover:text-slate-600 transition-colors"
                 >
                   → open the studio in a new tab
                 </a>
-                <div className="text-slate-500 text-xs mt-3 pt-3 border-t border-slate-800">
+                <div className="text-slate-500 text-xs mt-3 pt-3 border-t border-stone-300/60">
                   # No signup. Runs against your local backend.
                 </div>
               </div>

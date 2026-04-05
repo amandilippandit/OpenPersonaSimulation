@@ -211,13 +211,13 @@ body {
 /* ---------- TERMINAL / TABS ---------- */
 
 .terminal-light {
-  background: #14142a;
-  border: 1px solid #252540;
+  background: #f1ebdf;
+  border: 1px solid #e3dbc8;
   border-radius: 10px;
   transition: all 200ms ease;
 }
 .terminal-light:hover {
-  border-color: #35354f;
+  border-color: #d1c6ac;
 }
 
 .tab-light {
