@@ -22,7 +22,7 @@ export default function AgentCreator({ onSubmit, onClose }: AgentCreatorProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError("Name is required");
+      setError("name is required");
       return;
     }
     setSubmitting(true);
@@ -32,145 +32,158 @@ export default function AgentCreator({ onSubmit, onClose }: AgentCreatorProps) {
         name: name.trim(),
         age,
         nationality: nationality.trim(),
-        occupation: {
-          title: title.trim(),
-          organization: organization.trim(),
-        },
-        personality: personality
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean),
+        occupation: { title: title.trim(), organization: organization.trim() },
+        personality: personality.split(",").map((s) => s.trim()).filter(Boolean),
         preferences: {
-          interests: interests
-            .split(",")
-            .map((s) => s.trim())
-            .filter(Boolean),
+          interests: interests.split(",").map((s) => s.trim()).filter(Boolean),
         },
       });
       onClose();
     } catch (err) {
-      setError((err as Error).message || "Failed to create agent");
+      setError((err as Error).message || "failed to create agent");
     } finally {
       setSubmitting(false);
     }
   };
 
+  const labelCls = "block text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-1.5";
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl w-full max-w-md mx-4 animate-slide-up">
-        <div className="flex items-center justify-between p-5 border-b border-gray-800">
-          <h2 className="text-lg font-bold text-gray-100">Create Agent</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors">
-            x
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl shadow-slate-900/10 w-full max-w-md animate-reaction-in max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 flex-shrink-0">
+          <h2 className="text-sm font-semibold text-slate-900 font-mono">create persona</h2>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-900 transition-colors"
+            aria-label="Close"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
+              <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-5 space-y-4">
+        <form onSubmit={handleSubmit} className="p-5 space-y-3 overflow-y-auto">
           {error && (
-            <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+            <div className="text-xs font-mono text-red-700 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-medium text-gray-400 mb-1">Name *</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Oscar"
-              className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
-              autoFocus
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Age</label>
-              <input
-                type="number"
-                value={age}
-                onChange={(e) => setAge(parseInt(e.target.value) || 0)}
-                min={1}
-                max={120}
-                className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Nationality</label>
+            <label className={labelCls}>name *</label>
+            <div className="input-field px-3 py-2">
               <input
                 type="text"
-                value={nationality}
-                onChange={(e) => setNationality(e.target.value)}
-                placeholder="e.g. American"
-                className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. jordan reyes"
+                className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono"
+                autoFocus
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Job Title</label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Architect"
-                className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
-              />
+              <label className={labelCls}>age</label>
+              <div className="input-field px-3 py-2">
+                <input
+                  type="number"
+                  value={age}
+                  onChange={(e) => setAge(parseInt(e.target.value) || 0)}
+                  min={1}
+                  max={120}
+                  className="w-full bg-transparent text-sm text-slate-900 outline-none font-mono"
+                />
+              </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Organization</label>
+              <label className={labelCls}>nationality</label>
+              <div className="input-field px-3 py-2">
+                <input
+                  type="text"
+                  value={nationality}
+                  onChange={(e) => setNationality(e.target.value)}
+                  placeholder="american"
+                  className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={labelCls}>job title</label>
+              <div className="input-field px-3 py-2">
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="architect"
+                  className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono"
+                />
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>organization</label>
+              <div className="input-field px-3 py-2">
+                <input
+                  type="text"
+                  value={organization}
+                  onChange={(e) => setOrganization(e.target.value)}
+                  placeholder="acme corp"
+                  className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className={labelCls}>
+              personality <span className="text-slate-400 normal-case tracking-normal">(comma-separated)</span>
+            </label>
+            <div className="input-field px-3 py-2">
               <input
                 type="text"
-                value={organization}
-                onChange={(e) => setOrganization(e.target.value)}
-                placeholder="e.g. ACME Corp"
-                className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
+                value={personality}
+                onChange={(e) => setPersonality(e.target.value)}
+                placeholder="creative, analytical, introverted"
+                className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-gray-400 mb-1">
-              Personality Traits <span className="text-gray-600">(comma-separated)</span>
+            <label className={labelCls}>
+              interests <span className="text-slate-400 normal-case tracking-normal">(comma-separated)</span>
             </label>
-            <input
-              type="text"
-              value={personality}
-              onChange={(e) => setPersonality(e.target.value)}
-              placeholder="e.g. creative, analytical, introverted"
-              className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
-            />
+            <div className="input-field px-3 py-2">
+              <input
+                type="text"
+                value={interests}
+                onChange={(e) => setInterests(e.target.value)}
+                placeholder="jazz, rock climbing, philosophy"
+                className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-gray-400 mb-1">
-              Interests <span className="text-gray-600">(comma-separated)</span>
-            </label>
-            <input
-              type="text"
-              value={interests}
-              onChange={(e) => setInterests(e.target.value)}
-              placeholder="e.g. philosophy, jazz, rock climbing"
-              className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium rounded-lg transition-colors border border-gray-700"
+              className="btn-ghost flex-1 px-4 py-2 text-xs font-mono rounded-md"
             >
-              Cancel
+              cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 text-white text-sm font-medium rounded-lg transition-colors"
+              className="btn-primary flex-1 px-4 py-2 text-xs font-mono rounded-md disabled:opacity-40"
             >
-              {submitting ? "Creating..." : "Create Agent"}
+              {submitting ? "creating..." : "create persona"}
             </button>
           </div>
         </form>

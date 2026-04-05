@@ -15,7 +15,7 @@ export default function CreateSimulation({ onSubmit, onClose }: CreateSimulation
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError("Simulation name is required");
+      setError("simulation name is required");
       return;
     }
     setSubmitting(true);
@@ -24,55 +24,65 @@ export default function CreateSimulation({ onSubmit, onClose }: CreateSimulation
       await onSubmit(name.trim());
       onClose();
     } catch (err) {
-      setError((err as Error).message || "Failed to create simulation");
+      setError((err as Error).message || "failed to create simulation");
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl w-full max-w-sm mx-4 animate-slide-up">
-        <div className="flex items-center justify-between p-5 border-b border-gray-800">
-          <h2 className="text-lg font-bold text-gray-100">New Simulation</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors">
-            x
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl shadow-slate-900/10 w-full max-w-sm mx-4 animate-reaction-in">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+          <h2 className="text-sm font-semibold text-slate-900 font-mono">new simulation</h2>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-900 transition-colors"
+            aria-label="Close"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
+              <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {error && (
-            <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+            <div className="text-xs font-mono text-red-700 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-medium text-gray-400 mb-1">Simulation Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Coffee Shop Scenario"
-              className="w-full bg-gray-800/50 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
-              autoFocus
-            />
+            <label className="block text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-1.5">
+              simulation name
+            </label>
+            <div className="input-field px-3 py-2">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. focus group · apparel ad"
+                className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none font-mono"
+                autoFocus
+              />
+            </div>
           </div>
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-2 pt-1">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium rounded-lg transition-colors border border-gray-700"
+              className="btn-ghost flex-1 px-4 py-2 text-xs font-mono rounded-md"
             >
-              Cancel
+              cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 text-white text-sm font-medium rounded-lg transition-colors"
+              className="btn-primary flex-1 px-4 py-2 text-xs font-mono rounded-md disabled:opacity-40"
             >
-              {submitting ? "Creating..." : "Create"}
+              {submitting ? "creating..." : "create"}
             </button>
           </div>
         </form>
