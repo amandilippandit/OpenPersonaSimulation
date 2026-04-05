@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 const TABS = [
-  { id: "pip", label: "pip", cmd: "pip install openpersona" },
-  { id: "uv", label: "uv", cmd: "uv add openpersona" },
-  { id: "poetry", label: "poetry", cmd: "poetry add openpersona" },
-  { id: "git", label: "git", cmd: "git clone https://github.com/amandilippandit/OpenPersonaSimulation" },
+  { id: "pip", label: "pip", cmd: "pip install git+https://github.com/amandilippandit/OpenPersonaSimulation.git" },
+  { id: "uv", label: "uv", cmd: "uv pip install git+https://github.com/amandilippandit/OpenPersonaSimulation.git" },
+  { id: "clone", label: "clone", cmd: "git clone https://github.com/amandilippandit/OpenPersonaSimulation && cd OpenPersonaSimulation && pip install -e ." },
+  { id: "poetry", label: "poetry", cmd: "poetry add git+https://github.com/amandilippandit/OpenPersonaSimulation.git" },
 ];
 
 const MODES = [
