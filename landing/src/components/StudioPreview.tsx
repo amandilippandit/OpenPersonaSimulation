@@ -367,15 +367,13 @@ export default function StudioPreview() {
                     </div>
                   </div>
                   {/* Attached IG post image */}
-                  <div className="rounded-lg overflow-hidden border border-slate-200 w-[180px] transition-transform duration-300 ease-out hover:scale-[1.04] hover:shadow-xl hover:shadow-slate-900/15 cursor-pointer pointer-events-auto">
-                    <div className="relative aspect-square bg-black overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/hero-ad.jpg"
-                        alt="Instagram ad being tested"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                  <div className="rounded-lg overflow-hidden border border-slate-200 w-[200px] transition-transform duration-300 ease-out hover:scale-[1.04] hover:shadow-xl hover:shadow-slate-900/15 cursor-pointer pointer-events-auto">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/hero-ad.jpg"
+                      alt="Instagram ad being tested"
+                      className="w-full h-auto block"
+                    />
                   </div>
                 </div>
               </div>
