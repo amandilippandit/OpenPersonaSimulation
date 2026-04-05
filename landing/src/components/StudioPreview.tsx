@@ -366,43 +366,15 @@ export default function StudioPreview() {
                       Test this Instagram ad against our target audience.
                     </div>
                   </div>
-                  {/* Attached IG post image — athletic performance brand */}
+                  {/* Attached IG post image */}
                   <div className="rounded-lg overflow-hidden border border-slate-200 w-[180px]">
-                    <div className="relative aspect-square bg-gradient-to-br from-black via-slate-950 to-slate-900 flex items-center justify-center p-4 text-center overflow-hidden">
-                      {/* Dramatic diagonal orange streak */}
-                      <div
-                        className="absolute inset-0 opacity-40"
-                        style={{
-                          background: "linear-gradient(115deg, transparent 35%, #f97316 50%, transparent 65%)",
-                          filter: "blur(28px)",
-                        }}
+                    <div className="relative aspect-square bg-black overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/hero-ad.jpg"
+                        alt="Instagram ad being tested"
+                        className="w-full h-full object-cover"
                       />
-                      {/* Runner silhouette */}
-                      <svg
-                        className="absolute bottom-2 right-1 opacity-30"
-                        viewBox="0 0 120 120"
-                        width="96"
-                        height="96"
-                        fill="none"
-                      >
-                        <path
-                          d="M58 20a8 8 0 11-16 0 8 8 0 0116 0zM48 32c-6 2-12 8-14 16l-10 18c-2 4 0 8 4 10s8 0 10-4l6-10 4 6-8 22c-1 3 0 6 3 7l4 1c3 1 5 0 7-3l10-26c2-5 1-9-2-12l-8-8 10-10c3-3 3-7 0-10s-7-3-10 0l-6 6"
-                          stroke="#fff"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      {/* Content */}
-                      <div className="relative text-left self-start w-full">
-                        <div className="text-[6px] font-mono text-orange-400 uppercase tracking-[0.25em] mb-2">apex</div>
-                        <div className="font-serif italic text-white text-[22px] leading-[0.95] tracking-tight mb-2">
-                          Run<br />Anyway.
-                        </div>
-                        <div className="inline-block px-1.5 py-0.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-[7px] font-mono text-white/90">
-                          new release · $140
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
