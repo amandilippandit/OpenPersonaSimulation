@@ -109,7 +109,7 @@ export function useSimulation(simId: string): UseSimulationReturn {
 
   const fetchSimState = useCallback(async () => {
     try {
-      const sim = await api.getSimulation(simId);
+      const sim = (await api.getSimulation(simId)) as Record<string, unknown>;
       setStepCount((sim.step_count as number) || (sim.steps as number) || 0);
     } catch {
       // sim state

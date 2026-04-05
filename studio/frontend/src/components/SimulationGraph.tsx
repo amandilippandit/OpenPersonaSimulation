@@ -8,8 +8,8 @@ import type { GraphNode, GraphEdge } from "@/types";
 const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
   ssr: false,
   loading: () => (
-    <div className="flex items-center justify-center h-full bg-gray-950">
-      <div className="text-gray-500 text-sm font-mono">Loading 3D Graph...</div>
+    <div className="flex items-center justify-center h-full bg-white">
+      <div className="text-slate-400 text-xs font-mono">loading graph...</div>
     </div>
   ),
 });
@@ -41,7 +41,7 @@ export default function SimulationGraph({
       })),
       links: links.map((l) => ({
         ...l,
-        color: "#475569",
+        color: "#cbd5e1",
       })),
     };
   }, [nodes, links]);
@@ -57,10 +57,10 @@ export default function SimulationGraph({
   const nodeLabel = useCallback((node: Record<string, unknown>) => {
     const name = (node.name as string) || (node.id as string) || "?";
     const emotions = (node.emotions as string) || "neutral";
-    const age = node.age ? `, age ${node.age}` : "";
-    return `<div style="background: rgba(15,23,42,0.9); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(148,163,184,0.2); font-family: monospace; font-size: 12px;">
-      <div style="font-weight: bold; color: #F1F5F9; margin-bottom: 4px;">${name}${age}</div>
-      <div style="color: ${emotionToColor(emotions)};">${emotions}</div>
+    const age = node.age ? ` · ${node.age}` : "";
+    return `<div style="background: white; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 8px 20px -8px rgba(15,23,42,0.15); font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+      <div style="font-weight: 600; color: #0f172a; margin-bottom: 2px;">${name}${age}</div>
+      <div style="color: ${emotionToColor(emotions)}; font-size: 10px;">${emotions}</div>
     </div>`;
   }, []);
 
@@ -71,9 +71,9 @@ export default function SimulationGraph({
       const edgeKey = `${src}-${tgt}`;
       const reverseKey = `${tgt}-${src}`;
       if (glowingEdges.has(edgeKey) || glowingEdges.has(reverseKey)) {
-        return "#22C55E";
+        return "#f97316";
       }
-      return "#475569";
+      return "#cbd5e1";
     },
     [glowingEdges]
   );
@@ -96,7 +96,7 @@ export default function SimulationGraph({
     (node: Record<string, unknown>) => {
       const name = (node.name as string) || (node.id as string);
       if (name === selectedAgent) {
-        return "#F1F5F9";
+        return "#f97316";
       }
       return emotionToColor(node.emotions as string);
     },
@@ -105,11 +105,16 @@ export default function SimulationGraph({
 
   if (nodes.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full bg-gray-950">
+      <div className="flex items-center justify-center h-full bg-white">
         <div className="text-center">
-          <div className="text-gray-600 text-4xl mb-4">&#x25C9;</div>
-          <p className="text-gray-500 text-sm font-mono">No agents yet</p>
-          <p className="text-gray-600 text-xs font-mono mt-1">Add agents to see the social graph</p>
+          <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center mx-auto mb-3">
+            <svg className="w-4 h-4 text-slate-400" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="5" stroke="currentColor" strokeWidth="1.5" />
+              <circle cx="8" cy="8" r="2" fill="currentColor" />
+            </svg>
+          </div>
+          <p className="text-xs font-mono font-semibold text-slate-900">no personas yet</p>
+          <p className="text-[10px] text-slate-400 font-mono mt-1">add personas to see the graph</p>
         </div>
       </div>
     );
@@ -122,12 +127,12 @@ export default function SimulationGraph({
       nodeLabel={nodeLabel as (node: object) => string}
       nodeColor={nodeColor as (node: object) => string}
       nodeVal={(node: object) => (node as Record<string, unknown>).val as number}
-      nodeOpacity={0.9}
+      nodeOpacity={0.95}
       linkColor={linkColor as (link: object) => string}
       linkWidth={linkWidth as (link: object) => number}
-      linkOpacity={0.6}
+      linkOpacity={0.5}
       onNodeClick={handleNodeClick as (node: object) => void}
-      backgroundColor="#030712"
+      backgroundColor="#ffffff"
       showNavInfo={false}
       enableNodeDrag={true}
       nodeRelSize={1}

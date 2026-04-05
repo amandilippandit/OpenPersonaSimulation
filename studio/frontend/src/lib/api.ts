@@ -29,7 +29,7 @@ export const api = {
     const raw = await request<{ sim_id: string; name: string; created_at: string; agent_count: number }>(
       `/api/simulations/${id}`
     );
-    return { id: raw.sim_id, name: raw.name, created_at: raw.created_at, agent_count: raw.agent_count, step_count: 0, ...raw };
+    return { ...raw, id: raw.sim_id, step_count: 0 };
   },
 
   listSimulations: async () => {
