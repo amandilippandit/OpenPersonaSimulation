@@ -6,19 +6,92 @@ import Logo from "./Logo";
 const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3000";
 
 // --- Persona profiles for node popups ---
-const PROFILES = [
-  { initials: "MC", name: "Maya Chen", segment: "Gen Z Creator", location: "Los Angeles" },
-  { initials: "BT", name: "Ben Thompson", segment: "Value Seeker", location: "Columbus" },
-  { initials: "PK", name: "Priya Kapoor", segment: "Luxury Millennial", location: "New York" },
-  { initials: "TH", name: "Tom Henderson", segment: "Practical Buyer", location: "Austin" },
-  { initials: "DW", name: "David Walker", segment: "Early Adopter", location: "Seattle" },
-  { initials: "EM", name: "Elena Morales", segment: "Impulse Shopper", location: "Miami" },
-  { initials: "MR", name: "Marcus Reed", segment: "Eco-Conscious", location: "Portland" },
-  { initials: "LF", name: "Laura Fitzgerald", segment: "Loyal Customer", location: "Boston" },
-  { initials: "RN", name: "Ryan Nakamura", segment: "Social Influencer", location: "San Francisco" },
-  { initials: "GC", name: "Grace Coleman", segment: "Premium Health", location: "Denver" },
-  { initials: "NP", name: "Nina Park", segment: "Researcher", location: "Toronto" },
-  { initials: "NK", name: "Noah King", segment: "Minimalist", location: "Brooklyn" },
+interface Profile {
+  initials: string;
+  name: string;
+  age: number;
+  location: string;
+  segment: string;
+  income: string;
+  channels: string;
+  priceSensitivity: "high" | "medium" | "low";
+  reaction: string;
+  intentScore: number;
+}
+
+const PROFILES: Profile[] = [
+  {
+    initials: "MC", name: "Maya Chen", age: 24, location: "Los Angeles",
+    segment: "Gen Z Creator", income: "$55k", channels: "TikTok · Instagram",
+    priceSensitivity: "medium", reaction: "Love the vibe but need to see reviews first",
+    intentScore: 6.4,
+  },
+  {
+    initials: "BT", name: "Ben Thompson", age: 38, location: "Columbus, OH",
+    segment: "Value Seeker", income: "$72k", channels: "Email · Search",
+    priceSensitivity: "high", reaction: "$899 is a lot — I'd wait for a sale",
+    intentScore: 3.2,
+  },
+  {
+    initials: "PK", name: "Priya Kapoor", age: 33, location: "New York",
+    segment: "Luxury Millennial", income: "$210k", channels: "Instagram · Podcasts",
+    priceSensitivity: "low", reaction: "Premium feel. The trial seals it for me.",
+    intentScore: 8.6,
+  },
+  {
+    initials: "TH", name: "Tom Henderson", age: 52, location: "Austin",
+    segment: "Practical Buyer", income: "$95k", channels: "Search · TV",
+    priceSensitivity: "medium", reaction: "Solid specs, but I want warranty terms",
+    intentScore: 5.8,
+  },
+  {
+    initials: "DW", name: "David Walker", age: 31, location: "Seattle",
+    segment: "Early Adopter", income: "$140k", channels: "YouTube · Reddit",
+    priceSensitivity: "low", reaction: "Tech story is compelling. Ordering tonight.",
+    intentScore: 8.9,
+  },
+  {
+    initials: "EM", name: "Elena Morales", age: 27, location: "Miami",
+    segment: "Impulse Shopper", income: "$68k", channels: "Instagram · TikTok",
+    priceSensitivity: "medium", reaction: "It's giving dream bedroom energy",
+    intentScore: 7.9,
+  },
+  {
+    initials: "MR", name: "Marcus Reed", age: 35, location: "Portland",
+    segment: "Eco-Conscious", income: "$88k", channels: "Podcasts · Email",
+    priceSensitivity: "medium", reaction: "Materials? Sourcing? Need sustainability info.",
+    intentScore: 4.7,
+  },
+  {
+    initials: "LF", name: "Laura Fitzgerald", age: 45, location: "Boston",
+    segment: "Loyal Customer", income: "$78k", channels: "Email · Direct Mail",
+    priceSensitivity: "high", reaction: "My current mattress is fine, not convinced",
+    intentScore: 2.9,
+  },
+  {
+    initials: "RN", name: "Ryan Nakamura", age: 26, location: "San Francisco",
+    segment: "Social Influencer", income: "$120k", channels: "TikTok · LinkedIn",
+    priceSensitivity: "medium", reaction: "Could film a review. Worth testing publicly.",
+    intentScore: 7.3,
+  },
+  {
+    initials: "GC", name: "Grace Coleman", age: 41, location: "Denver",
+    segment: "Premium Health", income: "$160k", channels: "Podcasts · Instagram",
+    priceSensitivity: "low", reaction: "Sleep is my top priority — shut up and take my money",
+    intentScore: 9.2,
+  },
+  {
+    initials: "NP", name: "Nina Park", age: 36, location: "Toronto",
+    segment: "Researcher", income: "$92k", channels: "Search · Reviews",
+    priceSensitivity: "medium", reaction: "Need comparison data vs Purple, Casper",
+    intentScore: 5.1,
+  },
+  {
+    initials: "NK", name: "Noah King", age: 32, location: "Brooklyn",
+    segment: "Minimalist", income: "$105k", channels: "Newsletter · Podcasts",
+    priceSensitivity: "low", reaction: "Clean design. I'd own this for 10 years.",
+    intentScore: 8.0,
+  },
 ];
 
 // --- Fibonacci sphere ---
@@ -80,7 +153,7 @@ const NODE_COUNT = 64;
 const SPHERE_R = 88;
 const CAMERA_Z = 380;
 const SHADE_COLORS = ["#475569", "#94a3b8", "#cbd5e1"];
-const CARD_WIDTH = 210;
+const CARD_WIDTH = 240;
 
 function RotatingGraph() {
   const basePositions = useMemo(() => fibonacciSphere(NODE_COUNT), []);
@@ -195,25 +268,61 @@ function RotatingGraph() {
           animation: "reactionIn 350ms cubic-bezier(0.16, 1, 0.3, 1) both",
         }}
       >
-        <div className="rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 p-4">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-sm font-bold text-orange-600 flex-shrink-0">
+        <div className="rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center gap-2.5 p-3 border-b border-slate-100">
+            <div className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-xs font-bold text-orange-600 flex-shrink-0">
               {activeProfile.initials}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-slate-900 truncate leading-tight">
+              <div className="text-[13px] font-semibold text-slate-900 truncate leading-tight">
                 {activeProfile.name}
               </div>
-              <div className="text-xs font-mono text-slate-500 truncate leading-tight mt-0.5">
-                {activeProfile.location}
+              <div className="text-[10px] font-mono text-slate-500 truncate leading-tight mt-0.5">
+                {activeProfile.age} · {activeProfile.location}
+              </div>
+            </div>
+            <div className="flex-shrink-0">
+              <div className="text-[8px] font-mono text-slate-400 uppercase tracking-wider text-right leading-none mb-0.5">intent</div>
+              <div className="text-sm font-mono font-bold text-slate-900 tabular-nums leading-none">
+                {activeProfile.intentScore.toFixed(1)}
+                <span className="text-[9px] font-normal text-slate-400">/10</span>
               </div>
             </div>
           </div>
-          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-orange-50 border border-orange-100">
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-            <span className="text-[11px] font-mono text-orange-700 font-semibold">
-              {activeProfile.segment}
-            </span>
+
+          {/* Segment pill */}
+          <div className="px-3 pt-3">
+            <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-orange-50 border border-orange-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+              <span className="text-[10px] font-mono text-orange-700 font-semibold">
+                {activeProfile.segment}
+              </span>
+            </div>
+          </div>
+
+          {/* Marketing attributes */}
+          <div className="grid grid-cols-2 gap-2 p-3 text-[10px] font-mono">
+            <div>
+              <div className="text-slate-400 uppercase tracking-wider text-[8px] mb-0.5">income</div>
+              <div className="text-slate-700 font-semibold">{activeProfile.income}</div>
+            </div>
+            <div>
+              <div className="text-slate-400 uppercase tracking-wider text-[8px] mb-0.5">price sens.</div>
+              <div className="text-slate-700 font-semibold capitalize">{activeProfile.priceSensitivity}</div>
+            </div>
+            <div className="col-span-2">
+              <div className="text-slate-400 uppercase tracking-wider text-[8px] mb-0.5">channels</div>
+              <div className="text-slate-700">{activeProfile.channels}</div>
+            </div>
+          </div>
+
+          {/* Reaction quote */}
+          <div className="px-3 pb-3">
+            <div className="text-[8px] font-mono text-slate-400 uppercase tracking-wider mb-1">reaction</div>
+            <div className="text-[11px] text-slate-700 italic leading-snug">
+              &ldquo;{activeProfile.reaction}&rdquo;
+            </div>
           </div>
         </div>
       </div>
