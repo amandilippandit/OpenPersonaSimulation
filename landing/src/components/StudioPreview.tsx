@@ -193,9 +193,7 @@ function RotatingGraph() {
   });
 
   const sorted = [...projected].sort((a, b) => a.z - b.z);
-  const activeNode = projected[activeIdx];
   const activeProfile = PROFILES[activeIdx % PROFILES.length];
-  const cardOnLeft = activeNode.x > 120;
 
   return (
     <div className="relative w-full h-full">
@@ -251,20 +249,15 @@ function RotatingGraph() {
         })}
       </svg>
 
-      {/* Active persona card — bigger */}
+      {/* Active persona card — pinned to bottom-right, fixed width */}
       <div
         key={activeIdx}
         className="absolute pointer-events-none z-10"
         style={{
-          left: cardOnLeft
-            ? "4px"
-            : `calc(${(activeNode.x / 240) * 100}% + 16px)`,
-          right: cardOnLeft
-            ? `calc(${((240 - activeNode.x) / 240) * 100}% + 16px)`
-            : "4px",
-          top: `${(activeNode.y / 240) * 100}%`,
-          transform: "translateY(-50%)",
-          maxWidth: `${CARD_WIDTH}px`,
+          bottom: "0px",
+          right: "0px",
+          width: `${CARD_WIDTH}px`,
+          maxWidth: "calc(100% - 8px)",
           animation: "reactionIn 350ms cubic-bezier(0.16, 1, 0.3, 1) both",
         }}
       >
