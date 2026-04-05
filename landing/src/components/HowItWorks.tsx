@@ -238,118 +238,114 @@ function BroadcastVisual() {
   );
 }
 
-// --- Step 3: Area chart with multiple segments ---
+// --- Step 3: Single clean area chart ---
 function InsightsVisual() {
-  // Sample data — intent distribution across score buckets per segment
-  const segments = [
-    { name: "luxury", color: "#10b981", values: [2, 4, 8, 15, 28, 32, 45, 58, 72, 68] },
-    { name: "gen z", color: "#f97316", values: [5, 12, 22, 35, 48, 52, 45, 38, 28, 18] },
-    { name: "value", color: "#f59e0b", values: [42, 58, 48, 32, 22, 14, 8, 5, 3, 2] },
-  ];
+  // Distribution of personas across intent scores 1-10
+  const values = [4, 8, 14, 22, 34, 42, 38, 28, 16, 8];
 
   const W = 300;
-  const H = 140;
-  const PAD_X = 10;
-  const PAD_Y = 20;
-  const maxVal = 80;
+  const H = 150;
+  const PAD_X = 16;
+  const PAD_Y = 12;
+  const maxVal = Math.max(...values);
 
-  const buildPath = (values: number[]) => {
-    const step = (W - PAD_X * 2) / (values.length - 1);
-    const points = values.map((v, i) => ({
-      x: PAD_X + i * step,
-      y: H - PAD_Y - (v / maxVal) * (H - PAD_Y * 2),
-    }));
-    // Smooth path using quadratic bezier curves
-    let d = `M ${points[0].x},${points[0].y}`;
-    for (let i = 1; i < points.length; i++) {
-      const prev = points[i - 1];
-      const curr = points[i];
-      const cx = (prev.x + curr.x) / 2;
-      d += ` Q ${cx},${prev.y} ${cx},${(prev.y + curr.y) / 2} T ${curr.x},${curr.y}`;
-    }
-    return { path: d, points };
-  };
+  const step = (W - PAD_X * 2) / (values.length - 1);
+  const points = values.map((v, i) => ({
+    x: PAD_X + i * step,
+    y: H - PAD_Y - (v / maxVal) * (H - PAD_Y * 2),
+  }));
 
-  const segmentPaths = segments.map((s) => ({ ...s, ...buildPath(s.values) }));
+  // Smooth curve using quadratic beziers
+  let linePath = `M ${points[0].x},${points[0].y}`;
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1];
+    const curr = points[i];
+    const cx = (prev.x + curr.x) / 2;
+    linePath += ` Q ${cx},${prev.y} ${cx},${(prev.y + curr.y) / 2} T ${curr.x},${curr.y}`;
+  }
+  const areaPath = linePath + ` L ${W - PAD_X},${H - PAD_Y} L ${PAD_X},${H - PAD_Y} Z`;
+
+  // Average marker position (6.3 on 1-10 scale)
+  const avgX = PAD_X + ((6.3 - 1) / 9) * (W - PAD_X * 2);
+  // Find y on the curve at avgX (approximate via nearest points)
+  const avgIdx = Math.floor(5.3);
+  const avgFrac = 5.3 - avgIdx;
+  const avgY = points[avgIdx].y + (points[avgIdx + 1].y - points[avgIdx].y) * avgFrac;
 
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-emerald-50/25 overflow-hidden p-4">
+    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-emerald-50/25 overflow-hidden p-5 flex flex-col">
       {/* Header */}
-      <div className="flex items-start justify-between mb-2">
-        <div>
-          <div className="text-[9px] font-mono text-slate-400 uppercase tracking-wider mb-0.5">intent distribution</div>
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-2xl font-mono font-bold text-slate-900 tabular-nums leading-none">6.3</span>
-            <span className="text-[10px] font-mono text-slate-400">avg</span>
-          </div>
+      <div className="flex items-baseline justify-between mb-3">
+        <div className="text-[9px] font-mono text-slate-400 uppercase tracking-wider">
+          intent distribution
         </div>
-        <div className="flex gap-2">
-          {segments.map((s) => (
-            <div key={s.name} className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
-              <span className="text-[8px] font-mono text-slate-500">{s.name}</span>
-            </div>
-          ))}
+        <div className="flex items-baseline gap-1">
+          <span className="text-[10px] font-mono text-slate-400">avg</span>
+          <span className="text-sm font-mono font-bold text-slate-900 tabular-nums">6.3</span>
         </div>
       </div>
 
       {/* Chart */}
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" preserveAspectRatio="none">
-        {/* Grid lines */}
-        {[0.25, 0.5, 0.75].map((frac) => (
-          <line
-            key={frac}
-            x1={PAD_X}
-            y1={PAD_Y + frac * (H - PAD_Y * 2)}
-            x2={W - PAD_X}
-            y2={PAD_Y + frac * (H - PAD_Y * 2)}
-            stroke="#e2e8f0"
-            strokeWidth="0.5"
-            strokeDasharray="2 3"
-          />
-        ))}
-        {/* Baseline */}
-        <line x1={PAD_X} y1={H - PAD_Y} x2={W - PAD_X} y2={H - PAD_Y} stroke="#cbd5e1" strokeWidth="0.8" />
+      <div className="flex-1 relative">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            </linearGradient>
+          </defs>
 
-        {/* Area fills (back to front) */}
-        {segmentPaths.map((s, i) => {
-          const areaPath = s.path + ` L ${W - PAD_X},${H - PAD_Y} L ${PAD_X},${H - PAD_Y} Z`;
-          return (
-            <path
-              key={`area-${s.name}`}
-              d={areaPath}
-              fill={s.color}
-              opacity="0.08"
+          {/* Horizontal grid lines */}
+          {[0.25, 0.5, 0.75].map((frac) => (
+            <line
+              key={frac}
+              x1={PAD_X}
+              y1={PAD_Y + frac * (H - PAD_Y * 2)}
+              x2={W - PAD_X}
+              y2={PAD_Y + frac * (H - PAD_Y * 2)}
+              stroke="#e2e8f0"
+              strokeWidth="0.5"
+              strokeDasharray="2 3"
             />
-          );
-        })}
+          ))}
 
-        {/* Lines */}
-        {segmentPaths.map((s) => (
+          {/* Baseline */}
+          <line x1={PAD_X} y1={H - PAD_Y} x2={W - PAD_X} y2={H - PAD_Y} stroke="#cbd5e1" strokeWidth="0.8" />
+
+          {/* Area */}
+          <path d={areaPath} fill="url(#areaFill)" />
+
+          {/* Line */}
           <path
-            key={`line-${s.name}`}
-            d={s.path}
+            d={linePath}
             fill="none"
-            stroke={s.color}
-            strokeWidth="1.8"
+            stroke="#10b981"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-        ))}
 
-        {/* End dots on each line */}
-        {segmentPaths.map((s) => (
-          <g key={`dot-${s.name}`}>
-            <circle cx={s.points[s.points.length - 1].x} cy={s.points[s.points.length - 1].y} r="3" fill="white" />
-            <circle cx={s.points[s.points.length - 1].x} cy={s.points[s.points.length - 1].y} r="2" fill={s.color} />
-          </g>
-        ))}
+          {/* Average marker */}
+          <line
+            x1={avgX}
+            y1={PAD_Y}
+            x2={avgX}
+            y2={H - PAD_Y}
+            stroke="#0f172a"
+            strokeWidth="0.8"
+            strokeDasharray="3 2"
+            opacity="0.5"
+          />
+          <circle cx={avgX} cy={avgY} r="3.5" fill="white" stroke="#0f172a" strokeWidth="1.5" />
+        </svg>
+      </div>
 
-        {/* X-axis labels */}
-        <text x={PAD_X} y={H - 4} fontSize="7" fill="#94a3b8" fontFamily="JetBrains Mono, monospace">1</text>
-        <text x={W / 2} y={H - 4} fontSize="7" fill="#94a3b8" textAnchor="middle" fontFamily="JetBrains Mono, monospace">intent score</text>
-        <text x={W - PAD_X} y={H - 4} fontSize="7" fill="#94a3b8" textAnchor="end" fontFamily="JetBrains Mono, monospace">10</text>
-      </svg>
+      {/* X-axis labels */}
+      <div className="flex justify-between px-4 mt-1.5">
+        <span className="text-[9px] font-mono text-slate-400">1</span>
+        <span className="text-[9px] font-mono text-slate-400">intent score</span>
+        <span className="text-[9px] font-mono text-slate-400">10</span>
+      </div>
     </div>
   );
 }
