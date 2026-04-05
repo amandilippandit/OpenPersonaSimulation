@@ -238,17 +238,10 @@ export default function StudioPreview() {
     <div className="w-full max-w-4xl">
       <div className="rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/5 overflow-hidden">
         {/* Top chrome */}
-        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center px-5 py-3 border-b border-slate-100 bg-slate-50/50">
           <div className="flex items-center gap-2.5">
             <Logo size={18} />
             <span className="text-xs font-semibold text-slate-900">openpersona</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-100">
-            <span className="relative flex w-1.5 h-1.5">
-              <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
-              <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            </span>
-            <span className="text-[9px] font-mono text-emerald-700 font-semibold uppercase tracking-wider">live</span>
           </div>
         </div>
 
@@ -307,14 +300,20 @@ export default function StudioPreview() {
                 <div className="w-7 h-7 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0">
                   <Logo size={14} />
                 </div>
-                <div className="flex-1 min-w-0 text-xs text-slate-800 leading-relaxed space-y-3">
-                  <p>
+                <div
+                  className="flex-1 min-w-0 text-xs text-slate-800 leading-relaxed space-y-3"
+                  style={{ textAlign: "left" }}
+                >
+                  <p style={{ textAlign: "left" }}>
                     I&apos;ll run this against a synthetic panel of{" "}
                     <span className="font-semibold text-slate-900">10,000 consumers</span>{" "}
                     spanning Gen Z through Boomers, distributed across US demographics and twelve behavioral segments.
                   </p>
 
-                  <p className={`transition-all duration-500 ${stage >= 3 ? "opacity-100" : "opacity-0"}`}>
+                  <p
+                    className={`transition-all duration-500 ${stage >= 3 ? "opacity-100" : "opacity-0"}`}
+                    style={{ textAlign: "left" }}
+                  >
                     Each persona reacts independently based on price sensitivity, channel habits, brand loyalty, and personality-values alignment. You&apos;ll see segment-specific signals surface in the playground on the right as the simulation propagates.
                   </p>
 
