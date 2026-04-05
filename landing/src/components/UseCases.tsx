@@ -1,3 +1,5 @@
+import RevealOnScroll from "./RevealOnScroll";
+
 const USE_CASES = [
   {
     tag: "ad copy testing",
@@ -25,25 +27,26 @@ export default function UseCases() {
   return (
     <section className="relative px-6 py-32 border-t border-ink-800/50">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-16 max-w-2xl">
-          <div className="text-xs uppercase tracking-wider text-ink-500 mb-3">use cases</div>
-          <h2 className="font-mono text-3xl md:text-4xl text-white leading-tight">
-            built for marketing teams that need signal before launch.
-          </h2>
-        </div>
+        <RevealOnScroll>
+          <div className="mb-16 max-w-2xl">
+            <div className="text-xs uppercase tracking-wider text-ink-500 mb-3">use cases</div>
+            <h2 className="font-mono text-3xl md:text-4xl text-white leading-tight">
+              built for marketing teams that need signal before launch.
+            </h2>
+          </div>
+        </RevealOnScroll>
 
         <div className="grid md:grid-cols-2 gap-px bg-ink-800/50 rounded-xl overflow-hidden border border-ink-800">
-          {USE_CASES.map((uc) => (
-            <div
-              key={uc.tag}
-              className="bg-ink-900/50 p-8 hover:bg-ink-850/70 transition-colors"
-            >
-              <div className="text-[10px] uppercase tracking-wider text-ink-500 mb-4 font-mono">
-                {uc.tag}
+          {USE_CASES.map((uc, i) => (
+            <RevealOnScroll key={uc.tag} delay={i * 100}>
+              <div className="bg-ink-900/50 p-8 hover:bg-ink-850/70 transition-colors h-full">
+                <div className="text-[10px] uppercase tracking-wider text-ink-500 mb-4 font-mono">
+                  {uc.tag}
+                </div>
+                <h3 className="font-mono text-xl text-white mb-3 leading-snug">{uc.headline}</h3>
+                <p className="text-sm text-ink-400 leading-relaxed">{uc.body}</p>
               </div>
-              <h3 className="font-mono text-xl text-white mb-3 leading-snug">{uc.headline}</h3>
-              <p className="text-sm text-ink-400 leading-relaxed">{uc.body}</p>
-            </div>
+            </RevealOnScroll>
           ))}
         </div>
       </div>
