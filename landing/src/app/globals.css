@@ -67,6 +67,17 @@ body {
   100% { background-position: 48px 48px; }
 }
 
+@keyframes scrollVertDown {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+@keyframes scrollVertUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+.scroll-col-down { animation: scrollVertDown linear infinite; }
+.scroll-col-up { animation: scrollVertUp linear infinite; }
+
 /* ---------- ANIMATION UTILITIES ---------- */
 
 .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
