@@ -3,104 +3,57 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import RevealOnScroll from "./RevealOnScroll";
 
-// --- Step 1: Collage of persona cards with photo-style avatars ---
+// --- Step 1: Clean persona grid with real portraits ---
 function AudienceVisual() {
   const personas = [
-    {
-      initials: "PK",
-      name: "Priya Kapoor",
-      segment: "Luxury Millennial",
-      gradient: "from-orange-300 via-pink-400 to-rose-500",
-      x: 50, y: 50, rotate: -2, z: 5, featured: true,
-    },
-    {
-      initials: "MC",
-      name: "Maya Chen",
-      segment: "Gen Z Creator",
-      gradient: "from-violet-400 via-purple-400 to-indigo-500",
-      x: 20, y: 25, rotate: -10, z: 2, featured: false,
-    },
-    {
-      initials: "DW",
-      name: "David Walker",
-      segment: "Early Adopter",
-      gradient: "from-sky-400 via-blue-500 to-cyan-600",
-      x: 80, y: 30, rotate: 9, z: 3, featured: false,
-    },
-    {
-      initials: "BT",
-      name: "Ben Thompson",
-      segment: "Value Seeker",
-      gradient: "from-emerald-400 via-teal-500 to-green-600",
-      x: 22, y: 80, rotate: 6, z: 1, featured: false,
-    },
-    {
-      initials: "GC",
-      name: "Grace Coleman",
-      segment: "Premium Health",
-      gradient: "from-amber-400 via-orange-500 to-red-500",
-      x: 82, y: 75, rotate: -7, z: 4, featured: false,
-    },
+    { name: "Priya Kapoor", segment: "Luxury Millennial", avatarId: 47, featured: true },
+    { name: "Maya Chen", segment: "Gen Z Creator", avatarId: 5 },
+    { name: "David Walker", segment: "Early Adopter", avatarId: 13 },
+    { name: "Ben Thompson", segment: "Value Seeker", avatarId: 9 },
+    { name: "Grace Coleman", segment: "Premium Health", avatarId: 20 },
+    { name: "Marcus Knight", segment: "Sneakerhead", avatarId: 12 },
   ];
 
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/40 overflow-hidden">
-      {/* Dotted grid */}
-      <svg className="absolute inset-0 w-full h-full opacity-30" aria-hidden>
-        <defs>
-          <pattern id="dotgrid-audience" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.6" fill="#cbd5e1" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#dotgrid-audience)" />
-      </svg>
-
-      {personas.map((p) => (
-        <div
-          key={p.initials}
-          className="absolute"
-          style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            transform: `translate(-50%, -50%) rotate(${p.rotate}deg) scale(${p.featured ? 1 : 0.82})`,
-            zIndex: p.z,
-          }}
-        >
+    <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/40 overflow-hidden p-3">
+      <div className="grid grid-cols-3 grid-rows-2 gap-2 h-full">
+        {personas.map((p) => (
           <div
-            className={`w-[140px] rounded-xl border overflow-hidden ${
+            key={p.name}
+            className={`relative rounded-lg overflow-hidden bg-white transition-transform hover:scale-[1.02] ${
               p.featured
-                ? "border-orange-200 shadow-2xl shadow-orange-900/15"
-                : "border-slate-200 shadow-lg shadow-slate-900/10"
-            } bg-white`}
+                ? "border-2 border-orange-400 shadow-lg shadow-orange-500/20"
+                : "border border-slate-200 shadow-sm"
+            }`}
           >
-            {/* Photo-style avatar area */}
-            <div
-              className={`relative h-[72px] bg-gradient-to-br ${p.gradient} flex items-center justify-center`}
-            >
-              {/* Stylized face silhouette */}
-              <svg className="absolute w-full h-full opacity-20" viewBox="0 0 100 72" preserveAspectRatio="xMidYMid slice" fill="none">
-                <circle cx="50" cy="28" r="14" fill="#fff" />
-                <ellipse cx="50" cy="78" rx="30" ry="24" fill="#fff" />
-              </svg>
-              <span className="relative text-3xl font-bold text-white" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
-                {p.initials}
-              </span>
-              {p.featured && (
-                <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
-                  <span className="text-[8px]">★</span>
-                </div>
-              )}
-            </div>
-            {/* Info */}
-            <div className="p-2">
-              <div className="text-[11px] font-semibold text-slate-900 truncate leading-tight">{p.name}</div>
-              <div className={`text-[9px] font-mono truncate leading-tight mt-0.5 ${p.featured ? "text-orange-600" : "text-slate-500"}`}>
+            {/* Portrait photo */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://i.pravatar.cc/160?img=${p.avatarId}`}
+              alt={p.name}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            {/* Gradient overlay with name */}
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-2 pt-6">
+              <div className="text-[10px] font-semibold text-white leading-tight truncate">
+                {p.name.split(" ")[0]} {p.name.split(" ")[1]?.[0]}.
+              </div>
+              <div className="text-[8px] font-mono text-white/80 leading-tight truncate mt-0.5">
                 {p.segment}
               </div>
             </div>
+            {/* Featured star badge */}
+            {p.featured && (
+              <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center shadow-md">
+                <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="currentColor">
+                  <path d="M6 0.5l1.5 3.5 3.8.3-2.9 2.5.9 3.7L6 8.5l-3.3 2 .9-3.7L.7 4.3l3.8-.3z" />
+                </svg>
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
