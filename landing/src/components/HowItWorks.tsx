@@ -149,24 +149,30 @@ function BroadcastVisual() {
   const edges = useMemo(() => computeEdges(basePositions), [basePositions]);
   const [angle, setAngle] = useState(0);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const rafRef = useRef<number>();
 
+  // Rotate only while hovered; resume from where we left off
   useEffect(() => {
-    const start = performance.now();
+    if (!isHovered) return;
+    const baseTime = performance.now() - angle * 1000;
     const tick = (now: number) => {
-      setAngle((now - start) / 1000);
+      setAngle((now - baseTime) / 1000);
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHovered]);
 
+  // Cycle active node only while hovered
   useEffect(() => {
+    if (!isHovered) return;
     const i = setInterval(() => setActiveIdx((v) => (v + 1) % 36), 2600);
     return () => clearInterval(i);
-  }, []);
+  }, [isHovered]);
 
   const projected = basePositions.map((p, i) => {
     const r = rotate(p.x, p.y, p.z, angle * 0.28, angle * 0.12);
@@ -184,7 +190,11 @@ function BroadcastVisual() {
   const sorted = [...projected].sort((a, b) => a.z - b.z);
 
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/30 overflow-hidden flex items-center justify-center">
+    <div
+      className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/30 overflow-hidden flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <svg viewBox="0 0 240 240" className="w-full h-full max-w-[240px] max-h-[240px]">
         <defs>
           <filter id="hiwGlow" x="-100%" y="-100%" width="300%" height="300%">
