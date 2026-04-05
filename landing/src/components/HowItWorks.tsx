@@ -213,7 +213,7 @@ function BroadcastVisual() {
             if (na.z < -0.4 && nb.z < -0.4) return null;
             const avgZ = (na.z + nb.z) / 2;
             const edgeOpacity = 0.12 + Math.max(0, (avgZ + 1) / 2) * 0.22;
-            const isActiveEdge = a === activeIdx || b === activeIdx;
+            const isActiveEdge = isHovered && (a === activeIdx || b === activeIdx);
             return (
               <line
                 key={`e-${i}`}
@@ -230,7 +230,7 @@ function BroadcastVisual() {
         </g>
         {/* Nodes */}
         {sorted.map((node) => {
-          const isActive = node.idx === activeIdx;
+          const isActive = isHovered && node.idx === activeIdx;
           const radius = 5 * node.scale;
           const opacity = 0.35 + Math.max(0, (node.z + 1) / 2) * 0.65;
           const fillColor = isActive ? "#f97316" : SHADES[node.shade];
