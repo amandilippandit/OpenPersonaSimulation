@@ -3,57 +3,66 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import RevealOnScroll from "./RevealOnScroll";
 
-// --- Step 1: Clean persona grid with real portraits ---
+// --- Step 1: Scrolling columns of persona portraits ---
+function PortraitTile({ id }: { id: number }) {
+  return (
+    <div className="relative aspect-square rounded-md overflow-hidden border border-slate-200 bg-slate-100 group/tile">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`https://i.pravatar.cc/120?img=${id}`}
+        alt=""
+        className="w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover/tile:grayscale-0 group-hover/tile:scale-110"
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
+function ScrollColumn({
+  ids,
+  direction,
+  duration,
+}: {
+  ids: number[];
+  direction: "up" | "down";
+  duration: string;
+}) {
+  return (
+    <div className="relative overflow-hidden">
+      <div
+        className={direction === "down" ? "scroll-col-down" : "scroll-col-up"}
+        style={{ animationDuration: duration }}
+      >
+        <div className="flex flex-col gap-2">
+          {[...ids, ...ids].map((id, i) => (
+            <PortraitTile key={`${id}-${i}`} id={id} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function AudienceVisual() {
-  const personas = [
-    { name: "Priya Kapoor", segment: "Luxury Millennial", avatarId: 47, featured: true },
-    { name: "Maya Chen", segment: "Gen Z Creator", avatarId: 5 },
-    { name: "David Walker", segment: "Early Adopter", avatarId: 13 },
-    { name: "Ben Thompson", segment: "Value Seeker", avatarId: 9 },
-    { name: "Grace Coleman", segment: "Premium Health", avatarId: 20 },
-    { name: "Marcus Knight", segment: "Sneakerhead", avatarId: 12 },
-  ];
+  // 5 columns of portraits, alternating direction
+  const col1 = [5, 9, 11, 13];
+  const col2 = [22, 25, 33, 36];
+  const col3 = [47, 52, 55, 58];
+  const col4 = [1, 3, 7, 19];
+  const col5 = [26, 31, 40, 44];
 
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/40 overflow-hidden p-3">
-      <div className="grid grid-cols-3 grid-rows-2 gap-2 h-full">
-        {personas.map((p) => (
-          <div
-            key={p.name}
-            className={`relative rounded-lg overflow-hidden bg-white transition-transform hover:scale-[1.02] ${
-              p.featured
-                ? "border-2 border-orange-400 shadow-lg shadow-orange-500/20"
-                : "border border-slate-200 shadow-sm"
-            }`}
-          >
-            {/* Portrait photo */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`https://i.pravatar.cc/160?img=${p.avatarId}`}
-              alt={p.name}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-            {/* Gradient overlay with name */}
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-2 pt-6">
-              <div className="text-[10px] font-semibold text-white leading-tight truncate">
-                {p.name.split(" ")[0]} {p.name.split(" ")[1]?.[0]}.
-              </div>
-              <div className="text-[8px] font-mono text-white/80 leading-tight truncate mt-0.5">
-                {p.segment}
-              </div>
-            </div>
-            {/* Featured star badge */}
-            {p.featured && (
-              <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center shadow-md">
-                <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="currentColor">
-                  <path d="M6 0.5l1.5 3.5 3.8.3-2.9 2.5.9 3.7L6 8.5l-3.3 2 .9-3.7L.7 4.3l3.8-.3z" />
-                </svg>
-              </div>
-            )}
-          </div>
-        ))}
+    <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/40 overflow-hidden p-2">
+      <div className="grid grid-cols-5 gap-2 h-full">
+        <ScrollColumn ids={col1} direction="down" duration="28s" />
+        <ScrollColumn ids={col2} direction="down" duration="32s" />
+        <ScrollColumn ids={col3} direction="up" duration="30s" />
+        <ScrollColumn ids={col4} direction="up" duration="26s" />
+        <ScrollColumn ids={col5} direction="down" duration="34s" />
       </div>
+      {/* Top/bottom fade masks */}
+      <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-slate-100 via-slate-100/70 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-orange-50/40 via-slate-50/60 to-transparent pointer-events-none" />
     </div>
   );
 }
