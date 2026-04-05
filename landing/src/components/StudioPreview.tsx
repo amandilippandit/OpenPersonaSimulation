@@ -357,13 +357,13 @@ export default function StudioPreview() {
                   stage >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                 }`}
               >
-                <div className="flex flex-col items-end gap-2 max-w-[85%]">
-                  <div className="rounded-lg bg-orange-50/70 border border-orange-100 px-3 py-2">
+                <div className="flex flex-col items-end gap-3 max-w-[85%]">
+                  <div className="rounded-2xl bg-[#f4efe6] px-4 py-3">
                     <div
-                      className="text-xs text-slate-900 leading-relaxed"
-                      style={{ textAlign: "right" }}
+                      className="text-[13px] text-slate-900 leading-relaxed font-sans"
+                      style={{ textAlign: "left", fontFamily: "Inter, system-ui, sans-serif" }}
                     >
-                      Test this Instagram ad against our target audience.
+                      I want to test this Instagram ad against our core audience — young athletes, weekend warriors, and budget-conscious parents. Tell me which segments resonate and where the $140 price point breaks down.
                     </div>
                   </div>
                   {/* Attached IG post image */}
