@@ -300,8 +300,8 @@ export default function StudioPreview() {
                   stage >= 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                 }`}
               >
-                <div className="w-7 h-7 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0">
-                  <Logo size={14} />
+                <div className="w-7 h-7 flex items-center justify-center flex-shrink-0">
+                  <Logo size={20} />
                 </div>
                 <div
                   className="flex-1 min-w-0 text-xs text-slate-800 leading-relaxed space-y-3"
