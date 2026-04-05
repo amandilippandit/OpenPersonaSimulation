@@ -1,3 +1,5 @@
+import RevealOnScroll from "./RevealOnScroll";
+
 const FEATURES = [
   {
     icon: "▣",
@@ -50,20 +52,26 @@ export default function Features() {
   return (
     <section className="relative px-6 py-32 border-t border-ink-800/50">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-16 max-w-2xl">
-          <div className="text-xs uppercase tracking-wider text-ink-500 mb-3">capabilities</div>
-          <h2 className="font-mono text-3xl md:text-4xl text-white leading-tight">
-            everything you need to test marketing content against synthetic audiences.
-          </h2>
-        </div>
+        <RevealOnScroll>
+          <div className="mb-16 max-w-2xl">
+            <div className="text-xs uppercase tracking-wider text-ink-500 mb-3">capabilities</div>
+            <h2 className="font-mono text-3xl md:text-4xl text-white leading-tight">
+              everything you need to test marketing content against synthetic audiences.
+            </h2>
+          </div>
+        </RevealOnScroll>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {FEATURES.map((f) => (
-            <div key={f.title} className="feature-card p-6">
-              <div className={`text-xl mb-4 ${ACCENT_MAP[f.accent]}`}>{f.icon}</div>
-              <h3 className="text-base font-mono text-white mb-2">{f.title}</h3>
-              <p className="text-sm text-ink-400 leading-relaxed">{f.desc}</p>
-            </div>
+          {FEATURES.map((f, i) => (
+            <RevealOnScroll key={f.title} delay={(i % 3) * 80}>
+              <div className="feature-card p-6 h-full">
+                <div className={`text-xl mb-4 ${ACCENT_MAP[f.accent]} animate-glow-pulse`} style={{ animationDelay: `${i * 0.2}s` }}>
+                  {f.icon}
+                </div>
+                <h3 className="text-base font-mono text-white mb-2">{f.title}</h3>
+                <p className="text-sm text-ink-400 leading-relaxed">{f.desc}</p>
+              </div>
+            </RevealOnScroll>
           ))}
         </div>
       </div>
