@@ -78,6 +78,16 @@ body {
 .scroll-col-down { animation: scrollVertDown linear infinite; }
 .scroll-col-up { animation: scrollVertUp linear infinite; }
 
+@keyframes chart-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+@keyframes chart-pulse {
+  0%, 100% { r: 3.5; opacity: 1; }
+  50% { r: 4.5; opacity: 0.7; }
+}
+
 /* ---------- ANIMATION UTILITIES ---------- */
 
 .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }

@@ -238,11 +238,9 @@ function BroadcastVisual() {
   );
 }
 
-// --- Step 3: Single clean area chart ---
+// --- Step 3: Single clean area chart (grey default, green on hover) ---
 function InsightsVisual() {
-  // Distribution of personas across intent scores 1-10
   const values = [4, 8, 14, 22, 34, 42, 38, 28, 16, 8];
-
   const W = 300;
   const H = 150;
   const PAD_X = 16;
@@ -255,7 +253,6 @@ function InsightsVisual() {
     y: H - PAD_Y - (v / maxVal) * (H - PAD_Y * 2),
   }));
 
-  // Smooth curve using quadratic beziers
   let linePath = `M ${points[0].x},${points[0].y}`;
   for (let i = 1; i < points.length; i++) {
     const prev = points[i - 1];
@@ -265,15 +262,13 @@ function InsightsVisual() {
   }
   const areaPath = linePath + ` L ${W - PAD_X},${H - PAD_Y} L ${PAD_X},${H - PAD_Y} Z`;
 
-  // Average marker position (6.3 on 1-10 scale)
   const avgX = PAD_X + ((6.3 - 1) / 9) * (W - PAD_X * 2);
-  // Find y on the curve at avgX (approximate via nearest points)
   const avgIdx = Math.floor(5.3);
   const avgFrac = 5.3 - avgIdx;
   const avgY = points[avgIdx].y + (points[avgIdx + 1].y - points[avgIdx].y) * avgFrac;
 
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-emerald-50/25 overflow-hidden p-5 flex flex-col">
+    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-emerald-50/25 overflow-hidden p-5 flex flex-col group/chart">
       {/* Header */}
       <div className="flex items-baseline justify-between mb-3">
         <div className="text-[9px] font-mono text-slate-400 uppercase tracking-wider">
@@ -281,7 +276,9 @@ function InsightsVisual() {
         </div>
         <div className="flex items-baseline gap-1">
           <span className="text-[10px] font-mono text-slate-400">avg</span>
-          <span className="text-sm font-mono font-bold text-slate-900 tabular-nums">6.3</span>
+          <span className="text-sm font-mono font-bold text-slate-900 tabular-nums transition-colors duration-500 group-hover/chart:text-emerald-600">
+            6.3
+          </span>
         </div>
       </div>
 
@@ -289,13 +286,19 @@ function InsightsVisual() {
       <div className="flex-1 relative">
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
+            {/* Grey area fill (default) */}
+            <linearGradient id="areaFillGrey" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#94a3b8" stopOpacity="0" />
+            </linearGradient>
+            {/* Green area fill (hover) */}
+            <linearGradient id="areaFillGreen" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#10b981" stopOpacity="0.28" />
               <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
             </linearGradient>
           </defs>
 
-          {/* Horizontal grid lines */}
+          {/* Grid lines */}
           {[0.25, 0.5, 0.75].map((frac) => (
             <line
               key={frac}
@@ -308,24 +311,61 @@ function InsightsVisual() {
               strokeDasharray="2 3"
             />
           ))}
-
-          {/* Baseline */}
           <line x1={PAD_X} y1={H - PAD_Y} x2={W - PAD_X} y2={H - PAD_Y} stroke="#cbd5e1" strokeWidth="0.8" />
 
-          {/* Area */}
-          <path d={areaPath} fill="url(#areaFill)" />
+          {/* Area — grey base, green fades in on hover */}
+          <path d={areaPath} fill="url(#areaFillGrey)" className="transition-opacity duration-500 group-hover/chart:opacity-0" />
+          <path d={areaPath} fill="url(#areaFillGreen)" className="opacity-0 transition-opacity duration-500 group-hover/chart:opacity-100" />
 
-          {/* Line */}
+          {/* Line — grey default, green on hover, animates draw on hover */}
+          <path
+            d={linePath}
+            fill="none"
+            stroke="#94a3b8"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="transition-colors duration-500 group-hover/chart:stroke-emerald-500"
+            style={{
+              strokeDasharray: "600",
+              strokeDashoffset: "0",
+              animation: "chart-breathe 4s ease-in-out infinite",
+            }}
+          />
+
+          {/* Subtle animated draw-in overlay line on hover */}
           <path
             d={linePath}
             fill="none"
             stroke="#10b981"
-            strokeWidth="2"
+            strokeWidth="2.2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            className="opacity-0 group-hover/chart:opacity-100"
+            style={{
+              strokeDasharray: "600",
+              strokeDashoffset: "600",
+              transition: "stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease",
+            }}
+            ref={(el) => {
+              if (el) {
+                // Trigger draw-in when hovered
+                const parent = el.closest(".group\\/chart");
+                if (parent) {
+                  const onEnter = () => {
+                    el.style.strokeDashoffset = "0";
+                  };
+                  const onLeave = () => {
+                    el.style.strokeDashoffset = "600";
+                  };
+                  parent.addEventListener("mouseenter", onEnter);
+                  parent.addEventListener("mouseleave", onLeave);
+                }
+              }
+            }}
           />
 
-          {/* Average marker */}
+          {/* Average marker line */}
           <line
             x1={avgX}
             y1={PAD_Y}
@@ -334,16 +374,29 @@ function InsightsVisual() {
             stroke="#0f172a"
             strokeWidth="0.8"
             strokeDasharray="3 2"
-            opacity="0.5"
+            opacity="0.4"
+            className="transition-all duration-500 group-hover/chart:opacity-60 group-hover/chart:stroke-emerald-700"
           />
-          <circle cx={avgX} cy={avgY} r="3.5" fill="white" stroke="#0f172a" strokeWidth="1.5" />
+          {/* Average marker dot */}
+          <circle
+            cx={avgX}
+            cy={avgY}
+            r="3.5"
+            fill="white"
+            stroke="#64748b"
+            strokeWidth="1.5"
+            className="transition-all duration-500 group-hover/chart:stroke-emerald-600"
+            style={{ animation: "chart-pulse 2.2s ease-in-out infinite" }}
+          />
         </svg>
       </div>
 
       {/* X-axis labels */}
       <div className="flex justify-between px-4 mt-1.5">
         <span className="text-[9px] font-mono text-slate-400">1</span>
-        <span className="text-[9px] font-mono text-slate-400">intent score</span>
+        <span className="text-[9px] font-mono text-slate-400 transition-colors duration-500 group-hover/chart:text-emerald-600">
+          intent score
+        </span>
         <span className="text-[9px] font-mono text-slate-400">10</span>
       </div>
     </div>
