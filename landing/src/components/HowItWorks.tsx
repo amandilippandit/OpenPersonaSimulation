@@ -4,16 +4,45 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import RevealOnScroll from "./RevealOnScroll";
 
 // --- Step 1: Scrolling columns of persona portraits ---
+const PERSONA_INFO: Record<number, { name: string; segment: string }> = {
+  5: { name: "Maya C.", segment: "Gen Z Creator" },
+  9: { name: "Tanya M.", segment: "Weekend Warrior" },
+  11: { name: "Tom H.", segment: "Practical Buyer" },
+  13: { name: "David W.", segment: "Early Adopter" },
+  22: { name: "Amelia P.", segment: "Skeptic" },
+  25: { name: "Sophie L.", segment: "Brand Advocate" },
+  33: { name: "Ryan N.", segment: "Social Influencer" },
+  36: { name: "Elena M.", segment: "Impulse Shopper" },
+  47: { name: "Priya K.", segment: "Luxury Millennial" },
+  52: { name: "Greg S.", segment: "Casual Walker" },
+  1: { name: "Jake M.", segment: "Convenience First" },
+  3: { name: "Alex C.", segment: "Lifestyle Athlete" },
+  7: { name: "Chris B.", segment: "Gym Regular" },
+  19: { name: "Grace C.", segment: "Premium Health" },
+  26: { name: "Olivia B.", segment: "Beauty Obsessed" },
+  31: { name: "Isla S.", segment: "Home Curator" },
+};
+
 function PortraitTile({ id }: { id: number }) {
+  const info = PERSONA_INFO[id] || { name: "", segment: "" };
   return (
     <div className="relative aspect-square rounded-md overflow-hidden border border-slate-200 bg-slate-100 group/tile">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={`https://i.pravatar.cc/120?img=${id}`}
-        alt=""
+        alt={info.name}
         className="w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover/tile:grayscale-0 group-hover/tile:scale-110"
         loading="lazy"
       />
+      {/* Hover overlay with persona info */}
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-1.5 pt-4 opacity-0 group-hover/tile:opacity-100 transition-opacity duration-300 ease-out">
+        <div className="text-[9px] font-semibold text-white leading-tight truncate">
+          {info.name}
+        </div>
+        <div className="text-[7px] font-mono text-white/80 leading-tight truncate mt-0.5">
+          {info.segment}
+        </div>
+      </div>
     </div>
   );
 }
@@ -44,21 +73,19 @@ function ScrollColumn({
 }
 
 function AudienceVisual() {
-  // 5 columns of portraits, alternating direction
+  // 4 columns of portraits, alternating direction
   const col1 = [5, 9, 11, 13];
   const col2 = [22, 25, 33, 36];
-  const col3 = [47, 52, 55, 58];
-  const col4 = [1, 3, 7, 19];
-  const col5 = [26, 31, 40, 44];
+  const col3 = [47, 52, 3, 19];
+  const col4 = [1, 7, 26, 31];
 
   return (
     <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/40 overflow-hidden p-2">
-      <div className="grid grid-cols-5 gap-2 h-full">
+      <div className="grid grid-cols-4 gap-2 h-full">
         <ScrollColumn ids={col1} direction="down" duration="28s" />
-        <ScrollColumn ids={col2} direction="down" duration="32s" />
-        <ScrollColumn ids={col3} direction="up" duration="30s" />
+        <ScrollColumn ids={col2} direction="up" duration="32s" />
+        <ScrollColumn ids={col3} direction="down" duration="30s" />
         <ScrollColumn ids={col4} direction="up" duration="26s" />
-        <ScrollColumn ids={col5} direction="down" duration="34s" />
       </div>
       {/* Top/bottom fade masks */}
       <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-slate-100 via-slate-100/70 to-transparent pointer-events-none" />
