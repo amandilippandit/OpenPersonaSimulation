@@ -35,7 +35,7 @@ export default function CTASection() {
           </div>
 
           <div className="mt-8 text-xs text-slate-400 font-mono">
-            $ pip install openpersona
+            $ pip install git+https://github.com/amandilippandit/OpenPersonaSimulation.git
           </div>
         </div>
       </RevealOnScroll>
