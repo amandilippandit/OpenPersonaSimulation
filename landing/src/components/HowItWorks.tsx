@@ -1,223 +1,366 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import RevealOnScroll from "./RevealOnScroll";
 
-// --- Step 1: Featured persona with roster behind ---
+// --- Step 1: Collage of persona cards with photo-style avatars ---
 function AudienceVisual() {
-  const roster = [
-    { initials: "MC", name: "Maya", x: 12, y: 18 },
-    { initials: "BT", name: "Ben", x: 78, y: 8 },
-    { initials: "DW", name: "David", x: 82, y: 62 },
-    { initials: "EM", name: "Elena", x: 8, y: 68 },
-    { initials: "NK", name: "Noah", x: 48, y: 4 },
-    { initials: "GC", name: "Grace", x: 50, y: 82 },
+  const personas = [
+    {
+      initials: "PK",
+      name: "Priya Kapoor",
+      segment: "Luxury Millennial",
+      gradient: "from-orange-300 via-pink-400 to-rose-500",
+      x: 50, y: 50, rotate: -2, z: 5, featured: true,
+    },
+    {
+      initials: "MC",
+      name: "Maya Chen",
+      segment: "Gen Z Creator",
+      gradient: "from-violet-400 via-purple-400 to-indigo-500",
+      x: 20, y: 25, rotate: -10, z: 2, featured: false,
+    },
+    {
+      initials: "DW",
+      name: "David Walker",
+      segment: "Early Adopter",
+      gradient: "from-sky-400 via-blue-500 to-cyan-600",
+      x: 80, y: 30, rotate: 9, z: 3, featured: false,
+    },
+    {
+      initials: "BT",
+      name: "Ben Thompson",
+      segment: "Value Seeker",
+      gradient: "from-emerald-400 via-teal-500 to-green-600",
+      x: 22, y: 80, rotate: 6, z: 1, featured: false,
+    },
+    {
+      initials: "GC",
+      name: "Grace Coleman",
+      segment: "Premium Health",
+      gradient: "from-amber-400 via-orange-500 to-red-500",
+      x: 82, y: 75, rotate: -7, z: 4, featured: false,
+    },
   ];
+
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-orange-50/30 overflow-hidden">
-      {/* Background dot grid */}
-      <svg className="absolute inset-0 w-full h-full opacity-40" aria-hidden>
+    <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/40 overflow-hidden">
+      {/* Dotted grid */}
+      <svg className="absolute inset-0 w-full h-full opacity-30" aria-hidden>
         <defs>
-          <pattern id="dotgrid-1" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.7" fill="#cbd5e1" />
+          <pattern id="dotgrid-audience" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.6" fill="#cbd5e1" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#dotgrid-1)" />
+        <rect width="100%" height="100%" fill="url(#dotgrid-audience)" />
       </svg>
 
-      {/* Roster avatars around the perimeter */}
-      {roster.map((p, i) => (
+      {personas.map((p) => (
         <div
           key={p.initials}
           className="absolute"
-          style={{ left: `${p.x}%`, top: `${p.y}%` }}
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            transform: `translate(-50%, -50%) rotate(${p.rotate}deg) scale(${p.featured ? 1 : 0.82})`,
+            zIndex: p.z,
+          }}
         >
-          <div className="w-9 h-9 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-[10px] font-bold text-slate-600">
-            {p.initials}
+          <div
+            className={`w-[140px] rounded-xl border overflow-hidden ${
+              p.featured
+                ? "border-orange-200 shadow-2xl shadow-orange-900/15"
+                : "border-slate-200 shadow-lg shadow-slate-900/10"
+            } bg-white`}
+          >
+            {/* Photo-style avatar area */}
+            <div
+              className={`relative h-[72px] bg-gradient-to-br ${p.gradient} flex items-center justify-center`}
+            >
+              {/* Stylized face silhouette */}
+              <svg className="absolute w-full h-full opacity-20" viewBox="0 0 100 72" preserveAspectRatio="xMidYMid slice" fill="none">
+                <circle cx="50" cy="28" r="14" fill="#fff" />
+                <ellipse cx="50" cy="78" rx="30" ry="24" fill="#fff" />
+              </svg>
+              <span className="relative text-3xl font-bold text-white" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+                {p.initials}
+              </span>
+              {p.featured && (
+                <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
+                  <span className="text-[8px]">★</span>
+                </div>
+              )}
+            </div>
+            {/* Info */}
+            <div className="p-2">
+              <div className="text-[11px] font-semibold text-slate-900 truncate leading-tight">{p.name}</div>
+              <div className={`text-[9px] font-mono truncate leading-tight mt-0.5 ${p.featured ? "text-orange-600" : "text-slate-500"}`}>
+                {p.segment}
+              </div>
+            </div>
           </div>
         </div>
       ))}
-
-      {/* Featured central persona card */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="w-[200px] rounded-xl border border-orange-200 bg-white shadow-2xl shadow-orange-900/10 overflow-hidden">
-          {/* Header bar */}
-          <div className="flex items-center gap-2.5 p-3 border-b border-slate-100">
-            <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-sm font-bold text-white">
-              PK
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-[13px] font-semibold text-slate-900 truncate leading-tight">Priya Kapoor</div>
-              <div className="text-[10px] font-mono text-slate-500 truncate leading-tight">33 · New York</div>
-            </div>
-          </div>
-          {/* Segment + attrs */}
-          <div className="p-3 space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-orange-50 border border-orange-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-              <span className="text-[10px] font-mono text-orange-700 font-semibold">Luxury Millennial</span>
-            </div>
-            <div className="grid grid-cols-2 gap-1.5 text-[9px] font-mono pt-1">
-              <div className="flex items-center gap-1">
-                <span className="text-slate-400">◈</span>
-                <span className="text-slate-600">$210k</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-slate-400">∷</span>
-                <span className="text-slate-600">Instagram</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
 
-// --- Step 2: Content broadcasting with ripples + recipients ---
+// --- Step 2: Mini GNN graph (rotating sphere) ---
+function fibonacciSphere(n: number) {
+  const nodes: { x: number; y: number; z: number; shade: number }[] = [];
+  const phi = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < n; i++) {
+    const y = 1 - (i / (n - 1)) * 2;
+    const r = Math.sqrt(1 - y * y);
+    const theta = phi * i;
+    nodes.push({ x: Math.cos(theta) * r, y, z: Math.sin(theta) * r, shade: i % 3 });
+  }
+  return nodes;
+}
+
+function computeEdges(nodes: { x: number; y: number; z: number }[]) {
+  const edges: [number, number][] = [];
+  const seen = new Set<string>();
+  for (let i = 0; i < nodes.length; i++) {
+    const dists = nodes
+      .map((n, j) => ({
+        j,
+        d: (n.x - nodes[i].x) ** 2 + (n.y - nodes[i].y) ** 2 + (n.z - nodes[i].z) ** 2,
+      }))
+      .filter((e) => e.j !== i)
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 2);
+    for (const { j } of dists) {
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        edges.push([Math.min(i, j), Math.max(i, j)]);
+      }
+    }
+  }
+  return edges;
+}
+
+function rotate(x: number, y: number, z: number, angleY: number, angleX: number) {
+  const cosY = Math.cos(angleY);
+  const sinY = Math.sin(angleY);
+  const rx = x * cosY + z * sinY;
+  const rz = -x * sinY + z * cosY;
+  const cosX = Math.cos(angleX);
+  const sinX = Math.sin(angleX);
+  const ry = y * cosX - rz * sinX;
+  const rz2 = y * sinX + rz * cosX;
+  return { x: rx, y: ry, z: rz2 };
+}
+
+const SHADES = ["#475569", "#94a3b8", "#cbd5e1"];
+
 function BroadcastVisual() {
+  const basePositions = useMemo(() => fibonacciSphere(36), []);
+  const edges = useMemo(() => computeEdges(basePositions), [basePositions]);
+  const [angle, setAngle] = useState(0);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const rafRef = useRef<number>();
+
+  useEffect(() => {
+    const start = performance.now();
+    const tick = (now: number) => {
+      setAngle((now - start) / 1000);
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const i = setInterval(() => setActiveIdx((v) => (v + 1) % 36), 2600);
+    return () => clearInterval(i);
+  }, []);
+
+  const projected = basePositions.map((p, i) => {
+    const r = rotate(p.x, p.y, p.z, angle * 0.28, angle * 0.12);
+    const scale = 320 / (320 - r.z * 70);
+    return {
+      idx: i,
+      x: 120 + r.x * 70 * scale,
+      y: 120 + r.y * 70 * scale,
+      z: r.z,
+      scale,
+      shade: p.shade,
+    };
+  });
+
+  const sorted = [...projected].sort((a, b) => a.z - b.z);
+
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-orange-50/30 overflow-hidden flex items-center justify-center">
-      <svg viewBox="0 0 320 240" className="w-full h-full">
+    <div className="relative h-64 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50/30 overflow-hidden flex items-center justify-center">
+      <svg viewBox="0 0 240 240" className="w-full h-full max-w-[240px] max-h-[240px]">
         <defs>
-          <radialGradient id="bcastGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#f97316" stopOpacity="0.3" />
-            <stop offset="70%" stopColor="#f97316" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="bcastAd" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#1e293b" />
-            <stop offset="100%" stopColor="#0f172a" />
-          </linearGradient>
+          <filter id="hiwGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
-
-        {/* Ambient glow */}
-        <circle cx="160" cy="120" r="110" fill="url(#bcastGlow)" />
-
-        {/* Ripple rings */}
-        {[0, 1, 2].map((i) => (
-          <circle
-            key={i}
-            cx="160"
-            cy="120"
-            r="40"
-            fill="none"
-            stroke="#f97316"
-            strokeWidth="1"
-            opacity="0.35"
-            style={{
-              animation: `ripple 3.2s cubic-bezier(0.16, 1, 0.3, 1) ${i * 1.06}s infinite`,
-            }}
-          />
-        ))}
-
-        {/* Recipient dots around perimeter */}
-        {Array.from({ length: 16 }).map((_, i) => {
-          const angle = (i / 16) * Math.PI * 2 - Math.PI / 2;
-          const x = 160 + Math.cos(angle) * 95;
-          const y = 120 + Math.sin(angle) * 80;
-          const isOrange = i === 3;
-          const isDark = i === 10;
-          return (
-            <g key={i}>
+        {/* Edges */}
+        <g>
+          {edges.map(([a, b], i) => {
+            const na = projected[a];
+            const nb = projected[b];
+            if (na.z < -0.4 && nb.z < -0.4) return null;
+            const avgZ = (na.z + nb.z) / 2;
+            const edgeOpacity = 0.12 + Math.max(0, (avgZ + 1) / 2) * 0.22;
+            const isActiveEdge = a === activeIdx || b === activeIdx;
+            return (
               <line
-                x1="160"
-                y1="120"
-                x2={x}
-                y2={y}
-                stroke="#e2e8f0"
-                strokeWidth="0.6"
-                strokeDasharray="1 3"
-                opacity="0.6"
+                key={`e-${i}`}
+                x1={na.x}
+                y1={na.y}
+                x2={nb.x}
+                y2={nb.y}
+                stroke={isActiveEdge ? "#0a0a14" : "#1e293b"}
+                strokeWidth={isActiveEdge ? 0.9 : 0.4}
+                opacity={isActiveEdge ? 0.7 : edgeOpacity}
               />
-              <circle
-                cx={x}
-                cy={y}
-                r={isOrange ? 5 : 4}
-                fill={isOrange ? "#f97316" : isDark ? "#475569" : "#cbd5e1"}
-              />
-              {isOrange && (
-                <circle cx={x} cy={y} r="9" fill="none" stroke="#f97316" strokeWidth="0.8" opacity="0.3" />
+            );
+          })}
+        </g>
+        {/* Nodes */}
+        {sorted.map((node) => {
+          const isActive = node.idx === activeIdx;
+          const radius = 5 * node.scale;
+          const opacity = 0.35 + Math.max(0, (node.z + 1) / 2) * 0.65;
+          const fillColor = isActive ? "#f97316" : SHADES[node.shade];
+          return (
+            <g key={node.idx}>
+              {isActive && (
+                <circle cx={node.x} cy={node.y} r={radius + 6} fill="#f97316" opacity="0.2" filter="url(#hiwGlow)" />
               )}
+              <circle cx={node.x} cy={node.y} r={radius} fill={fillColor} opacity={isActive ? 1 : opacity} />
             </g>
           );
         })}
-
-        {/* Central content card — Instagram-style */}
-        <g>
-          <rect x="122" y="82" width="76" height="76" rx="8" fill="url(#bcastAd)" stroke="#334155" strokeWidth="0.5" />
-          {/* Post header */}
-          <circle cx="132" cy="92" r="3.5" fill="#fb923c" />
-          <rect x="138" y="90.5" width="20" height="1.5" rx="0.75" fill="#64748b" />
-          <rect x="138" y="94" width="12" height="1" rx="0.5" fill="#475569" />
-          {/* Image area */}
-          <rect x="128" y="100" width="64" height="38" rx="2" fill="#0f172a" />
-          <text x="160" y="115" textAnchor="middle" fontSize="7" fill="#f97316" fontFamily="JetBrains Mono, monospace" fontWeight="700" letterSpacing="1">SLEEP</text>
-          <text x="160" y="126" textAnchor="middle" fontSize="9" fill="#fff" fontFamily="serif" fontStyle="italic">Better.</text>
-          {/* Caption lines */}
-          <rect x="128" y="144" width="52" height="1.2" rx="0.6" fill="#475569" />
-          <rect x="128" y="148" width="36" height="1.2" rx="0.6" fill="#334155" />
-          <rect x="128" y="152" width="44" height="1.2" rx="0.6" fill="#334155" />
-        </g>
       </svg>
     </div>
   );
 }
 
-// --- Step 3: Full dashboard view ---
+// --- Step 3: Area chart with multiple segments ---
 function InsightsVisual() {
-  const bars = [
-    { label: "luxury", value: 86, color: "bg-emerald-400" },
-    { label: "early", value: 72, color: "bg-blue-400" },
-    { label: "gen z", value: 64, color: "bg-orange-400" },
-    { label: "practical", value: 48, color: "bg-purple-400" },
-    { label: "value", value: 32, color: "bg-amber-400" },
+  // Sample data — intent distribution across score buckets per segment
+  const segments = [
+    { name: "luxury", color: "#10b981", values: [2, 4, 8, 15, 28, 32, 45, 58, 72, 68] },
+    { name: "gen z", color: "#f97316", values: [5, 12, 22, 35, 48, 52, 45, 38, 28, 18] },
+    { name: "value", color: "#f59e0b", values: [42, 58, 48, 32, 22, 14, 8, 5, 3, 2] },
   ];
+
+  const W = 300;
+  const H = 140;
+  const PAD_X = 10;
+  const PAD_Y = 20;
+  const maxVal = 80;
+
+  const buildPath = (values: number[]) => {
+    const step = (W - PAD_X * 2) / (values.length - 1);
+    const points = values.map((v, i) => ({
+      x: PAD_X + i * step,
+      y: H - PAD_Y - (v / maxVal) * (H - PAD_Y * 2),
+    }));
+    // Smooth path using quadratic bezier curves
+    let d = `M ${points[0].x},${points[0].y}`;
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1];
+      const curr = points[i];
+      const cx = (prev.x + curr.x) / 2;
+      d += ` Q ${cx},${prev.y} ${cx},${(prev.y + curr.y) / 2} T ${curr.x},${curr.y}`;
+    }
+    return { path: d, points };
+  };
+
+  const segmentPaths = segments.map((s) => ({ ...s, ...buildPath(s.values) }));
+
   return (
-    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-emerald-50/20 overflow-hidden flex items-center justify-center p-4">
-      <div className="w-full max-w-[260px] rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5 overflow-hidden">
-        {/* Big headline metric */}
-        <div className="px-4 pt-4 pb-3 border-b border-slate-100">
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="text-[9px] font-mono text-slate-400 uppercase tracking-wider mb-1">purchase intent</div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-mono font-bold text-slate-900 tabular-nums leading-none">6.3</span>
-                <span className="text-[11px] font-mono text-slate-400">/ 10</span>
-              </div>
-            </div>
-            <div className="flex flex-col items-end gap-1.5">
-              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-100">
-                <svg className="w-2.5 h-2.5 text-emerald-600" viewBox="0 0 8 8" fill="none">
-                  <path d="M1 5l2-2 4 4M3 3h4v4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                </svg>
-                <span className="text-[9px] font-mono text-emerald-700 font-semibold">+12%</span>
-              </div>
-              {/* Mini sparkline */}
-              <svg width="44" height="14" viewBox="0 0 44 14" className="opacity-60">
-                <polyline points="0,10 6,8 12,9 18,6 24,7 30,4 36,5 44,2" fill="none" stroke="#10b981" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
+    <div className="relative h-64 bg-gradient-to-br from-slate-50 via-white to-emerald-50/25 overflow-hidden p-4">
+      {/* Header */}
+      <div className="flex items-start justify-between mb-2">
+        <div>
+          <div className="text-[9px] font-mono text-slate-400 uppercase tracking-wider mb-0.5">intent distribution</div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl font-mono font-bold text-slate-900 tabular-nums leading-none">6.3</span>
+            <span className="text-[10px] font-mono text-slate-400">avg</span>
           </div>
         </div>
-
-        {/* Segment bars */}
-        <div className="px-4 py-3 space-y-2">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[9px] font-mono text-slate-400 uppercase tracking-wider">by segment</span>
-            <span className="text-[9px] font-mono text-slate-400">5 segments</span>
-          </div>
-          {bars.map((b) => (
-            <div key={b.label} className="flex items-center gap-2">
-              <span className="text-[10px] font-mono text-slate-600 w-14 truncate">{b.label}</span>
-              <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <div className={`h-full ${b.color} rounded-full`} style={{ width: `${b.value}%` }} />
-              </div>
-              <span className="text-[10px] font-mono font-semibold text-slate-900 tabular-nums w-6 text-right">
-                {(b.value / 10).toFixed(1)}
-              </span>
+        <div className="flex gap-2">
+          {segments.map((s) => (
+            <div key={s.name} className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
+              <span className="text-[8px] font-mono text-slate-500">{s.name}</span>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Chart */}
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" preserveAspectRatio="none">
+        {/* Grid lines */}
+        {[0.25, 0.5, 0.75].map((frac) => (
+          <line
+            key={frac}
+            x1={PAD_X}
+            y1={PAD_Y + frac * (H - PAD_Y * 2)}
+            x2={W - PAD_X}
+            y2={PAD_Y + frac * (H - PAD_Y * 2)}
+            stroke="#e2e8f0"
+            strokeWidth="0.5"
+            strokeDasharray="2 3"
+          />
+        ))}
+        {/* Baseline */}
+        <line x1={PAD_X} y1={H - PAD_Y} x2={W - PAD_X} y2={H - PAD_Y} stroke="#cbd5e1" strokeWidth="0.8" />
+
+        {/* Area fills (back to front) */}
+        {segmentPaths.map((s, i) => {
+          const areaPath = s.path + ` L ${W - PAD_X},${H - PAD_Y} L ${PAD_X},${H - PAD_Y} Z`;
+          return (
+            <path
+              key={`area-${s.name}`}
+              d={areaPath}
+              fill={s.color}
+              opacity="0.08"
+            />
+          );
+        })}
+
+        {/* Lines */}
+        {segmentPaths.map((s) => (
+          <path
+            key={`line-${s.name}`}
+            d={s.path}
+            fill="none"
+            stroke={s.color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ))}
+
+        {/* End dots on each line */}
+        {segmentPaths.map((s) => (
+          <g key={`dot-${s.name}`}>
+            <circle cx={s.points[s.points.length - 1].x} cy={s.points[s.points.length - 1].y} r="3" fill="white" />
+            <circle cx={s.points[s.points.length - 1].x} cy={s.points[s.points.length - 1].y} r="2" fill={s.color} />
+          </g>
+        ))}
+
+        {/* X-axis labels */}
+        <text x={PAD_X} y={H - 4} fontSize="7" fill="#94a3b8" fontFamily="JetBrains Mono, monospace">1</text>
+        <text x={W / 2} y={H - 4} fontSize="7" fill="#94a3b8" textAnchor="middle" fontFamily="JetBrains Mono, monospace">intent score</text>
+        <text x={W - PAD_X} y={H - 4} fontSize="7" fill="#94a3b8" textAnchor="end" fontFamily="JetBrains Mono, monospace">10</text>
+      </svg>
     </div>
   );
 }
@@ -266,12 +409,7 @@ export default function HowItWorks() {
           {STEPS.map((step, i) => (
             <RevealOnScroll key={step.num} delay={i * 120}>
               <div className="card-light overflow-hidden h-full flex flex-col">
-                {/* Visual area — large, dominant */}
-                <div className="relative border-b border-slate-100">
-                  {step.visual}
-                </div>
-
-                {/* Text content */}
+                <div className="relative border-b border-slate-100">{step.visual}</div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
