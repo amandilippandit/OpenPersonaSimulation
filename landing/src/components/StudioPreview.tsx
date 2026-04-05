@@ -80,7 +80,7 @@ const NODE_COUNT = 64;
 const SPHERE_R = 88;
 const CAMERA_Z = 380;
 const SHADE_COLORS = ["#475569", "#94a3b8", "#cbd5e1"];
-const CARD_WIDTH = 150;
+const CARD_WIDTH = 210;
 
 function RotatingGraph() {
   const basePositions = useMemo(() => fibonacciSphere(NODE_COUNT), []);
@@ -195,23 +195,23 @@ function RotatingGraph() {
           animation: "reactionIn 350ms cubic-bezier(0.16, 1, 0.3, 1) both",
         }}
       >
-        <div className="rounded-lg border border-slate-200 bg-white shadow-lg shadow-slate-900/10 p-2.5">
-          <div className="flex items-center gap-2 mb-1.5">
-            <div className="w-7 h-7 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-[10px] font-bold text-orange-600 flex-shrink-0">
+        <div className="rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-sm font-bold text-orange-600 flex-shrink-0">
               {activeProfile.initials}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[11px] font-semibold text-slate-900 truncate leading-tight">
+              <div className="text-sm font-semibold text-slate-900 truncate leading-tight">
                 {activeProfile.name}
               </div>
-              <div className="text-[9px] font-mono text-slate-500 truncate leading-tight">
+              <div className="text-xs font-mono text-slate-500 truncate leading-tight mt-0.5">
                 {activeProfile.location}
               </div>
             </div>
           </div>
-          <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-orange-50 border border-orange-100">
-            <span className="w-1 h-1 rounded-full bg-orange-500" />
-            <span className="text-[9px] font-mono text-orange-700 font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-orange-50 border border-orange-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+            <span className="text-[11px] font-mono text-orange-700 font-semibold">
               {activeProfile.segment}
             </span>
           </div>
@@ -294,8 +294,8 @@ export default function StudioPreview() {
                   stage >= 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                 }`}
               >
-                <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  <Logo size={32} />
+                <div className="w-7 h-7 flex items-center justify-center flex-shrink-0">
+                  <Logo size={20} />
                 </div>
                 <div
                   className="flex-1 min-w-0 text-xs text-slate-800 leading-relaxed space-y-3"
@@ -397,10 +397,8 @@ export default function StudioPreview() {
               </div>
             </div>
             <div className="relative aspect-square w-full flex items-center justify-center">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-full h-full max-w-[280px] max-h-[280px]">
-                  <RotatingGraph />
-                </div>
+              <div className="absolute inset-0">
+                <RotatingGraph />
               </div>
             </div>
           </div>
