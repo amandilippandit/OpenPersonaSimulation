@@ -32,13 +32,13 @@ export default function InstallBox() {
     <div className="w-full max-w-2xl">
       {/* Mode selector */}
       <div className="flex items-center justify-between mb-4">
-        <span className="text-xs uppercase tracking-wider text-ink-500">install openpersona</span>
+        <span className="text-xs uppercase tracking-wider text-slate-400">install openpersona</span>
         <div className="flex items-center gap-1">
           {MODES.map((m) => (
             <button
               key={m.id}
               onClick={() => setActiveMode(m.id)}
-              className={`tab ${activeMode === m.id ? "tab-active" : "tab-inactive"} flex items-center gap-1.5`}
+              className={`tab-light ${activeMode === m.id ? "tab-light-active" : "tab-light-inactive"} flex items-center gap-1.5`}
             >
               <span className="text-[10px] opacity-70">{m.icon}</span>
               {m.label}
@@ -49,28 +49,26 @@ export default function InstallBox() {
 
       {activeMode === "terminal" && (
         <>
-          {/* Tab row */}
           <div className="flex items-center gap-1 mb-2">
             {TABS.map((t) => (
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id)}
-                className={`tab ${activeTab === t.id ? "tab-active" : "tab-inactive"}`}
+                className={`tab-light ${activeTab === t.id ? "tab-light-active" : "tab-light-inactive"}`}
               >
                 {t.label}
               </button>
             ))}
           </div>
 
-          {/* Terminal */}
-          <div className="terminal-box p-4 flex items-center justify-between gap-3 group">
+          <div className="terminal-light p-4 flex items-center justify-between gap-3 group">
             <div className="flex items-center gap-3 flex-1 font-mono text-sm overflow-x-auto">
-              <span className="text-ink-500 select-none">$</span>
-              <span className="text-ink-200 whitespace-nowrap">{currentCmd}</span>
+              <span className="text-slate-500 select-none">$</span>
+              <span className="text-slate-100 whitespace-nowrap">{currentCmd}</span>
             </div>
             <button
               onClick={handleCopy}
-              className="text-ink-500 hover:text-ink-200 transition-colors p-1 -m-1"
+              className="text-slate-500 hover:text-slate-200 transition-colors p-1 -m-1"
               aria-label="Copy to clipboard"
             >
               {copied ? (
@@ -89,26 +87,26 @@ export default function InstallBox() {
       )}
 
       {activeMode === "studio" && (
-        <div className="terminal-box p-6">
-          <div className="text-xs uppercase tracking-wider text-ink-500 mb-3">launch the visual studio</div>
-          <div className="font-mono text-sm text-ink-200 space-y-2">
-            <div><span className="text-ink-500">$</span> uvicorn studio.backend.main:app --port 8000</div>
-            <div><span className="text-ink-500">$</span> cd studio/frontend && npm run dev</div>
-            <div className="text-ink-500 mt-3 text-xs"># 3D persona graph, live event feed, agent inspector</div>
+        <div className="terminal-light p-6">
+          <div className="text-xs uppercase tracking-wider text-slate-500 mb-3">launch the visual studio</div>
+          <div className="font-mono text-sm text-slate-100 space-y-2">
+            <div><span className="text-slate-500">$</span> uvicorn studio.backend.main:app --port 8000</div>
+            <div><span className="text-slate-500">$</span> cd studio/frontend && npm run dev</div>
+            <div className="text-slate-500 mt-3 text-xs"># 3D persona graph, live event feed, agent inspector</div>
           </div>
         </div>
       )}
 
       {activeMode === "demo" && (
-        <div className="terminal-box p-6">
-          <div className="text-xs uppercase tracking-wider text-ink-500 mb-3">try it live</div>
+        <div className="terminal-light p-6">
+          <div className="text-xs uppercase tracking-wider text-slate-500 mb-3">try it live</div>
           <a
             href={process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3000"}
-            className="block font-mono text-sm text-ink-200 hover:text-white transition-colors"
+            className="block font-mono text-sm text-slate-100 hover:text-white transition-colors"
           >
             → open the studio in a new tab
           </a>
-          <div className="text-ink-500 text-xs mt-2">no signup. runs against your local backend.</div>
+          <div className="text-slate-500 text-xs mt-2">no signup. runs against your local backend.</div>
         </div>
       )}
     </div>
