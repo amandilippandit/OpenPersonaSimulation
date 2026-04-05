@@ -21,76 +21,76 @@ interface Profile {
 
 const PROFILES: Profile[] = [
   {
-    initials: "MC", name: "Maya Chen", age: 24, location: "Los Angeles",
-    segment: "Gen Z Creator", income: "$55k", channels: "TikTok · Instagram",
-    priceSensitivity: "medium", reaction: "Love the vibe but need to see reviews first",
+    initials: "JR", name: "Jordan Reyes", age: 27, location: "Los Angeles",
+    segment: "Marathon Runner", income: "$78k", channels: "Strava · Instagram",
+    priceSensitivity: "low", reaction: "Finally a brand that gets race-day prep",
+    intentScore: 8.7,
+  },
+  {
+    initials: "TM", name: "Tanya Mitchell", age: 34, location: "Denver",
+    segment: "Weekend Warrior", income: "$92k", channels: "Instagram · YouTube",
+    priceSensitivity: "medium", reaction: "Copy hits — but wait for a sale moment",
+    intentScore: 6.1,
+  },
+  {
+    initials: "MK", name: "Marcus Knight", age: 22, location: "Atlanta",
+    segment: "Sneakerhead",      income: "$42k", channels: "TikTok · Discord",
+    priceSensitivity: "medium", reaction: "If it drops limited I'm camping the app",
+    intentScore: 9.1,
+  },
+  {
+    initials: "AC", name: "Alex Chen", age: 29, location: "Brooklyn",
+    segment: "Lifestyle Athlete", income: "$110k", channels: "Instagram · Podcasts",
+    priceSensitivity: "low", reaction: "Love the mood. Feels earned, not hypey.",
+    intentScore: 8.2,
+  },
+  {
+    initials: "DW", name: "Diane Walker", age: 43, location: "Minneapolis",
+    segment: "Budget Parent", income: "$64k", channels: "Search · Coupons",
+    priceSensitivity: "high", reaction: "Not spending $140 on trainers for my kid",
+    intentScore: 2.8,
+  },
+  {
+    initials: "CB", name: "Chris Bell", age: 31, location: "Austin",
+    segment: "Gym Regular", income: "$88k", channels: "YouTube · Reddit",
+    priceSensitivity: "medium", reaction: "Need specs. Cushioning? Drop? Weight?",
+    intentScore: 5.9,
+  },
+  {
+    initials: "PS", name: "Priya Shah", age: 26, location: "San Francisco",
+    segment: "Yoga Devotee", income: "$95k", channels: "Instagram · Email",
+    priceSensitivity: "low", reaction: "Bold tone. Not sure it aligns with my practice.",
+    intentScore: 4.3,
+  },
+  {
+    initials: "RN", name: "Ryan Nakamura", age: 36, location: "Portland",
+    segment: "Former Athlete", income: "$115k", channels: "Podcasts · Email",
+    priceSensitivity: "medium", reaction: "The brand earned loyalty years ago. In.",
+    intentScore: 8.8,
+  },
+  {
+    initials: "MO", name: "Maya O'Connor", age: 19, location: "Chicago",
+    segment: "Gen Z Fitness", income: "$28k", channels: "TikTok · Instagram",
+    priceSensitivity: "high", reaction: "Obsessed with the ad but broke til payday",
+    intentScore: 6.8,
+  },
+  {
+    initials: "GS", name: "Greg Stevens", age: 52, location: "Phoenix",
+    segment: "Walker / Casual", income: "$82k", channels: "TV · Facebook",
+    priceSensitivity: "medium", reaction: "Looks like it's aimed at my kids, not me",
+    intentScore: 3.7,
+  },
+  {
+    initials: "ES", name: "Elena Santos", age: 38, location: "Miami",
+    segment: "Wellness Mom", income: "$98k", channels: "Instagram · Podcasts",
+    priceSensitivity: "medium", reaction: "Love the energy. Great gift for my husband.",
+    intentScore: 7.2,
+  },
+  {
+    initials: "NK", name: "Noah King", age: 30, location: "Seattle",
+    segment: "Trail Runner", income: "$102k", channels: "Strava · Reddit",
+    priceSensitivity: "low", reaction: "Would trust them for pavement, not trails",
     intentScore: 6.4,
-  },
-  {
-    initials: "BT", name: "Ben Thompson", age: 38, location: "Columbus, OH",
-    segment: "Value Seeker", income: "$72k", channels: "Email · Search",
-    priceSensitivity: "high", reaction: "$899 is a lot — I'd wait for a sale",
-    intentScore: 3.2,
-  },
-  {
-    initials: "PK", name: "Priya Kapoor", age: 33, location: "New York",
-    segment: "Luxury Millennial", income: "$210k", channels: "Instagram · Podcasts",
-    priceSensitivity: "low", reaction: "Premium feel. The trial seals it for me.",
-    intentScore: 8.6,
-  },
-  {
-    initials: "TH", name: "Tom Henderson", age: 52, location: "Austin",
-    segment: "Practical Buyer", income: "$95k", channels: "Search · TV",
-    priceSensitivity: "medium", reaction: "Solid specs, but I want warranty terms",
-    intentScore: 5.8,
-  },
-  {
-    initials: "DW", name: "David Walker", age: 31, location: "Seattle",
-    segment: "Early Adopter", income: "$140k", channels: "YouTube · Reddit",
-    priceSensitivity: "low", reaction: "Tech story is compelling. Ordering tonight.",
-    intentScore: 8.9,
-  },
-  {
-    initials: "EM", name: "Elena Morales", age: 27, location: "Miami",
-    segment: "Impulse Shopper", income: "$68k", channels: "Instagram · TikTok",
-    priceSensitivity: "medium", reaction: "It's giving dream bedroom energy",
-    intentScore: 7.9,
-  },
-  {
-    initials: "MR", name: "Marcus Reed", age: 35, location: "Portland",
-    segment: "Eco-Conscious", income: "$88k", channels: "Podcasts · Email",
-    priceSensitivity: "medium", reaction: "Materials? Sourcing? Need sustainability info.",
-    intentScore: 4.7,
-  },
-  {
-    initials: "LF", name: "Laura Fitzgerald", age: 45, location: "Boston",
-    segment: "Loyal Customer", income: "$78k", channels: "Email · Direct Mail",
-    priceSensitivity: "high", reaction: "My current mattress is fine, not convinced",
-    intentScore: 2.9,
-  },
-  {
-    initials: "RN", name: "Ryan Nakamura", age: 26, location: "San Francisco",
-    segment: "Social Influencer", income: "$120k", channels: "TikTok · LinkedIn",
-    priceSensitivity: "medium", reaction: "Could film a review. Worth testing publicly.",
-    intentScore: 7.3,
-  },
-  {
-    initials: "GC", name: "Grace Coleman", age: 41, location: "Denver",
-    segment: "Premium Health", income: "$160k", channels: "Podcasts · Instagram",
-    priceSensitivity: "low", reaction: "Sleep is my top priority — shut up and take my money",
-    intentScore: 9.2,
-  },
-  {
-    initials: "NP", name: "Nina Park", age: 36, location: "Toronto",
-    segment: "Researcher", income: "$92k", channels: "Search · Reviews",
-    priceSensitivity: "medium", reaction: "Need comparison data vs Purple, Casper",
-    intentScore: 5.1,
-  },
-  {
-    initials: "NK", name: "Noah King", age: 32, location: "Brooklyn",
-    segment: "Minimalist", income: "$105k", channels: "Newsletter · Podcasts",
-    priceSensitivity: "low", reaction: "Clean design. I'd own this for 10 years.",
-    intentScore: 8.0,
   },
 ];
 
@@ -366,23 +366,41 @@ export default function StudioPreview() {
                       Test this Instagram ad against our target audience.
                     </div>
                   </div>
-                  {/* Attached IG post image — just the picture, right-aligned */}
+                  {/* Attached IG post image — athletic performance brand */}
                   <div className="rounded-lg overflow-hidden border border-slate-200 w-[180px]">
-                    <div className="relative aspect-square bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-800 flex items-center justify-center p-4 text-center overflow-hidden">
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-orange-500/25 blur-2xl" />
-                      <svg className="absolute bottom-0 w-full opacity-20" viewBox="0 0 400 100" fill="none">
-                        <rect x="40" y="60" width="320" height="35" rx="4" fill="#e2e8f0" />
-                        <rect x="40" y="42" width="320" height="22" rx="10" fill="#cbd5e1" />
-                        <rect x="70" y="22" width="80" height="28" rx="5" fill="#f1f5f9" />
-                        <rect x="250" y="22" width="80" height="28" rx="5" fill="#f1f5f9" />
+                    <div className="relative aspect-square bg-gradient-to-br from-black via-slate-950 to-slate-900 flex items-center justify-center p-4 text-center overflow-hidden">
+                      {/* Dramatic diagonal orange streak */}
+                      <div
+                        className="absolute inset-0 opacity-40"
+                        style={{
+                          background: "linear-gradient(115deg, transparent 35%, #f97316 50%, transparent 65%)",
+                          filter: "blur(28px)",
+                        }}
+                      />
+                      {/* Runner silhouette */}
+                      <svg
+                        className="absolute bottom-2 right-1 opacity-30"
+                        viewBox="0 0 120 120"
+                        width="96"
+                        height="96"
+                        fill="none"
+                      >
+                        <path
+                          d="M58 20a8 8 0 11-16 0 8 8 0 0116 0zM48 32c-6 2-12 8-14 16l-10 18c-2 4 0 8 4 10s8 0 10-4l6-10 4 6-8 22c-1 3 0 6 3 7l4 1c3 1 5 0 7-3l10-26c2-5 1-9-2-12l-8-8 10-10c3-3 3-7 0-10s-7-3-10 0l-6 6"
+                          stroke="#fff"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
-                      <div className="relative">
-                        <div className="text-[6px] font-mono text-orange-300 uppercase tracking-[0.2em] mb-1">smart sleep</div>
-                        <div className="font-serif text-white text-base leading-tight mb-1.5">
-                          Sleep Better<br />Tonight.
+                      {/* Content */}
+                      <div className="relative text-left self-start w-full">
+                        <div className="text-[6px] font-mono text-orange-400 uppercase tracking-[0.25em] mb-2">apex</div>
+                        <div className="font-serif italic text-white text-[22px] leading-[0.95] tracking-tight mb-2">
+                          Run<br />Anyway.
                         </div>
-                        <div className="inline-block px-1.5 py-0.5 rounded-full border border-white/30 text-[7px] font-mono text-white/90">
-                          $899 · 90-night trial
+                        <div className="inline-block px-1.5 py-0.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-[7px] font-mono text-white/90">
+                          new release · $140
                         </div>
                       </div>
                     </div>
