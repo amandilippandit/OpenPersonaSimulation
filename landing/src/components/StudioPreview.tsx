@@ -256,7 +256,7 @@ export default function StudioPreview() {
           {/* LEFT: Chat conversation + input */}
           <div className="flex flex-col border-r border-slate-100">
             <div className="flex-1 p-5 md:p-6 space-y-5">
-              {/* User message — avatar on right, orange-tinted bg */}
+              {/* User message — avatar right, orange-tinted bubble, right-aligned row */}
               <div
                 className={`flex flex-row-reverse gap-3 transition-all duration-500 ${
                   stage >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
@@ -268,21 +268,14 @@ export default function StudioPreview() {
                     <path d="M2.5 14a5.5 5.5 0 0111 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="inline-block rounded-lg bg-orange-50/70 border border-orange-100 px-3 py-2 mb-2">
+                <div className="flex flex-col items-end gap-2 max-w-[85%]">
+                  <div className="rounded-lg bg-orange-50/70 border border-orange-100 px-3 py-2">
                     <div className="text-xs text-slate-900 leading-relaxed">
                       Test this Instagram ad against our target audience.
                     </div>
                   </div>
-                  {/* Attached IG post image */}
-                  <div className="block rounded-lg border border-slate-200 overflow-hidden max-w-[220px]">
-                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 border-b border-slate-100 bg-slate-50/50">
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 p-[1px]">
-                        <div className="w-full h-full rounded-full bg-white" />
-                      </div>
-                      <span className="text-[9px] font-semibold text-slate-900">zenmatt</span>
-                      <span className="text-[9px] text-slate-400">· Sponsored</span>
-                    </div>
+                  {/* Attached IG post image — just the picture, right-aligned */}
+                  <div className="rounded-lg overflow-hidden border border-slate-200 w-[180px]">
                     <div className="relative aspect-square bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-800 flex items-center justify-center p-4 text-center overflow-hidden">
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-orange-500/25 blur-2xl" />
                       <svg className="absolute bottom-0 w-full opacity-20" viewBox="0 0 400 100" fill="none">
@@ -301,14 +294,11 @@ export default function StudioPreview() {
                         </div>
                       </div>
                     </div>
-                    <div className="px-2.5 py-1.5 text-[9px] font-mono text-slate-400 bg-slate-50/50 border-t border-slate-100">
-                      zenmatt-ad-v3.png
-                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* AI response — right-aligned text */}
+              {/* AI response — left-aligned paragraphs */}
               <div
                 className={`flex gap-3 transition-all duration-500 ${
                   stage >= 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
@@ -317,76 +307,84 @@ export default function StudioPreview() {
                 <div className="w-7 h-7 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0">
                   <Logo size={14} />
                 </div>
-                <div className="flex-1 min-w-0 text-xs text-slate-800 leading-relaxed space-y-3 text-right">
+                <div className="flex-1 min-w-0 text-xs text-slate-800 leading-relaxed space-y-3">
                   <p>
                     I&apos;ll run this against a synthetic panel of{" "}
-                    <span className="font-semibold text-slate-900">10,000 consumers</span>.
+                    <span className="font-semibold text-slate-900">10,000 consumers</span>{" "}
+                    spanning Gen Z through Boomers, distributed across US demographics and twelve behavioral segments.
                   </p>
 
-                  <div>
-                    <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-1.5">audience composition</div>
-                    <ul className="space-y-1">
-                      <li className="flex gap-2 flex-row-reverse">
-                        <span className="text-orange-500 font-semibold">·</span>
-                        <span>Gen Z through Boomers</span>
-                      </li>
-                      <li className="flex gap-2 flex-row-reverse">
-                        <span className="text-orange-500 font-semibold">·</span>
-                        <span>US demographic distribution</span>
-                      </li>
-                      <li className="flex gap-2 flex-row-reverse">
-                        <span className="text-orange-500 font-semibold">·</span>
-                        <span>12 behavioral segments</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className={`transition-all duration-500 ${stage >= 3 ? "opacity-100" : "opacity-0"}`}>
-                    <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-1.5">reacting to</div>
-                    <ul className="space-y-1">
-                      <li className="flex gap-2 flex-row-reverse">
-                        <span className="text-slate-400 font-semibold">·</span>
-                        <span>price sensitivity</span>
-                      </li>
-                      <li className="flex gap-2 flex-row-reverse">
-                        <span className="text-slate-400 font-semibold">·</span>
-                        <span>channel habits &amp; brand loyalty</span>
-                      </li>
-                      <li className="flex gap-2 flex-row-reverse">
-                        <span className="text-slate-400 font-semibold">·</span>
-                        <span>personality &amp; values alignment</span>
-                      </li>
-                    </ul>
-                  </div>
+                  <p className={`transition-all duration-500 ${stage >= 3 ? "opacity-100" : "opacity-0"}`}>
+                    Each persona reacts independently based on price sensitivity, channel habits, brand loyalty, and personality-values alignment. You&apos;ll see segment-specific signals surface in the playground on the right as the simulation propagates.
+                  </p>
 
                   {stage >= 3 && (
-                    <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500 pt-1 justify-end">
-                      <span>simulating reactions</span>
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500 pt-1">
                       <span className="flex gap-0.5">
                         <span className="w-1 h-1 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "0ms" }} />
                         <span className="w-1 h-1 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "120ms" }} />
                         <span className="w-1 h-1 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "240ms" }} />
                       </span>
+                      <span>simulating reactions</span>
                     </div>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Chat input */}
+            {/* Chat input (disabled) */}
             <div className="p-3 border-t border-slate-100 bg-slate-50/30">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-slate-200 focus-within:border-orange-300 focus-within:ring-2 focus-within:ring-orange-100 transition-all">
-                <svg className="w-4 h-4 text-slate-400 flex-shrink-0" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 11V5m-3 3h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-slate-200">
+                {/* Plus button */}
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className="text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
+                  aria-label="Add"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </button>
+                {/* Attach button */}
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className="text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
+                  aria-label="Attach file"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M13 7.5L8.5 12a3 3 0 11-4.24-4.24l5.3-5.3a2 2 0 012.83 2.83L7.08 10.59a1 1 0 01-1.41-1.42L10 4.8"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+                {/* Input (disabled via readOnly) */}
                 <input
                   type="text"
-                  placeholder="ask a follow-up..."
-                  className="flex-1 bg-transparent text-xs text-slate-900 placeholder:text-slate-400 outline-none font-mono"
+                  readOnly
+                  placeholder="ask a question..."
+                  className="flex-1 bg-transparent text-xs text-slate-900 placeholder:text-slate-400 outline-none font-mono cursor-default"
                 />
-                <button className="text-[10px] font-mono text-slate-500 hover:text-slate-900 transition-colors px-2 py-0.5 rounded border border-slate-200 hover:border-slate-300 hover:bg-slate-50">
-                  send
+                {/* Send button as SVG */}
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className="w-6 h-6 rounded-md bg-slate-900 text-white flex items-center justify-center flex-shrink-0 hover:bg-slate-800 transition-colors"
+                  aria-label="Send"
+                >
+                  <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M2 8l12-6-4 13-3-5-5-2z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>
