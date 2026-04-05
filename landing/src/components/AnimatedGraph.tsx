@@ -14,6 +14,7 @@ interface Profile {
   loyalty: "low" | "medium" | "high";
   description: string;
   tags: string[];
+  avatarId: number;
 }
 
 const PROFILES: Profile[] = [
@@ -28,6 +29,7 @@ const PROFILES: Profile[] = [
     loyalty: "low",
     description: "Chases authenticity, tries new brands weekly, skeptical of traditional ads.",
     tags: ["Gen Z", "Female", "Urban", "Beauty & Lifestyle"],
+    avatarId: 5,
   },
   {
     initials: "BT",
@@ -40,6 +42,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Compares prices carefully, reads reviews, waits for sales.",
     tags: ["Gen X", "Male", "Suburban", "Family"],
+    avatarId: 9,
   },
   {
     initials: "PK",
@@ -52,6 +55,7 @@ const PROFILES: Profile[] = [
     loyalty: "high",
     description: "Pays premium for quality and story, brand-loyal once earned.",
     tags: ["Millennial", "Female", "Urban", "Finance"],
+    avatarId: 47,
   },
   {
     initials: "TH",
@@ -64,6 +68,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Buys what works, avoids trends, rewards reliability.",
     tags: ["Gen X", "Male", "Urban", "Professional"],
+    avatarId: 11,
   },
   {
     initials: "SL",
@@ -76,6 +81,7 @@ const PROFILES: Profile[] = [
     loyalty: "high",
     description: "Champions favorite brands, recommends to everyone in her network.",
     tags: ["Millennial", "Female", "Urban", "Creative"],
+    avatarId: 25,
   },
   {
     initials: "DW",
@@ -88,6 +94,7 @@ const PROFILES: Profile[] = [
     loyalty: "low",
     description: "First in line for new tech, moves on once it's mainstream.",
     tags: ["Millennial", "Male", "Urban", "Tech"],
+    avatarId: 13,
   },
   {
     initials: "EM",
@@ -100,6 +107,7 @@ const PROFILES: Profile[] = [
     loyalty: "low",
     description: "Decides fast, shops emotionally, justifies the purchase later.",
     tags: ["Millennial", "Female", "Urban", "Fashion"],
+    avatarId: 36,
   },
   {
     initials: "MR",
@@ -112,6 +120,7 @@ const PROFILES: Profile[] = [
     loyalty: "high",
     description: "Checks sustainability before price, boycotts greenwashing.",
     tags: ["Millennial", "Male", "Urban", "Outdoor"],
+    avatarId: 44,
   },
   {
     initials: "LF",
@@ -124,6 +133,7 @@ const PROFILES: Profile[] = [
     loyalty: "high",
     description: "Sticks with what she knows, switches only after disappointment.",
     tags: ["Gen X", "Female", "Suburban", "Healthcare"],
+    avatarId: 16,
   },
   {
     initials: "RN",
@@ -136,6 +146,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Tests products publicly, opinions shape his followers.",
     tags: ["Millennial", "Male", "Urban", "Media"],
+    avatarId: 33,
   },
   {
     initials: "GC",
@@ -148,6 +159,7 @@ const PROFILES: Profile[] = [
     loyalty: "high",
     description: "Invests heavily in wellness, researches every ingredient.",
     tags: ["Gen X", "Female", "Urban", "Wellness"],
+    avatarId: 20,
   },
   {
     initials: "CV",
@@ -160,6 +172,7 @@ const PROFILES: Profile[] = [
     loyalty: "low",
     description: "Wears what's hot, discards what's not, always watching the feed.",
     tags: ["Gen Z", "Male", "Urban", "Streetwear"],
+    avatarId: 12,
   },
   {
     initials: "NP",
@@ -172,6 +185,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Reads every review, compares specs, buys with confidence.",
     tags: ["Millennial", "Female", "Urban", "Science"],
+    avatarId: 19,
   },
   {
     initials: "JM",
@@ -184,6 +198,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Values speed over savings, pays more for frictionless checkout.",
     tags: ["Millennial", "Male", "Urban", "Sales"],
+    avatarId: 15,
   },
   {
     initials: "AP",
@@ -196,6 +211,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Trusts people over brands, demands proof before purchase.",
     tags: ["Gen X", "Female", "Suburban", "Education"],
+    avatarId: 22,
   },
   {
     initials: "ZD",
@@ -208,6 +224,7 @@ const PROFILES: Profile[] = [
     loyalty: "high",
     description: "Loyal to performance brands, pays for gear that delivers.",
     tags: ["Millennial", "Male", "Urban", "Fitness"],
+    avatarId: 68,
   },
   {
     initials: "OB",
@@ -220,6 +237,7 @@ const PROFILES: Profile[] = [
     loyalty: "low",
     description: "Follows beauty trends, restocks quickly, tries new formulas monthly.",
     tags: ["Gen Z", "Female", "Urban", "Beauty"],
+    avatarId: 31,
   },
   {
     initials: "NK",
@@ -232,6 +250,7 @@ const PROFILES: Profile[] = [
     loyalty: "high",
     description: "Buys less, buys better, holds onto items for years.",
     tags: ["Millennial", "Male", "Urban", "Design"],
+    avatarId: 45,
   },
   {
     initials: "IS",
@@ -244,6 +263,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Invests in home aesthetic, mixes high and low thoughtfully.",
     tags: ["Gen X", "Female", "Suburban", "Home"],
+    avatarId: 40,
   },
   {
     initials: "LF",
@@ -256,6 +276,7 @@ const PROFILES: Profile[] = [
     loyalty: "medium",
     description: "Discovers through Instagram, pays premium for specialty ingredients.",
     tags: ["Millennial", "Male", "Urban", "Food"],
+    avatarId: 52,
   },
 ];
 
@@ -453,8 +474,14 @@ export default function AnimatedGraph() {
         <div className="rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5 p-5">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-sm font-semibold text-slate-600">
-              {activeProfile.initials}
+            <div className="w-11 h-11 rounded-full overflow-hidden bg-slate-100 border border-slate-200 flex-shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://i.pravatar.cc/88?img=${activeProfile.avatarId}`}
+                alt={activeProfile.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-sm font-semibold text-slate-900 truncate">
