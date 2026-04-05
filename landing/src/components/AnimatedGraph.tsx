@@ -1,357 +1,398 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-// Persona nodes arranged in a ring around the center stimulus
-const PERSONAS = [
-  { id: "p1", name: "Diane, 44", role: "skeptical parent",     angle: 0,   color: "#f59e0b", reaction: "$899 is steep..." },
-  { id: "p2", name: "Jordan, 29", role: "young professional",  angle: 60,  color: "#34d399", reaction: "love the trial period" },
-  { id: "p3", name: "Tyler, 27",  role: "impulse shopper",     angle: 120, color: "#818cf8", reaction: "buying this tonight" },
-  { id: "p4", name: "Charles, 52", role: "luxury consumer",    angle: 180, color: "#a78bfa", reaction: "feels too loud" },
-  { id: "p5", name: "Riley, 22",  role: "gen z creator",       angle: 240, color: "#f472b6", reaction: "where's the proof?" },
-  { id: "p6", name: "Morgan, 38", role: "knowledge worker",    angle: 300, color: "#60a5fa", reaction: "show me reviews" },
-];
-
-const RADIUS = 180;
-const CENTER = { x: 350, y: 280 };
-
-// Convert polar to cartesian coordinates
-function polar(angle: number, radius: number) {
-  const rad = (angle - 90) * (Math.PI / 180);
-  return {
-    x: CENTER.x + radius * Math.cos(rad),
-    y: CENTER.y + radius * Math.sin(rad),
+// ---------- Seeded PRNG for deterministic layout (SSR-safe) ----------
+function mulberry32(seed: number) {
+  return function () {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 
+// ---------- Layout dimensions ----------
+const VIEW_W = 900;
+const VIEW_H = 640;
+const CENTER = { x: 420, y: 320 };
+const NODE_COUNT = 68;
+
+// ---------- Generate node positions in an organic blob ----------
+interface Node {
+  id: number;
+  x: number;
+  y: number;
+  r: number;
+  shade: "dark" | "mid" | "light" | "white";
+}
+
+function generateNodes(): Node[] {
+  const rng = mulberry32(11);
+  const nodes: Node[] = [];
+  // Use rejection sampling to create a blob with minimum node spacing
+  const MIN_DIST = 24;
+  const MAX_RADIUS = 260;
+  let attempts = 0;
+  while (nodes.length < NODE_COUNT && attempts < 2000) {
+    const angle = rng() * Math.PI * 2;
+    const r = Math.sqrt(rng()) * MAX_RADIUS;
+    const x = CENTER.x + Math.cos(angle) * r;
+    const y = CENTER.y + Math.sin(angle) * r * 0.85; // slightly squished
+    // Check min distance
+    let ok = true;
+    for (const n of nodes) {
+      const dx = n.x - x;
+      const dy = n.y - y;
+      if (dx * dx + dy * dy < MIN_DIST * MIN_DIST) {
+        ok = false;
+        break;
+      }
+    }
+    if (ok) {
+      const sizeRoll = rng();
+      const nodeR = sizeRoll < 0.15 ? 11 : sizeRoll < 0.4 ? 9 : sizeRoll < 0.75 ? 7 : 5.5;
+      const shadeRoll = rng();
+      const shade: Node["shade"] =
+        shadeRoll < 0.35
+          ? "dark"
+          : shadeRoll < 0.65
+          ? "mid"
+          : shadeRoll < 0.88
+          ? "light"
+          : "white";
+      nodes.push({ id: nodes.length, x, y, r: nodeR, shade });
+    }
+    attempts++;
+  }
+  return nodes;
+}
+
+// ---------- Compute edges (each node to its 2-3 nearest neighbors) ----------
+interface Edge {
+  a: number;
+  b: number;
+}
+
+function computeEdges(nodes: Node[]): Edge[] {
+  const edges: Edge[] = [];
+  const seen = new Set<string>();
+  for (let i = 0; i < nodes.length; i++) {
+    // Find distances to all other nodes
+    const distances = nodes
+      .map((n, j) => ({
+        j,
+        d: Math.hypot(nodes[i].x - n.x, nodes[i].y - n.y),
+      }))
+      .filter((e) => e.j !== i)
+      .sort((a, b) => a.d - b.d);
+    // Connect to ~3 nearest
+    const connectCount = 2 + (i % 3 === 0 ? 1 : 0);
+    for (let k = 0; k < connectCount && k < distances.length; k++) {
+      const a = Math.min(i, distances[k].j);
+      const b = Math.max(i, distances[k].j);
+      const key = `${a}-${b}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        edges.push({ a, b });
+      }
+    }
+  }
+  return edges;
+}
+
+// ---------- Persona cards to show on highlighted nodes ----------
+interface PersonaCard {
+  nodeIdx: number; // which node to attach to
+  initials: string;
+  name: string;
+  title: string;
+  company: string;
+  description: string;
+  tags: { icon: string; label: string }[];
+}
+
+const PERSONA_CARDS: PersonaCard[] = [
+  {
+    nodeIdx: 6,
+    initials: "SC",
+    name: "Sarah Chen",
+    title: "Product Manager",
+    company: "TechFlow Inc.",
+    description: "Evaluates products through a lens of user impact and scalability.",
+    tags: [
+      { icon: "⊙", label: "San Francisco" },
+      { icon: "◐", label: "Female" },
+      { icon: "◈", label: "Millennial" },
+      { icon: "▣", label: "Technology" },
+    ],
+  },
+  {
+    nodeIdx: 22,
+    initials: "MJ",
+    name: "Marcus Johnson",
+    title: "Sales Director",
+    company: "Apex Consulting",
+    description: "Values in-person collaboration and measurable business outcomes.",
+    tags: [
+      { icon: "⊙", label: "London" },
+      { icon: "◐", label: "Male" },
+      { icon: "◈", label: "Gen X" },
+      { icon: "▣", label: "Services" },
+    ],
+  },
+  {
+    nodeIdx: 38,
+    initials: "ER",
+    name: "Elena Rodriguez",
+    title: "CMO",
+    company: "Meridian Brands",
+    description: "Data-driven creative leader focused on brand authenticity.",
+    tags: [
+      { icon: "⊙", label: "Barcelona" },
+      { icon: "◐", label: "Female" },
+      { icon: "◈", label: "Millennial" },
+      { icon: "▣", label: "Retail" },
+    ],
+  },
+  {
+    nodeIdx: 51,
+    initials: "DP",
+    name: "David Park",
+    title: "Engineering Lead",
+    company: "CloudForge Systems",
+    description: "Pragmatic technologist who weighs complexity against impact.",
+    tags: [
+      { icon: "⊙", label: "Seoul" },
+      { icon: "◐", label: "Male" },
+      { icon: "◈", label: "Gen X" },
+      { icon: "▣", label: "Technology" },
+    ],
+  },
+  {
+    nodeIdx: 15,
+    initials: "RP",
+    name: "Riley Patel",
+    title: "Content Strategist",
+    company: "Independent",
+    description: "Skeptical of conventional ads, values authenticity and proof.",
+    tags: [
+      { icon: "⊙", label: "Los Angeles" },
+      { icon: "◐", label: "Non-binary" },
+      { icon: "◈", label: "Gen Z" },
+      { icon: "▣", label: "Media" },
+    ],
+  },
+];
+
+// ---------- Shade color mapping ----------
+const SHADE_COLORS: Record<Node["shade"], string> = {
+  dark: "#475569",   // slate-600
+  mid: "#64748b",    // slate-500
+  light: "#cbd5e1",  // slate-300
+  white: "#f1f5f9",  // slate-100
+};
+
+const SHADE_STROKE: Record<Node["shade"], string> = {
+  dark: "#334155",
+  mid: "#475569",
+  light: "#94a3b8",
+  white: "#e2e8f0",
+};
+
+const ACTIVE_COLOR = "#f97316"; // orange-500
+const ACTIVE_GLOW = "#fb923c";  // orange-400
+
+// ---------- Component ----------
 export default function AnimatedGraph() {
-  const [pulseKey, setPulseKey] = useState(0);
-  const [activePersona, setActivePersona] = useState<number>(-1);
+  const nodes = useMemo(() => generateNodes(), []);
+  const edges = useMemo(() => computeEdges(nodes), [nodes]);
+  const [activeCardIdx, setActiveCardIdx] = useState(0);
 
-  // Re-trigger pulse wave every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setPulseKey((k) => k + 1);
-    }, 4000);
+      setActiveCardIdx((i) => (i + 1) % PERSONA_CARDS.length);
+    }, 4500);
     return () => clearInterval(interval);
   }, []);
 
-  // Cycle through active personas for reaction highlights
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActivePersona((p) => (p + 1) % PERSONAS.length);
-    }, 1800);
-    return () => clearInterval(interval);
-  }, []);
+  const activeCard = PERSONA_CARDS[activeCardIdx];
+  const activeNode = nodes[activeCard.nodeIdx];
+
+  // Compute card position (prefers opposite side of graph from the node)
+  const cardSide = activeNode.x > CENTER.x ? "left" : "right";
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto aspect-[7/5]">
+    <div className="relative w-full max-w-5xl mx-auto aspect-[9/6.4]">
       <svg
-        viewBox="0 0 700 560"
+        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="w-full h-full"
         style={{ overflow: "visible" }}
       >
         <defs>
-          {/* Gradient for central node */}
-          <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.9" />
-            <stop offset="70%" stopColor="#6366f1" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
-          </radialGradient>
-          {/* Edge gradient */}
-          <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.1" />
-            <stop offset="50%" stopColor="#a78bfa" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#6366f1" stopOpacity="0.1" />
-          </linearGradient>
-          {/* Glow filter */}
-          <filter id="softGlow">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          <filter id="nodeBlur">
+            <feGaussianBlur stdDeviation="0.4" />
+          </filter>
+          <filter id="orangeGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          {/* Inter-persona dashed line pattern */}
-          <pattern id="dashedPattern" patternUnits="userSpaceOnUse" width="8" height="8">
-            <circle cx="4" cy="4" r="0.5" fill="#4a4a66" />
-          </pattern>
         </defs>
 
-        {/* Background orbit rings */}
-        <g opacity="0.15">
-          <circle cx={CENTER.x} cy={CENTER.y} r={RADIUS} fill="none" stroke="#4a4a66" strokeWidth="0.5" strokeDasharray="2 6" />
-          <circle cx={CENTER.x} cy={CENTER.y} r={RADIUS + 60} fill="none" stroke="#4a4a66" strokeWidth="0.5" strokeDasharray="2 8" />
-          <circle cx={CENTER.x} cy={CENTER.y} r={RADIUS - 60} fill="none" stroke="#4a4a66" strokeWidth="0.3" strokeDasharray="1 4" />
+        {/* Edges — thin translucent web */}
+        <g opacity="0.35">
+          {edges.map((e, i) => {
+            const na = nodes[e.a];
+            const nb = nodes[e.b];
+            const isActive = e.a === activeCard.nodeIdx || e.b === activeCard.nodeIdx;
+            return (
+              <line
+                key={`edge-${i}`}
+                x1={na.x}
+                y1={na.y}
+                x2={nb.x}
+                y2={nb.y}
+                stroke={isActive ? "#94a3b8" : "#475569"}
+                strokeWidth={isActive ? 0.8 : 0.4}
+                opacity={isActive ? 0.9 : 0.5}
+                style={{ transition: "all 600ms ease" }}
+              />
+            );
+          })}
         </g>
 
-        {/* Pulse waves from center (re-mounts on each pulseKey change) */}
-        <g key={pulseKey}>
-          {[0, 1, 2].map((i) => (
-            <circle
+        {/* Nodes */}
+        <g>
+          {nodes.map((n) => {
+            const isActive = n.id === activeCard.nodeIdx;
+            return (
+              <g key={`node-${n.id}`}>
+                {isActive && (
+                  <>
+                    {/* Outer glow ring */}
+                    <circle
+                      cx={n.x}
+                      cy={n.y}
+                      r={n.r + 8}
+                      fill="none"
+                      stroke={ACTIVE_COLOR}
+                      strokeWidth="1"
+                      opacity="0.4"
+                      style={{ animation: "pulseDot 2s ease-in-out infinite" }}
+                    />
+                    {/* Inner halo */}
+                    <circle
+                      cx={n.x}
+                      cy={n.y}
+                      r={n.r + 4}
+                      fill={ACTIVE_GLOW}
+                      opacity="0.25"
+                      filter="url(#orangeGlow)"
+                    />
+                  </>
+                )}
+                <circle
+                  cx={n.x}
+                  cy={n.y}
+                  r={n.r}
+                  fill={isActive ? ACTIVE_COLOR : SHADE_COLORS[n.shade]}
+                  stroke={isActive ? ACTIVE_GLOW : SHADE_STROKE[n.shade]}
+                  strokeWidth={isActive ? 1.5 : 0.5}
+                  style={{
+                    transition: "all 600ms cubic-bezier(0.16, 1, 0.3, 1)",
+                  }}
+                />
+                {/* Subtle highlight on larger nodes */}
+                {n.r >= 9 && (
+                  <circle
+                    cx={n.x - n.r * 0.3}
+                    cy={n.y - n.r * 0.3}
+                    r={n.r * 0.25}
+                    fill="rgba(255,255,255,0.15)"
+                  />
+                )}
+              </g>
+            );
+          })}
+        </g>
+
+        {/* Connector line from active node to card */}
+        <line
+          x1={activeNode.x}
+          y1={activeNode.y}
+          x2={cardSide === "left" ? 60 : VIEW_W - 60}
+          y2={activeNode.y - 100}
+          stroke="#475569"
+          strokeWidth="0.5"
+          strokeDasharray="2 4"
+          opacity="0.4"
+          style={{ transition: "all 600ms ease" }}
+        />
+      </svg>
+
+      {/* Floating persona card */}
+      <div
+        key={activeCard.nodeIdx}
+        className={`absolute top-8 ${
+          cardSide === "left" ? "left-4 md:left-6" : "right-4 md:right-6"
+        } w-72 md:w-80`}
+        style={{
+          animation: "reactionIn 500ms cubic-bezier(0.16, 1, 0.3, 1) both",
+        }}
+      >
+        <div className="rounded-xl border border-ink-800 bg-ink-900/90 backdrop-blur-xl shadow-2xl shadow-black/40 p-5">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-11 h-11 rounded-full bg-ink-800 border border-ink-700 flex items-center justify-center text-sm font-semibold text-ink-300">
+              {activeCard.initials}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold text-white truncate">
+                {activeCard.name}
+              </div>
+              <div className="text-xs text-ink-400 truncate">{activeCard.title}</div>
+            </div>
+          </div>
+
+          {/* Company */}
+          <div className="text-[11px] font-mono text-ink-500 mb-1">company</div>
+          <div className="text-sm text-ink-200 mb-3">{activeCard.company}</div>
+
+          {/* Description */}
+          <div className="text-[11px] font-mono text-ink-500 mb-1">profile</div>
+          <p className="text-xs text-ink-300 leading-relaxed mb-4">
+            {activeCard.description}
+          </p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1.5">
+            {activeCard.tags.map((t) => (
+              <div
+                key={t.label}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-ink-800 bg-ink-850/60 text-[10px] font-mono text-ink-400"
+              >
+                <span className="text-ink-500">{t.icon}</span>
+                <span>{t.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Index indicator */}
+        <div className="mt-3 flex items-center justify-center gap-1.5">
+          {PERSONA_CARDS.map((_, i) => (
+            <div
               key={i}
-              cx={CENTER.x}
-              cy={CENTER.y}
-              fill="none"
-              stroke="#818cf8"
-              strokeWidth="2"
+              className="h-0.5 rounded-full transition-all duration-300"
               style={{
-                animation: `ripple 3s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.6}s forwards`,
+                width: i === activeCardIdx ? "16px" : "6px",
+                background: i === activeCardIdx ? ACTIVE_COLOR : "#35354f",
               }}
             />
           ))}
-        </g>
-
-        {/* Edges: center -> each persona */}
-        {PERSONAS.map((p, i) => {
-          const pos = polar(p.angle, RADIUS);
-          return (
-            <g key={`edge-${p.id}`}>
-              <line
-                x1={CENTER.x}
-                y1={CENTER.y}
-                x2={pos.x}
-                y2={pos.y}
-                stroke="url(#edgeGrad)"
-                strokeWidth="1.2"
-                opacity="0.5"
-              />
-              {/* Animated particle traveling along edge */}
-              <circle r="3" fill="#a78bfa" filter="url(#softGlow)">
-                <animateMotion
-                  dur="3s"
-                  repeatCount="indefinite"
-                  begin={`${i * 0.5}s`}
-                  path={`M ${CENTER.x} ${CENTER.y} L ${pos.x} ${pos.y}`}
-                />
-                <animate
-                  attributeName="opacity"
-                  values="0;1;1;0"
-                  dur="3s"
-                  repeatCount="indefinite"
-                  begin={`${i * 0.5}s`}
-                />
-              </circle>
-            </g>
-          );
-        })}
-
-        {/* Inter-persona edges (subtle, dotted, discussion lines) */}
-        {PERSONAS.map((p, i) => {
-          const nextIdx = (i + 1) % PERSONAS.length;
-          const p1 = polar(p.angle, RADIUS);
-          const p2 = polar(PERSONAS[nextIdx].angle, RADIUS);
-          return (
-            <line
-              key={`inter-${p.id}`}
-              x1={p1.x}
-              y1={p1.y}
-              x2={p2.x}
-              y2={p2.y}
-              stroke="#35354f"
-              strokeWidth="0.5"
-              strokeDasharray="2 4"
-              opacity={activePersona === i || activePersona === nextIdx ? 0.8 : 0.2}
-              style={{ transition: "opacity 400ms ease" }}
-            />
-          );
-        })}
-
-        {/* Central stimulus node */}
-        <g>
-          <circle
-            cx={CENTER.x}
-            cy={CENTER.y}
-            r="40"
-            fill="url(#centerGrad)"
-            style={{ animation: "glowPulse 3s ease-in-out infinite" }}
-          />
-          <circle
-            cx={CENTER.x}
-            cy={CENTER.y}
-            r="28"
-            fill="#1a1a2e"
-            stroke="#818cf8"
-            strokeWidth="1.5"
-          />
-          <text
-            x={CENTER.x}
-            y={CENTER.y - 4}
-            textAnchor="middle"
-            fill="#e5e5f0"
-            fontSize="10"
-            fontFamily="JetBrains Mono, monospace"
-            fontWeight="600"
-          >
-            AD COPY
-          </text>
-          <text
-            x={CENTER.x}
-            y={CENTER.y + 8}
-            textAnchor="middle"
-            fill="#818cf8"
-            fontSize="7"
-            fontFamily="JetBrains Mono, monospace"
-          >
-            stimulus
-          </text>
-        </g>
-
-        {/* Persona nodes */}
-        {PERSONAS.map((p, i) => {
-          const pos = polar(p.angle, RADIUS);
-          const isActive = activePersona === i;
-          const labelOffset = pos.x > CENTER.x ? 38 : -38;
-          const textAnchor = pos.x > CENTER.x ? "start" : "end";
-
-          return (
-            <g key={p.id}>
-              {/* Active ring */}
-              {isActive && (
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r="26"
-                  fill="none"
-                  stroke={p.color}
-                  strokeWidth="1.5"
-                  opacity="0.5"
-                  style={{ animation: "pulseDot 1.8s ease-in-out infinite" }}
-                />
-              )}
-              {/* Persona node */}
-              <circle
-                cx={pos.x}
-                cy={pos.y}
-                r="18"
-                fill="#0f0f1e"
-                stroke={p.color}
-                strokeWidth="2"
-                filter={isActive ? "url(#softGlow)" : undefined}
-                style={{
-                  transition: "all 400ms ease",
-                  animation: `float 4s ease-in-out ${i * 0.3}s infinite`,
-                }}
-              />
-              {/* Initial letter */}
-              <text
-                x={pos.x}
-                y={pos.y + 4}
-                textAnchor="middle"
-                fill={p.color}
-                fontSize="14"
-                fontFamily="JetBrains Mono, monospace"
-                fontWeight="700"
-                style={{ pointerEvents: "none" }}
-              >
-                {p.name[0]}
-              </text>
-
-              {/* Labels */}
-              <text
-                x={pos.x + labelOffset}
-                y={pos.y - 2}
-                textAnchor={textAnchor}
-                fill="#e5e5f0"
-                fontSize="10"
-                fontFamily="JetBrains Mono, monospace"
-                fontWeight="500"
-              >
-                {p.name}
-              </text>
-              <text
-                x={pos.x + labelOffset}
-                y={pos.y + 10}
-                textAnchor={textAnchor}
-                fill="#6b6b85"
-                fontSize="8"
-                fontFamily="JetBrains Mono, monospace"
-              >
-                {p.role}
-              </text>
-
-              {/* Reaction badge (only shows when active) */}
-              {isActive && (
-                <g style={{ animation: "reactionIn 300ms cubic-bezier(0.16, 1, 0.3, 1) both" }}>
-                  <rect
-                    x={pos.x + labelOffset - (textAnchor === "end" ? 110 : 0)}
-                    y={pos.y + 18}
-                    width="110"
-                    height="18"
-                    rx="4"
-                    fill="#050510"
-                    stroke={p.color}
-                    strokeWidth="1"
-                    opacity="0.9"
-                  />
-                  <text
-                    x={pos.x + labelOffset + (textAnchor === "end" ? -55 : 55)}
-                    y={pos.y + 30}
-                    textAnchor="middle"
-                    fill={p.color}
-                    fontSize="9"
-                    fontFamily="JetBrains Mono, monospace"
-                  >
-                    {p.reaction}
-                  </text>
-                </g>
-              )}
-            </g>
-          );
-        })}
-
-        {/* Output insights drifting out */}
-        <g opacity="0.7">
-          <g style={{ animation: "fadeIn 1s ease-out 1s both" }}>
-            <text x="80" y="40" fill="#34d399" fontSize="9" fontFamily="JetBrains Mono, monospace">
-              → intent: 6.2/10
-            </text>
-            <text x="80" y="56" fill="#6b6b85" fontSize="8" fontFamily="JetBrains Mono, monospace">
-              (weighted average)
-            </text>
-          </g>
-          <g style={{ animation: "fadeIn 1s ease-out 1.3s both" }}>
-            <text x="540" y="40" fill="#f59e0b" fontSize="9" fontFamily="JetBrains Mono, monospace">
-              ⚠ top concern
-            </text>
-            <text x="540" y="56" fill="#6b6b85" fontSize="8" fontFamily="JetBrains Mono, monospace">
-              price/trust ratio
-            </text>
-          </g>
-          <g style={{ animation: "fadeIn 1s ease-out 1.6s both" }}>
-            <text x="80" y="520" fill="#818cf8" fontSize="9" fontFamily="JetBrains Mono, monospace">
-              ◈ segment split
-            </text>
-            <text x="80" y="536" fill="#6b6b85" fontSize="8" fontFamily="JetBrains Mono, monospace">
-              4 buyers / 2 skeptics
-            </text>
-          </g>
-          <g style={{ animation: "fadeIn 1s ease-out 1.9s both" }}>
-            <text x="540" y="520" fill="#f472b6" fontSize="9" fontFamily="JetBrains Mono, monospace">
-              ∿ sentiment
-            </text>
-            <text x="540" y="536" fill="#6b6b85" fontSize="8" fontFamily="JetBrains Mono, monospace">
-              mixed, actionable
-            </text>
-          </g>
-        </g>
-      </svg>
-
-      {/* Legend strip below */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-center gap-6 text-[10px] font-mono text-ink-500">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse-dot" />
-          <span>content broadcast</span>
-        </div>
-        <span className="text-ink-700">·</span>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full border border-ink-500" />
-          <span>persona reactions</span>
-        </div>
-        <span className="text-ink-700">·</span>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-400" />
-          <span>extracted insights</span>
         </div>
       </div>
     </div>
