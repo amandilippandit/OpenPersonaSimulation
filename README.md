@@ -1,17 +1,16 @@
 <h1 align="center">OpenPersona</h1>
 
 <p align="center">
-  <em>Synthetic human behavior at scale — powered by large language models.</em>
+  <em>Test your marketing content against synthetic audiences before you spend a dollar on media.</em>
 </p>
 
 <p align="center">
-  <a href="#get-started-in-60-seconds">Get Started</a> &bull;
-  <a href="#core-concepts">Core Concepts</a> &bull;
+  <a href="#what-it-does">What It Does</a> &bull;
+  <a href="#quickstart">Quickstart</a> &bull;
+  <a href="#workflows">Workflows</a> &bull;
   <a href="#openpersona-studio">Studio UI</a> &bull;
   <a href="#autoresearch">Autoresearch</a> &bull;
-  <a href="#cookbook">Cookbook</a> &bull;
-  <a href="#settings">Settings</a> &bull;
-  <a href="#benchmarking-against-real-data">Benchmarking</a>
+  <a href="#api">API</a>
 </p>
 
 <p align="center">
@@ -24,15 +23,39 @@
 
 ## The Problem
 
-You need to know how **real humans** with different backgrounds, opinions, and quirks would respond to your product, ad campaign, or software — before spending money on focus groups or surveys.
+You wrote an ad. You're about to spend $50K on media. But you don't actually know how your audience will react. Options so far:
 
-**OpenPersona** spins up populations of synthetic people — each with a unique backstory, personality profile, beliefs, and behavioral tendencies — and observes how they react in controlled environments. They argue. They change their minds. They make irrational decisions. Just like real people.
+- **Focus groups** — slow, expensive, biased by who shows up
+- **A/B testing in production** — costly to be wrong in public
+- **Your gut feeling** — flattering, often wrong
+- **Surveys** — respondents don't actually behave how they say they will
 
-This is not a chatbot framework. These agents model **human imperfection**, not helpfulness.
+**OpenPersona** gives you a fourth option: spin up 50 synthetic consumers with realistic personalities, demographics, and biases, show them your ad, and see how they react — structured, scored, and actionable. In minutes instead of weeks.
+
+This is built specifically for **marketing content testing**: ad copy, landing pages, taglines, brand messaging, product positioning, campaign concepts, email subject lines, social posts, pitch decks.
 
 ---
 
-## Get Started in 60 Seconds
+## What It Does
+
+### Test Ad Copy Against Audiences
+Show the same ad to 50 personas across your target demographic. Get back: purchase intent, emotional reactions, trust scores, comprehension, objections, and suggested improvements — broken down by segment.
+
+### A/B Test Before You Launch
+Run Variation A against Persona Group 1 and Variation B against Persona Group 2. Statistical comparison of response distributions. Know which headline wins before spending on media.
+
+### Evaluate Brand Messaging
+Read your brand guidelines to a diverse simulated audience. Measure how consistently different personas interpret your positioning. Find where your message gets lost.
+
+### Predict Campaign Reception
+Simulate your launch week. Show your campaign to 100 consumers across demographics, let them "discuss" it with each other (word-of-mouth simulation), and extract: initial reaction, trust signals, virality indicators, concerns.
+
+### Find the Right Persona
+Generate 200 synthetic consumers from demographic data, show them your product, and find the 20 who respond most strongly. These become your ideal customer profile — with full backstories, objections, and purchase triggers.
+
+---
+
+## Quickstart
 
 ```bash
 git clone https://github.com/amandilippandit/OpenPersonaSimulation.git
@@ -41,100 +64,145 @@ pip install -e .
 export OPENAI_API_KEY="sk-..."
 ```
 
+### Test an Ad in 20 Lines
+
 ```python
 from openpersona.agent import Persona
 from openpersona.environment import World
+from openpersona.extraction import ResultsExtractor
 
-chef = Persona("Marco")
-chef.define("age", 42)
-chef.define("nationality", "Italian")
-chef.define("occupation", {"title": "Head Chef", "organization": "Trattoria Bella"})
-chef.define("personality", {"traits": [
-    "Passionate about traditional cooking methods.",
-    "Skeptical of food technology and molecular gastronomy.",
-    "Warm but opinionated — will argue about olive oil brands."
-]})
+# Your target audience
+audiences = [
+    {"name": "Emma", "age": 28, "occupation": {"title": "Marketing Manager"},
+     "personality": {"traits": ["value-conscious", "brand-loyal", "socially active"]}},
+    {"name": "James", "age": 45, "occupation": {"title": "IT Director"},
+     "personality": {"traits": ["skeptical of marketing", "research-driven", "price-sensitive"]}},
+    {"name": "Priya", "age": 34, "occupation": {"title": "Working Parent"},
+     "personality": {"traits": ["time-constrained", "quality-focused", "impulse buyer"]}},
+]
 
-investor = Persona("Priya")
-investor.define("age", 35)
-investor.define("nationality", "Indian")
-investor.define("occupation", {"title": "VC Partner", "organization": "Horizon Ventures"})
-investor.define("personality", {"traits": [
-    "Data-driven and metrics-obsessed.",
-    "Fascinated by food-tech and direct-to-consumer brands.",
-    "Impatient with vague pitches — wants numbers fast."
-]})
+agents = [Persona(a["name"]) for a in audiences]
+for agent, spec in zip(agents, audiences):
+    for k, v in spec.items():
+        if k != "name":
+            agent.define(k, v)
 
-room = World("Pitch Meeting", [chef, investor])
+# Your ad copy
+ad_copy = """
+Sleep Better Tonight.
+Introducing ZenMatt — the smart mattress that learns your sleep patterns
+and adapts in real-time. 90-night trial. Free shipping. $899.
+"""
+
+# Test it
+room = World("Focus Group", agents)
 room.make_everyone_accessible()
-investor.listen("Marco, pitch me your idea for a premium frozen pasta subscription box.")
-room.run(4)
+for agent in agents:
+    agent.listen(f"Read this ad and share your honest reaction:\n\n{ad_copy}")
+room.run(2)
+
+# Extract structured feedback
+extractor = ResultsExtractor()
+results = extractor.extract_results_from_agents(agents,
+    extraction_objective="Get each person's reaction to the ad",
+    fields=["purchase_intent_1_to_10", "emotional_reaction",
+            "main_concern", "would_share_with_friend"])
+
+for r in results:
+    print(r)
 ```
 
-Two synthetic humans. One pitch meeting. Zero scripts.
+Output:
+```
+{"name": "Emma", "purchase_intent_1_to_10": 7, "emotional_reaction": "curious and excited",
+ "main_concern": "how does the 'learning' work exactly?", "would_share_with_friend": true}
+{"name": "James", "purchase_intent_1_to_10": 3, "emotional_reaction": "skeptical",
+ "main_concern": "buzzwords without specifics, need reviews", "would_share_with_friend": false}
+{"name": "Priya", "purchase_intent_1_to_10": 8, "emotional_reaction": "intrigued",
+ "main_concern": "$899 is steep but 90-night trial helps", "would_share_with_friend": true}
+```
 
 ---
 
-## Core Concepts
+## Workflows
 
-### Personas
+### 1. Ad Copy A/B Testing
 
-A persona is a full synthetic identity — not a chatbot prompt:
+```python
+from openpersona.experimentation import ABRandomizer
 
-| Layer | What You Define |
-|---|---|
-| Demographics | Age, gender, nationality, residence |
-| Professional | Role, company, responsibilities, skills |
-| Psychology | Big Five traits, values, emotional tendencies |
-| Beliefs | Worldview, domain opinions, political leanings |
-| Behaviors | Routines, habits, decision patterns |
-| Preferences | Likes, dislikes, interests, tastes |
-| Relationships | Connections to other agents |
+ab = ABRandomizer(real_name_1="control", real_name_2="variant_b")
 
-### Environments
+headline_a = "Sleep Better Tonight"
+headline_b = "The Last Mattress You'll Ever Need"
 
-Containers where personas interact. Call `run()` and agents perceive what others say, think about it, and respond — in parallel or sequentially.
-
-### The Stimulus-Action Loop
-
-```
-Receive stimulus → Update mental state → Generate action → Broadcast to environment
+# Randomize which audience sees which variant
+for i, persona in enumerate(audiences):
+    shown_a, shown_b = ab.randomize(i, headline_a, headline_b)
+    persona.listen(f"How does this headline make you feel?\n{shown_a}")
+    # ... collect response, map back to real variant via derandomize()
 ```
 
-Stimuli: conversations, visuals, thoughts, goals, documents. Actions: speaking, thinking, recalling, consulting documents, using tools, or signaling completion.
+### 2. Campaign Reception Simulation
+
+```python
+from openpersona.factory import PersonaFactory
+
+# Generate 50 consumers matching US demographics
+factory = PersonaFactory.create_factory_from_demography(
+    "./examples/information/populations/usa.json",
+    population_size=50,
+    context="Tech-savvy consumers aged 25-45"
+)
+audience = factory.generate_people(50)
+
+# Launch simulation
+world = World("Launch Week", audience)
+world.make_everyone_accessible()
+world.broadcast("Check out this new product launch: [your campaign]")
+world.run(steps=5)  # Let them react and discuss
+
+# Measure virality, sentiment, concerns
+```
+
+### 3. Brand Message Consistency Check
+
+```python
+from openpersona.experimentation import Proposition
+
+brand_message = "We are a premium, sustainable, family-owned company."
+
+# For each persona, check if they correctly perceived the brand
+perception_check = Proposition(
+    "The agent perceived this brand as premium, sustainable, and family-oriented.",
+    include_personas=True
+)
+
+scores = [perception_check.score(target=agent) for agent in audience]
+print(f"Brand clarity score: {sum(scores)/len(scores)}/9")
+```
 
 ---
 
 ## OpenPersona Studio
 
-A full-stack web UI for building, running, and visualizing persona simulations.
+Full-stack web UI for running marketing tests visually.
 
-### Three-Panel Layout
+### Features
 
-| Panel | What It Shows |
+- **3D Audience Graph** — each node is a synthetic consumer, colored by emotional response to your content. See at a glance which segments are engaged, skeptical, or excited.
+- **Content Testing Panel** — paste ad copy, taglines, or brand messages. Instant responses from your audience.
+- **A/B Compare View** — side-by-side variant responses with statistical significance indicators.
+- **Segment Analytics** — break down responses by age, occupation, personality traits.
+- **Export Reports** — structured JSON/CSV of all reactions for your marketing team.
+
+### Three Panels
+
+| Panel | Shows |
 |---|---|
-| **3D Social Graph** | Force-directed network — agents as nodes (colored by emotion), relations as edges, message animations on TALK |
-| **Agent Inspector** | Selected agent's persona card, mental state, emotions, goals, memory stats, send-message input |
-| **Event Feed** | Color-coded timeline of all actions (TALK=green, THINK=purple, DONE=gray, REACH_OUT=blue) |
-
-### Architecture
-
-```
-studio/
-├── backend/                  # FastAPI (Python)
-│   ├── main.py               # 17 REST endpoints + WebSocket
-│   ├── models.py             # Pydantic request/response models
-│   └── simulation_manager.py # In-memory simulation state management
-└── frontend/                 # Next.js 14 + TypeScript + Tailwind
-    ├── src/components/
-    │   ├── SimulationGraph.tsx    # 3D force graph (react-force-graph-3d)
-    │   ├── AgentInspector.tsx     # Agent detail panel
-    │   ├── EventFeed.tsx          # Action timeline
-    │   ├── AgentCreator.tsx       # Modal form for new agents
-    │   └── SimulationControls.tsx # Step/Run/Add Agent toolbar
-    ├── src/hooks/useSimulation.ts # State + WebSocket management
-    └── src/lib/api.ts            # Backend API client
-```
+| **3D Audience Graph** | Consumers as nodes colored by emotion (positive=green, skeptical=red, neutral=gray) |
+| **Content Inspector** | Selected consumer's profile + their detailed reaction to your content |
+| **Response Timeline** | Real-time stream of reactions as your ad propagates through the audience |
 
 ### Run It
 
@@ -148,202 +216,117 @@ cd studio/frontend && npm install && npm run dev
 # Open http://localhost:3000
 ```
 
-### API Endpoints
-
-| Method | Path | What It Does |
-|---|---|---|
-| `POST` | `/api/simulations` | Create a new simulation |
-| `POST` | `/api/simulations/{id}/agents` | Add an agent with persona spec |
-| `POST` | `/api/simulations/{id}/step` | Run one simulation step |
-| `POST` | `/api/simulations/{id}/run` | Run N steps |
-| `GET` | `/api/simulations/{id}/graph` | Get social graph (nodes + edges) |
-| `GET` | `/api/simulations/{id}/events` | Get all events/actions |
-| `POST` | `/api/simulations/{id}/agents/{name}/listen_and_act` | Send message, get response |
-| `WS` | `/ws/simulations/{id}` | Real-time event stream |
-
 ---
 
 ## Autoresearch
 
-> Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch). Same pattern, different domain.
+> Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch). Autonomous overnight optimization for marketing testing quality.
 
-An AI agent autonomously experiments with persona simulation configurations overnight. It modifies the code, runs a scenario, scores the result, keeps improvements, discards regressions, and loops forever.
+An AI agent autonomously experiments with audience configurations to find the persona setups that produce the most realistic, actionable marketing insights.
 
-### The Pattern
+### One Metric
 
-| | Karpathy's autoresearch | OpenPersona autoresearch |
-|---|---|---|
-| **Domain** | LLM training | Persona simulation |
-| **One file to edit** | `train.py` | `autoresearch/experiment.py` |
-| **One metric** | `val_bpb` (lower is better) | `quality_score` (higher is better, 0.0→1.0) |
-| **Time budget** | 5 min | 3 min |
-| **Experiments/hour** | ~12 | ~20 |
+**`quality_score`** (0.0 → 1.0) — composite of:
+- Audience realism (do consumers behave like real target segments?)
+- Response depth (are reactions detailed and actionable?)
+- Discrimination (do different segments give meaningfully different feedback?)
+- Actionability (can you extract specific improvements from responses?)
+- Coverage (does the audience surface both positive and negative reactions?)
 
-### The Metric: `quality_score`
+### One File
 
-A weighted composite of five dimensions:
+The agent edits `autoresearch/experiment.py` — consumer persona specs, audience composition, reaction prompts, extraction strategies. Everything fair game.
 
-| Dimension | Weight | What It Measures |
-|---|---|---|
-| Persona adherence | 25% | Does the agent act like its defined personality? |
-| Response coherence | 25% | Are responses natural, well-formed, non-repetitive? |
-| Interaction quality | 20% | Do multi-agent conversations have realistic turn-taking? |
-| Extraction accuracy | 15% | Can structured data be reliably pulled from conversations? |
-| Diversity | 15% | Do different personas actually behave differently? |
-
-### Three Files
-
-| File | Who edits | Role |
-|---|---|---|
-| `autoresearch/prepare.py` | **Nobody** | Fixed evaluation harness — 3 test scenarios, 5 scoring functions (read-only) |
-| `autoresearch/experiment.py` | **The AI agent** | Persona specs, interaction patterns, extraction logic (everything fair game) |
-| `autoresearch/program.md` | **You** | Instructions for the agent — the "research org code" |
-
-### Run It
+### Overnight Iteration
 
 ```bash
 # Verify setup
 python autoresearch/prepare.py --check
 
-# Run one experiment manually
+# Run manually
 python autoresearch/experiment.py
 
-# Go autonomous — point Claude/Codex at the instructions:
-# "Read autoresearch/program.md and let's set up a new experiment run."
+# Autonomous: point Claude/Codex at autoresearch/program.md
 # Walk away. ~160 experiments overnight.
 ```
 
-### What the Agent Can Try
-
-Persona specs (Big Five traits, specific beliefs), prompt framing (first-person vs structured), conversation warm-up, multi-step interactions, personality fragments, memory priming, relationship definitions, environmental context, emotional state initialization, goal injection, varied interaction styles (interview, debate, brainstorm, negotiation).
-
 ---
 
-## Cookbook
+## API
 
-### Load a Pre-Built Persona
+### Backend Endpoints (FastAPI)
+
+| Method | Path | What It Does |
+|---|---|---|
+| `POST` | `/api/simulations` | Create a new test session |
+| `POST` | `/api/simulations/{id}/agents` | Add consumer to audience |
+| `POST` | `/api/simulations/{id}/test_content` | Show content to all consumers, get reactions |
+| `POST` | `/api/simulations/{id}/ab_test` | Run A/B test across audience |
+| `POST` | `/api/simulations/{id}/extract` | Pull structured feedback |
+| `GET` | `/api/simulations/{id}/graph` | 3D audience visualization data |
+| `GET` | `/api/simulations/{id}/events` | Full response timeline |
+| `WS` | `/ws/simulations/{id}` | Real-time reaction stream |
+
+### Core Library API
 
 ```python
 from openpersona.agent import Persona
-lisa = Persona.load_specification("./examples/agents/Lisa.agent.json")
-lisa.listen_and_act("Describe your typical workday.")
-```
-
-### Generate a Population from Demographics
-
-```python
-from openpersona.factory import PersonaFactory
-factory = PersonaFactory.create_factory_from_demography(
-    "./examples/information/populations/brazil.json",
-    population_size=40, context="Consumer panel for a fintech app"
-)
-panel = factory.generate_people(40)
-```
-
-### Run a Focus Group
-
-```python
 from openpersona.environment import World
-from openpersona.extraction import ResultsExtractor
-
-world = World("Focus Group", panel[:5])
-world.make_everyone_accessible()
-world.broadcast("What do you think about a new AI cooking assistant app?")
-world.run(3)
-
-extractor = ResultsExtractor()
-results = extractor.extract_results_from_world(world,
-    extraction_objective="Each person's opinion on the product",
-    fields=["name", "opinion", "would_buy"])
+from openpersona.factory import PersonaFactory
+from openpersona.extraction import ResultsExtractor, Normalizer
+from openpersona.experimentation import ABRandomizer, Proposition
+from openpersona.validation import validate_simulation_experiment_empirically
 ```
 
-### Evaluate a Claim About Behavior
+---
+
+## What's Inside
+
+| Directory | Purpose |
+|---|---|
+| `openpersona/` | Core engine — persona modeling, multi-agent environments |
+| `studio/` | Web UI for visual marketing testing (FastAPI + Next.js + Three.js) |
+| `autoresearch/` | Autonomous experiment runner for testing quality optimization |
+| `examples/` | 30 notebooks including ad evaluation, brand research, focus groups |
+| `data/empirical/` | Real market research CSVs for validation |
+| `tests/` | Test suite |
+
+---
+
+## Validation
+
+Compare simulation results against real survey data:
 
 ```python
-from openpersona.experimentation import Proposition
-prop = Proposition("The agent demonstrates skepticism toward new technology.", include_personas=True)
-passed = prop.check(target=agent)   # True/False
-score = prop.score(target=agent)    # 0-9
+from openpersona.validation import validate_simulation_experiment_empirically
+
+result = validate_simulation_experiment_empirically(
+    control_data=real_survey_csv,
+    treatment_data=simulation_results,
+    statistical_test_type="welch_t_test"
+)
+print(f"Simulation matches reality: {result.overall_score:.2%}")
 ```
 
-### Generate a Narrative
-
-```python
-from openpersona.steering import Narrative
-story = Narrative(environment=world, purpose="Document the negotiation dynamics.")
-opening = story.start_story(requirements="Focus on tension.", number_of_words=200)
-```
+8 statistical tests available: Welch's t, Student's t, KS, Mann-Whitney, Wilcoxon, chi-square, ANOVA, Kruskal-Wallis.
 
 ---
 
 ## Settings
 
-Layered config: `openpersona/config.ini` (defaults) → `./config.ini` (project) → `config_manager.update()` (runtime).
-
-| Section | Key | Default | Purpose |
-|---|---|---|---|
-| OpenAI | `API_TYPE` | `openai` | Provider: `openai`, `azure`, `ollama` |
-| OpenAI | `MODEL` | `gpt-5-mini` | Primary model for agent cognition |
-| OpenAI | `CACHE_API_CALLS` | `False` | Cache identical LLM requests |
-| Simulation | `PARALLEL_AGENT_ACTIONS` | `True` | Run agents in parallel per step |
-| ActionGenerator | `ENABLE_QUALITY_CHECKS` | `False` | Gate actions on persona-adherence |
-| ActionGenerator | `QUALITY_THRESHOLD` | `5` | Minimum score (0-9) to accept |
-
 ```python
 from openpersona import config_manager
-config_manager.update("model", "gpt-4o")
-config_manager.update("cache_api_calls", True)
+
+# Runtime config
+config_manager.update("model", "gpt-5-mini")
+config_manager.update("cache_api_calls", True)          # cache LLM responses
+config_manager.update("parallel_agent_actions", True)   # parallel audience reactions
 ```
 
----
-
-## Benchmarking Against Real Data
-
-### Persona Fidelity
-
-```python
-from openpersona.validation import PersonaValidator
-score, explanation = PersonaValidator.validate_person(agent,
-    expectations="Should behave like a cautious financial analyst.")
-```
-
-### Statistical Comparison with Surveys
-
-```python
-from openpersona.validation import validate_simulation_experiment_empirically
-result = validate_simulation_experiment_empirically(
-    control_data=real_responses, treatment_data=simulated_responses,
-    statistical_test_type="welch_t_test"
-)
-print(f"Match: {result.overall_score:.2%}")
-```
-
-8 tests: Welch's t, Student's t, KS, Mann-Whitney, Wilcoxon, chi-square, ANOVA, Kruskal-Wallis.
-
----
-
-## What Ships in the Box
-
-| Directory | Contents |
-|---|---|
-| `openpersona/` | Core engine — 14 subpackages, 60+ modules |
-| `studio/` | Full-stack web UI (FastAPI + Next.js + 3D graph) |
-| `autoresearch/` | Autonomous experiment runner (Karpathy-style) |
-| `examples/` | 30 Jupyter notebooks, 7 agent specs, 9 personality fragments |
-| `tests/` | 35+ unit tests, 7 scenario tests |
-| `data/` | Empirical survey CSVs, grounding documents |
-
----
-
-## Running Tests
-
-```bash
-pytest tests/ -v                                          # full (needs API key)
-pytest tests/unit/test_config.py tests/unit/test_statistical_tests.py -v  # no key needed
-```
+Or edit `config.ini` for persistent settings.
 
 ---
 
 ## Legal
 
-This software generates synthetic content using AI models. Outputs may be inaccurate, biased, or inappropriate. You are solely responsible for reviewing all generated content. Do not simulate sensitive scenarios or use outputs to deceive or harm. Licensed under [MIT](./LICENSE).
+This tool generates synthetic consumer reactions using AI. Outputs are simulations, not guarantees of real market behavior. Always validate critical marketing decisions against real audience testing. Do not use to deceive consumers or simulate sensitive scenarios. MIT Licensed.

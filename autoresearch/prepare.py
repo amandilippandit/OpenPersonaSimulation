@@ -1,6 +1,5 @@
 """
-Fixed evaluation harness for OpenPersona autoresearch experiments.
-Downloads nothing — uses the OpenPersona library directly.
+Fixed evaluation harness for OpenPersona marketing content testing autoresearch.
 
 DO NOT MODIFY THIS FILE. It contains the fixed evaluation, test scenarios,
 and scoring functions that all experiments are measured against.
@@ -12,63 +11,76 @@ Usage:
 
 import os
 import sys
-import time
-import json
 import argparse
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 
 # ---------------------------------------------------------------------------
 # Constants (fixed, do not modify)
 # ---------------------------------------------------------------------------
 
 TIME_BUDGET = 180         # experiment time budget in seconds (3 minutes)
-MAX_AGENTS = 8            # max agents per scenario
+MAX_AGENTS = 8            # max consumers per scenario
 MAX_STEPS = 10            # max simulation steps per scenario
 MAX_API_CALLS = 100       # soft cap on total API calls per experiment
 
 # ---------------------------------------------------------------------------
-# Test scenarios — the ground truth interaction setups
+# Marketing test scenarios — the ground truth content evaluation setups
 # ---------------------------------------------------------------------------
 
 SCENARIOS = [
     {
-        "id": "product_opinion",
-        "name": "Product Opinion Interview",
-        "description": "Interview agents about a new product and extract structured opinions",
-        "stimulus": "What do you think about a new AI-powered personal finance app that automatically invests your spare change? Would you use it? Why or why not?",
-        "expected_fields": ["opinion", "would_use", "main_reason", "concern"],
-        "min_agents": 2,
-        "diversity_check": True,
-        "persona_requirements": [
-            {"role": "tech_enthusiast", "age_range": [22, 35], "traits": ["early adopter", "tech-savvy"]},
-            {"role": "conservative_saver", "age_range": [45, 65], "traits": ["risk-averse", "traditional"]},
-        ],
-    },
-    {
-        "id": "focus_group",
-        "name": "Focus Group Discussion",
-        "description": "Multi-agent discussion about a topic with natural turn-taking",
-        "stimulus": "Let's discuss: should remote work be the default for knowledge workers?",
-        "expected_fields": ["position", "key_argument", "concession"],
+        "id": "ad_copy_test",
+        "name": "Ad Copy Evaluation",
+        "description": "Show an ad to diverse consumers and extract purchase intent, concerns, and emotional reactions",
+        "content": (
+            "Headline: Your Wallet Called. It Wants a Raise.\n"
+            "Body: ThriftAI tracks every dollar you spend and finds savings you didn't know existed. "
+            "Join 200,000 users who save an average of $340/month. Free 30-day trial. No credit card required."
+        ),
+        "prompt": "Read this ad carefully and share your honest, unfiltered reaction. Would you click? What's your first concern? Be specific.",
+        "expected_fields": ["purchase_intent", "emotional_reaction", "main_concern", "would_share"],
         "min_agents": 3,
         "diversity_check": True,
-        "persona_requirements": [
-            {"role": "manager", "traits": ["leadership", "productivity-focused"]},
-            {"role": "remote_advocate", "traits": ["values flexibility", "introverted"]},
-            {"role": "office_advocate", "traits": ["extroverted", "values collaboration"]},
+        "audience_requirements": [
+            {"segment": "young_professional", "age_range": [25, 35], "traits": ["tech-savvy", "budget-conscious", "values convenience"]},
+            {"segment": "skeptical_parent", "age_range": [38, 52], "traits": ["cautious with finances", "skeptical of ads", "values trust and reviews"]},
+            {"segment": "impulse_shopper", "age_range": [22, 40], "traits": ["impulse buyer", "brand-conscious", "trend-follower"]},
         ],
     },
     {
-        "id": "negotiation",
-        "name": "Negotiation Scenario",
-        "description": "Two agents negotiate with competing interests",
-        "stimulus": "You need to agree on a budget allocation. You have $100K total. Discuss and reach a compromise.",
-        "expected_fields": ["proposed_split", "reasoning", "compromise_willingness"],
-        "min_agents": 2,
+        "id": "brand_messaging",
+        "name": "Brand Messaging Perception",
+        "description": "Test whether a brand statement lands as intended across audience segments",
+        "content": (
+            "At Meridian, we believe luxury should be quiet. Our products aren't for the loud — "
+            "they're for those who know. Crafted by hand, owned for generations, understated by design."
+        ),
+        "prompt": "Read this brand statement. In your own words, what kind of company is this? Who is it for? Do you trust them?",
+        "expected_fields": ["perceived_positioning", "target_customer_guess", "trust_level", "memorability"],
+        "min_agents": 3,
+        "diversity_check": True,
+        "audience_requirements": [
+            {"segment": "luxury_consumer", "age_range": [40, 60], "traits": ["values craftsmanship", "discerning", "status-aware"]},
+            {"segment": "mainstream_shopper", "age_range": [28, 45], "traits": ["value-focused", "practical", "skeptical of luxury marketing"]},
+            {"segment": "gen_z", "age_range": [18, 26], "traits": ["brand-savvy", "authenticity-focused", "social-media native"]},
+        ],
+    },
+    {
+        "id": "product_launch",
+        "name": "Product Launch Reception",
+        "description": "Simulate word-of-mouth reaction when multiple consumers discuss a new product together",
+        "content": (
+            "New product announcement: NovaPen — a pen that transcribes your handwritten notes to digital text in real-time. "
+            "Works with any paper. Syncs to your phone. $149. Available next month."
+        ),
+        "prompt": "A friend just showed you this product announcement. Discuss it with the others. Would you buy it? What about it excites or worries you?",
+        "expected_fields": ["excitement_level", "likelihood_to_buy", "would_recommend", "price_perception"],
+        "min_agents": 3,
         "diversity_check": False,
-        "persona_requirements": [
-            {"role": "engineering_lead", "traits": ["technical", "ambitious"]},
-            {"role": "marketing_lead", "traits": ["creative", "persuasive"]},
+        "audience_requirements": [
+            {"segment": "student", "age_range": [18, 24], "traits": ["note-taker", "budget-limited", "tech adopter"]},
+            {"segment": "knowledge_worker", "age_range": [28, 45], "traits": ["productivity-focused", "willing to pay for tools", "organized"]},
+            {"segment": "creative_professional", "age_range": [25, 40], "traits": ["values analog tools", "tactile preferences", "brand-sensitive"]},
         ],
     },
 ]
@@ -77,56 +89,42 @@ SCENARIOS = [
 # Scoring functions (DO NOT CHANGE — these are the fixed metrics)
 # ---------------------------------------------------------------------------
 
-def score_persona_adherence(agent_responses: List[Dict], persona_specs: List[Dict]) -> float:
+def score_audience_realism(responses: List[Dict], audience_specs: List[Dict]) -> float:
     """
-    Score how well agents behave according to their persona specifications.
-    Checks that traits, age-appropriate language, and role-consistent opinions appear.
+    Score whether consumers behave authentically to their segment.
+    Higher when traits show up in reactions (skeptical personas voice skepticism, etc.)
     Returns 0.0 to 1.0.
     """
-    if not agent_responses or not persona_specs:
+    if not responses or not audience_specs:
         return 0.0
 
     scores = []
-    for resp, spec in zip(agent_responses, persona_specs):
+    for resp, spec in zip(responses, audience_specs):
         content = resp.get("content", "").lower()
         traits = spec.get("traits", [])
 
-        # Check trait signals in response
+        # Trait alignment: key words from traits appear in response
         trait_score = 0.0
         if traits:
-            trait_hits = 0
+            hits = 0
             for trait in traits:
-                # Look for trait-aligned language patterns
-                trait_words = trait.lower().split()
-                for word in trait_words:
-                    if word in content and len(word) > 3:
-                        trait_hits += 1
-                        break
-            trait_score = min(1.0, trait_hits / max(len(traits), 1))
+                keywords = [w for w in trait.lower().split() if len(w) > 3]
+                if any(kw in content for kw in keywords):
+                    hits += 1
+            trait_score = min(1.0, hits / max(len(traits), 1))
 
-        # Check response length (too short = low effort, too long = rambling)
+        # Segment voice check — response length appropriate (not too short, not rambling)
         word_count = len(content.split())
-        length_score = 1.0
-        if word_count < 10:
-            length_score = word_count / 10.0
-        elif word_count > 500:
-            length_score = max(0.3, 1.0 - (word_count - 500) / 1000.0)
+        length_score = 1.0 if 15 <= word_count <= 200 else max(0.3, 1.0 - abs(word_count - 80) / 200)
 
-        # Check role consistency (mentioned their role context)
-        role = spec.get("role", "")
-        role_score = 0.5  # neutral default
-        if role and any(w in content for w in role.lower().split("_")):
-            role_score = 1.0
-
-        scores.append(0.4 * trait_score + 0.3 * length_score + 0.3 * role_score)
+        scores.append(0.65 * trait_score + 0.35 * length_score)
 
     return sum(scores) / len(scores)
 
 
-def score_response_coherence(responses: List[Dict]) -> float:
+def score_response_depth(responses: List[Dict]) -> float:
     """
-    Score logical coherence and naturalness of responses.
-    Checks for: complete sentences, no repetition, logical flow.
+    Score whether reactions are detailed and actionable (not generic).
     Returns 0.0 to 1.0.
     """
     if not responses:
@@ -137,165 +135,132 @@ def score_response_coherence(responses: List[Dict]) -> float:
         content = resp.get("content", "")
         score = 0.0
 
-        # Has content at all
         if not content.strip():
             scores.append(0.0)
             continue
 
-        # Sentence structure (ends with punctuation)
-        if content.strip()[-1] in '.!?':
-            score += 0.3
-        else:
-            score += 0.1
-
-        # Not excessively repetitive (check unique word ratio)
-        words = content.lower().split()
-        if words:
-            unique_ratio = len(set(words)) / len(words)
-            score += 0.3 * min(1.0, unique_ratio / 0.5)
-
-        # Has substance (not just filler)
-        substantive_words = [w for w in words if len(w) > 4]
-        if substantive_words:
-            score += 0.2 * min(1.0, len(substantive_words) / 5.0)
-
-        # Multiple sentences (shows developed thought)
-        sentences = [s.strip() for s in content.split('.') if s.strip()]
+        # Specific details mentioned (numbers, quoted phrases, specific aspects)
+        if any(c.isdigit() for c in content):
+            score += 0.25
+        if '"' in content or "'" in content:
+            score += 0.15
+        # Has reasoning language ("because", "since", "however")
+        reasoning_words = ["because", "since", "however", "although", "but ", "actually", "reminds me"]
+        if any(w in content.lower() for w in reasoning_words):
+            score += 0.25
+        # Multiple sentences (developed thought)
+        sentences = [s.strip() for s in content.split('.') if len(s.strip()) > 5]
         if len(sentences) >= 2:
             score += 0.2
+        if len(sentences) >= 4:
+            score += 0.15
 
         scores.append(min(1.0, score))
 
     return sum(scores) / len(scores)
 
 
-def score_interaction_quality(conversation_log: List[Dict]) -> float:
+def score_discrimination(responses: List[Dict], audience_specs: List[Dict]) -> float:
     """
-    Score multi-agent interaction quality.
-    Checks for: turn-taking, responsiveness, topic coherence.
+    Score whether different segments give meaningfully different reactions.
+    If all consumers give similar responses, the test is useless.
     Returns 0.0 to 1.0.
     """
-    if not conversation_log or len(conversation_log) < 2:
+    if not responses or len(responses) < 2:
         return 0.0
 
-    score = 0.0
+    contents = [set(r.get("content", "").lower().split()) for r in responses]
 
-    # Multiple speakers participated
-    speakers = set(e.get("agent", "") for e in conversation_log if e.get("agent"))
-    if len(speakers) >= 2:
-        score += 0.3
-    elif len(speakers) == 1:
-        score += 0.1
+    # Pairwise dissimilarity
+    distances = []
+    for i in range(len(contents)):
+        for j in range(i + 1, len(contents)):
+            set_i, set_j = contents[i], contents[j]
+            if not set_i and not set_j:
+                continue
+            union = len(set_i | set_j)
+            intersection = len(set_i & set_j)
+            jaccard_dist = 1.0 - (intersection / union if union > 0 else 0.0)
+            distances.append(jaccard_dist)
 
-    # Has back-and-forth (alternating speakers)
-    prev_speaker = None
-    alternations = 0
-    for event in conversation_log:
-        speaker = event.get("agent", "")
-        if speaker and speaker != prev_speaker:
-            alternations += 1
-        prev_speaker = speaker
-    if len(conversation_log) > 0:
-        alt_ratio = alternations / len(conversation_log)
-        score += 0.3 * min(1.0, alt_ratio / 0.5)
+    if not distances:
+        return 0.0
 
-    # Responses reference each other (mentions other agent names)
-    references = 0
-    for event in conversation_log:
-        content = event.get("content", "").lower()
-        for speaker in speakers:
-            if speaker.lower() in content and speaker != event.get("agent", ""):
-                references += 1
-                break
-    if len(conversation_log) > 0:
-        score += 0.2 * min(1.0, references / max(1, len(speakers)))
+    avg_dist = sum(distances) / len(distances)
 
-    # Conversation has a natural arc (not all same length responses)
-    lengths = [len(e.get("content", "").split()) for e in conversation_log if e.get("content")]
-    if len(lengths) >= 2:
-        variance = sum((l - sum(lengths)/len(lengths))**2 for l in lengths) / len(lengths)
-        if variance > 10:  # some variety in response length
-            score += 0.2
-
-    return min(1.0, score)
+    # Sweet spot: 0.4-0.8 (meaningfully different but still on-topic)
+    if avg_dist < 0.3:
+        return avg_dist * 2  # too similar — bad discrimination
+    elif avg_dist > 0.9:
+        return 0.7  # suspiciously different
+    else:
+        return min(1.0, 0.5 + avg_dist * 0.6)
 
 
-def score_extraction_accuracy(extracted: Dict, expected_fields: List[str]) -> float:
+def score_actionability(extracted: Dict, expected_fields: List[str]) -> float:
     """
-    Score how well structured data was extracted from conversations.
+    Score whether structured feedback can be extracted for marketing team use.
     Returns 0.0 to 1.0.
     """
     if not extracted or not expected_fields:
         return 0.0
 
-    found = 0
-    non_empty = 0
+    found_with_content = 0
     for field in expected_fields:
-        if field in extracted:
-            found += 1
-            val = extracted[field]
-            if val is not None and str(val).strip():
-                non_empty += 1
+        val = extracted.get(field)
+        if val is not None and str(val).strip() and len(str(val).strip()) > 3:
+            found_with_content += 1
 
-    field_coverage = found / len(expected_fields)
-    content_quality = non_empty / len(expected_fields) if found > 0 else 0.0
-
-    return 0.5 * field_coverage + 0.5 * content_quality
+    return found_with_content / len(expected_fields)
 
 
-def score_diversity(agent_responses: List[Dict]) -> float:
+def score_coverage(responses: List[Dict]) -> float:
     """
-    Score how different agents give different responses (not all saying the same thing).
+    Score whether reactions surface BOTH positive and negative signals.
+    All-positive or all-negative reactions are suspicious and not useful.
     Returns 0.0 to 1.0.
     """
-    if not agent_responses or len(agent_responses) < 2:
+    if not responses:
         return 0.0
 
-    contents = [r.get("content", "").lower().split() for r in agent_responses]
+    positive_markers = ["love", "great", "interesting", "excited", "like", "would buy", "impressed", "clever", "smart"]
+    negative_markers = ["skeptical", "concern", "worry", "expensive", "doubt", "not sure", "wouldn't", "hesitant", "unclear"]
 
-    # Compute pairwise Jaccard distance
-    distances = []
-    for i in range(len(contents)):
-        for j in range(i + 1, len(contents)):
-            set_i = set(contents[i])
-            set_j = set(contents[j])
-            if not set_i and not set_j:
-                continue
-            intersection = len(set_i & set_j)
-            union = len(set_i | set_j)
-            jaccard = intersection / union if union > 0 else 0.0
-            distances.append(1.0 - jaccard)  # distance = 1 - similarity
+    pos_count = 0
+    neg_count = 0
+    for resp in responses:
+        content = resp.get("content", "").lower()
+        if any(m in content for m in positive_markers):
+            pos_count += 1
+        if any(m in content for m in negative_markers):
+            neg_count += 1
 
-    if not distances:
+    if pos_count == 0 and neg_count == 0:
         return 0.0
+    if pos_count == 0 or neg_count == 0:
+        return 0.4  # only one signal — incomplete coverage
 
-    avg_distance = sum(distances) / len(distances)
-    # We want moderate diversity (0.3-0.8 range), not complete dissimilarity
-    if avg_distance < 0.1:
-        return avg_distance * 3  # too similar
-    elif avg_distance > 0.95:
-        return 0.8  # suspiciously different
-    else:
-        return min(1.0, avg_distance * 1.2)
+    balance = min(pos_count, neg_count) / max(pos_count, neg_count)
+    return 0.6 + 0.4 * balance
 
 
 def compute_quality_score(
-    persona_adherence: float,
-    response_coherence: float,
-    interaction_quality: float,
-    extraction_accuracy: float,
-    diversity_score: float,
+    audience_realism: float,
+    response_depth: float,
+    discrimination: float,
+    actionability: float,
+    coverage: float,
 ) -> float:
     """
-    Compute the composite quality score. Weighted average.
+    Compute the composite marketing test quality score. Weighted average.
     Returns 0.0 to 1.0.
     """
     return (
-        0.25 * persona_adherence
-        + 0.25 * response_coherence
-        + 0.20 * interaction_quality
-        + 0.15 * extraction_accuracy
-        + 0.15 * diversity_score
+        0.25 * audience_realism     # Do consumers behave like real segments?
+        + 0.25 * response_depth     # Are reactions detailed and actionable?
+        + 0.20 * discrimination     # Do different segments differ meaningfully?
+        + 0.15 * actionability      # Can structured data be extracted?
+        + 0.15 * coverage           # Positive AND negative signals present?
     )
 
 
@@ -304,11 +269,10 @@ def compute_quality_score(
 # ---------------------------------------------------------------------------
 
 def verify_setup():
-    """Check that everything needed is in place."""
     print("Checking OpenPersona installation...")
     try:
         import openpersona
-        print(f"  openpersona version: {openpersona.__name__} OK")
+        print(f"  openpersona OK")
     except ImportError:
         print("  ERROR: openpersona not installed. Run: pip install -e .")
         return False
@@ -319,45 +283,40 @@ def verify_setup():
     else:
         print("  WARNING: OPENAI_API_KEY not set. Experiments will fail on LLM calls.")
 
-    print(f"Scenarios loaded: {len(SCENARIOS)}")
+    print(f"\nMarketing test scenarios loaded: {len(SCENARIOS)}")
     for s in SCENARIOS:
-        print(f"  - {s['id']}: {s['name']} ({s['min_agents']} agents)")
+        print(f"  - {s['id']}: {s['name']} ({s['min_agents']} consumers)")
 
     print(f"\nTime budget: {TIME_BUDGET}s ({TIME_BUDGET // 60} minutes)")
-    print(f"Max agents per scenario: {MAX_AGENTS}")
-    print(f"Max steps per scenario: {MAX_STEPS}")
+    print(f"Max consumers per scenario: {MAX_AGENTS}")
+    print("\nMetric: quality_score (0.0 - 1.0)")
+    print("  25% audience realism")
+    print("  25% response depth")
+    print("  20% discrimination (segment differences)")
+    print("  15% actionability (structured extraction)")
+    print("  15% coverage (positive + negative signals)")
 
-    print("\nSetup OK. Ready to experiment.")
+    print("\nSetup OK. Ready to run marketing tests.")
     return True
 
 
 def smoke_test():
-    """Quick test that the library can create agents and run basic operations."""
     print("Running smoke test...")
     try:
         from openpersona.agent import Persona
         from openpersona.environment import World
-
-        agent = Persona("TestAgent")
+        agent = Persona("TestConsumer")
         agent.define("age", 30)
-        agent.define("occupation", {"title": "Tester"})
-
-        world = World("TestWorld", [agent])
-        print(f"  Created agent: {agent.name}")
-        print(f"  Created world: {world.name}")
-        print("  Smoke test PASSED")
+        world = World("TestRoom", [agent])
+        print(f"  Smoke test PASSED")
         return True
     except Exception as e:
         print(f"  Smoke test FAILED: {e}")
         return False
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Verify autoresearch setup for OpenPersona")
+    parser = argparse.ArgumentParser(description="Verify autoresearch setup for marketing content testing")
     parser.add_argument("--check", action="store_true", help="Run smoke test")
     args = parser.parse_args()
 
