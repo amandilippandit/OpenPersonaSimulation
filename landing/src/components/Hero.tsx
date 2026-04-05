@@ -1,4 +1,4 @@
-import InstallBox from "./InstallBox";
+import StudioPreview from "./StudioPreview";
 
 const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3000";
 
@@ -42,28 +42,28 @@ export default function Hero() {
           reactions from realistic personas — in minutes, not weeks.
         </p>
 
-        {/* Install box */}
-        <div className="mt-12 flex justify-center w-full animate-fade-up" style={{ animationDelay: "1100ms" }}>
-          <InstallBox />
-        </div>
-
         {/* CTA row */}
-        <div className="mt-8 flex items-center gap-3 animate-fade-up" style={{ animationDelay: "1300ms" }}>
-          <a href={STUDIO_URL} className="btn-primary-light px-5 py-2.5 rounded-md text-sm font-medium">
-            launch studio
+        <div className="mt-10 flex items-center gap-3 animate-fade-up" style={{ animationDelay: "1100ms" }}>
+          <a href={STUDIO_URL} className="btn-primary-light px-6 py-3 rounded-md text-sm font-medium">
+            launch studio →
           </a>
-          <a href="https://github.com/amandilippandit/OpenPersonaSimulation#readme" className="btn-ghost-light px-5 py-2.5 rounded-md text-sm font-medium">
-            read the docs
+          <a href="#how-it-works" className="btn-ghost-light px-6 py-3 rounded-md text-sm font-medium">
+            see how it works
           </a>
         </div>
 
         {/* Supporting proof line */}
-        <div className="mt-14 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500 animate-fade-up" style={{ animationDelay: "1500ms" }}>
-          <span className="text-slate-700">python 3.10+</span>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-slate-500 animate-fade-up" style={{ animationDelay: "1300ms" }}>
+          <span className="text-slate-500">no signup</span>
           <span className="text-slate-300">·</span>
-          <span className="text-slate-700">openai · azure · ollama</span>
+          <span className="text-slate-500">bring your own api key</span>
           <span className="text-slate-300">·</span>
-          <span className="text-slate-700">mit licensed</span>
+          <span className="text-slate-500">open source</span>
+        </div>
+
+        {/* Studio preview mockup */}
+        <div className="mt-16 flex justify-center w-full animate-fade-up" style={{ animationDelay: "1500ms" }}>
+          <StudioPreview />
         </div>
       </div>
     </section>
