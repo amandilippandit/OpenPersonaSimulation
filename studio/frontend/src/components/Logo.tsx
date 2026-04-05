@@ -4,7 +4,7 @@ interface LogoProps {
   color?: string;
 }
 
-export default function Logo({ className = "", size = 24, color = "#f97316" }: LogoProps) {
+export default function Logo({ className = "", size = 24, color = "#0f172a" }: LogoProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
