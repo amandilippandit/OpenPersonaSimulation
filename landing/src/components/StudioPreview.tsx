@@ -235,7 +235,7 @@ export default function StudioPreview() {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-4xl" style={{ textAlign: "left" }}>
       <div className="rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/5 overflow-hidden">
         {/* Top chrome */}
         <div className="flex items-center px-5 py-3 border-b border-slate-100 bg-slate-50/50">
@@ -263,7 +263,10 @@ export default function StudioPreview() {
                 </div>
                 <div className="flex flex-col items-end gap-2 max-w-[85%]">
                   <div className="rounded-lg bg-orange-50/70 border border-orange-100 px-3 py-2">
-                    <div className="text-xs text-slate-900 leading-relaxed">
+                    <div
+                      className="text-xs text-slate-900 leading-relaxed"
+                      style={{ textAlign: "right" }}
+                    >
                       Test this Instagram ad against our target audience.
                     </div>
                   </div>
