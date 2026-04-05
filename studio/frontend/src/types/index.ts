@@ -92,7 +92,9 @@ export interface CreateAgentPayload {
     title: string;
     organization: string;
   };
-  personality: string[];
+  personality: {
+    traits: string[];
+  };
   preferences: {
     interests: string[];
   };

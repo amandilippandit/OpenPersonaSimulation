@@ -252,13 +252,15 @@ export function useSimulation(simId: string): UseSimulationReturn {
       }
       try {
         const data = await api.getAgent(simId, name);
+        const persona = (data.persona as Record<string, unknown>) || {};
+        const personalityObj = (persona.personality as { traits?: string[] }) || {};
         const detail: AgentDetail = {
-          name: (data.name as string) || name,
-          age: (data.age as number) || 0,
-          nationality: (data.nationality as string) || "",
-          occupation: (data.occupation as AgentDetail["occupation"]) || { title: "", organization: "" },
-          personality: (data.personality as string[]) || [],
-          preferences: (data.preferences as AgentDetail["preferences"]) || { interests: [] },
+          name: (persona.name as string) || (data.name as string) || name,
+          age: (persona.age as number) || 0,
+          nationality: (persona.nationality as string) || "",
+          occupation: (persona.occupation as AgentDetail["occupation"]) || { title: "", organization: "" },
+          personality: personalityObj.traits || [],
+          preferences: (persona.preferences as AgentDetail["preferences"]) || { interests: [] },
           mental_state: (data.mental_state as AgentDetail["mental_state"]) || {
             emotions: "neutral",
             attention: "",
@@ -267,7 +269,7 @@ export function useSimulation(simId: string): UseSimulationReturn {
           },
           actions_count: (data.actions_count as number) || 0,
           stimuli_count: (data.stimuli_count as number) || 0,
-          memory_count: (data.memory_count as number) || 0,
+          memory_count: ((data.episodic_memory_count as number) || 0) + ((data.semantic_memory_count as number) || 0),
         };
         setSelectedAgent(detail);
       } catch (e) {

@@ -33,7 +33,9 @@ export default function AgentCreator({ onSubmit, onClose }: AgentCreatorProps) {
         age,
         nationality: nationality.trim(),
         occupation: { title: title.trim(), organization: organization.trim() },
-        personality: personality.split(",").map((s) => s.trim()).filter(Boolean),
+        personality: {
+          traits: personality.split(",").map((s) => s.trim()).filter(Boolean),
+        },
         preferences: {
           interests: interests.split(",").map((s) => s.trim()).filter(Boolean),
         },
