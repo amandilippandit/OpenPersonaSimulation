@@ -47,15 +47,19 @@ export function useSimulation(simId: string): UseSimulationReturn {
   const fetchGraph = useCallback(async () => {
     try {
       const data = await api.getGraph(simId);
-      const nodes: GraphNode[] = (data.nodes || []).map((n: Record<string, unknown>) => ({
-        id: (n.id as string) || (n.name as string),
-        name: (n.name as string) || (n.id as string),
-        emotions: (n.emotions as string) || "neutral",
-        actions_count: (n.actions_count as number) || 0,
-        stimuli_count: (n.stimuli_count as number) || 0,
-        age: n.age as number | undefined,
-        occupation: n.occupation as string | undefined,
-      }));
+      const nodes: GraphNode[] = (data.nodes || []).map((n: Record<string, unknown>) => {
+        const ms = (n.mental_state as Record<string, unknown>) || {};
+        const persona = (n.persona as Record<string, unknown>) || {};
+        return {
+          id: (n.name as string) || (n.id as string),
+          name: (n.name as string) || (n.id as string),
+          emotions: (ms.emotions as string) || "neutral",
+          actions_count: (n.actions_count as number) || 0,
+          stimuli_count: (n.stimuli_count as number) || 0,
+          age: (persona.age as number) || undefined,
+          occupation: ((persona.occupation as Record<string, unknown>)?.title as string) || undefined,
+        };
+      });
       const links: GraphEdge[] = (data.edges || []).map((e: Record<string, unknown>) => ({
         source: e.source as string,
         target: e.target as string,

@@ -110,33 +110,32 @@ export default function SimulationPage() {
         <section className="flex-[1.2] flex flex-col border-r border-slate-200/70 min-w-0">
           {/* Chat messages */}
           <div className="flex-1 overflow-y-auto p-5 space-y-4">
-            {events.length === 0 && agents.length === 0 && (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <Logo size={28} />
-                <p className="text-xs font-mono text-slate-900 mt-3 font-semibold">no personas yet</p>
-                <p className="text-[10px] font-mono text-slate-400 mt-1 mb-4">
-                  add personas, then type a message to test your content
-                </p>
-                <button
-                  onClick={() => setShowAgentCreator(true)}
-                  className="btn-primary px-4 py-1.5 text-[11px] font-mono rounded-md"
-                >
-                  + add first persona
-                </button>
+            {/* Welcome message — always shows at the top */}
+            <div className="flex gap-3 pb-4 border-b border-slate-100 mb-4">
+              <div className="w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Logo size={20} />
               </div>
-            )}
-
-            {events.length === 0 && agents.length > 0 && (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <Logo size={28} />
-                <p className="text-xs font-mono text-slate-900 mt-3 font-semibold">
-                  {agents.length} personas ready
+              <div className="flex-1 min-w-0 text-[13px] text-slate-700 leading-relaxed space-y-2" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
+                <p>
+                  <span className="font-semibold text-slate-900">Welcome back.</span>{" "}
+                  {agents.length === 0
+                    ? "Start by adding personas to your audience panel, then paste your ad copy or campaign content below to begin testing."
+                    : `You have ${agents.length} persona${agents.length === 1 ? "" : "s"} ready in the playground. Paste your ad copy, landing page text, or campaign message below — each persona will react independently based on their profile.`
+                  }
                 </p>
-                <p className="text-[10px] font-mono text-slate-400 mt-1">
-                  type your ad copy below to start testing
-                </p>
+                {agents.length === 0 && (
+                  <button
+                    onClick={() => setShowAgentCreator(true)}
+                    className="btn-primary px-3 py-1.5 text-[11px] font-mono rounded-md inline-flex items-center gap-1.5"
+                  >
+                    <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none">
+                      <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                    add your first persona
+                  </button>
+                )}
               </div>
-            )}
+            </div>
 
             {/* Event messages rendered as chat bubbles */}
             {events.map((event, i) => {
