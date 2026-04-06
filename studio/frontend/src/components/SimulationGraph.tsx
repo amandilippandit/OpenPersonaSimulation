@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useRef, useMemo } from "react";
+import { useCallback, useRef, useMemo, useState, useEffect } from "react";
 import { emotionToColor, nodeSize } from "@/lib/colors";
 import type { GraphNode, GraphEdge } from "@/types";
 
@@ -31,6 +31,20 @@ export default function SimulationGraph({
 }: SimulationGraphProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fgRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 600, height: 400 });
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => {
+      setDimensions({ width: el.clientWidth, height: el.clientHeight });
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const graphData = useMemo(() => {
     return {
@@ -105,7 +119,7 @@ export default function SimulationGraph({
 
   if (nodes.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full bg-white">
+      <div ref={containerRef} className="w-full h-full flex items-center justify-center bg-white">
         <div className="text-center">
           <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center mx-auto mb-3">
             <svg className="w-4 h-4 text-slate-400" viewBox="0 0 16 16" fill="none">
@@ -121,26 +135,30 @@ export default function SimulationGraph({
   }
 
   return (
-    <ForceGraph3D
-      ref={fgRef}
-      graphData={graphData}
-      nodeLabel={nodeLabel as (node: object) => string}
-      nodeColor={nodeColor as (node: object) => string}
-      nodeVal={(node: object) => (node as Record<string, unknown>).val as number}
-      nodeOpacity={0.95}
-      linkColor={linkColor as (link: object) => string}
-      linkWidth={linkWidth as (link: object) => number}
-      linkOpacity={0.5}
-      onNodeClick={handleNodeClick as (node: object) => void}
-      backgroundColor="#ffffff"
-      showNavInfo={false}
-      enableNodeDrag={true}
-      nodeRelSize={1}
-      linkDirectionalParticles={2}
-      linkDirectionalParticleWidth={1}
-      linkDirectionalParticleSpeed={0.005}
-      warmupTicks={50}
-      cooldownTicks={100}
-    />
+    <div ref={containerRef} className="w-full h-full">
+      <ForceGraph3D
+        ref={fgRef}
+        graphData={graphData}
+        width={dimensions.width}
+        height={dimensions.height}
+        nodeLabel={nodeLabel as (node: object) => string}
+        nodeColor={nodeColor as (node: object) => string}
+        nodeVal={(node: object) => (node as Record<string, unknown>).val as number}
+        nodeOpacity={0.95}
+        linkColor={linkColor as (link: object) => string}
+        linkWidth={linkWidth as (link: object) => number}
+        linkOpacity={0.5}
+        onNodeClick={handleNodeClick as (node: object) => void}
+        backgroundColor="#ffffff"
+        showNavInfo={false}
+        enableNodeDrag={true}
+        nodeRelSize={1}
+        linkDirectionalParticles={2}
+        linkDirectionalParticleWidth={1}
+        linkDirectionalParticleSpeed={0.005}
+        warmupTicks={50}
+        cooldownTicks={100}
+      />
+    </div>
   );
 }
