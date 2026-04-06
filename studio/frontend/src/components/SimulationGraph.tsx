@@ -55,7 +55,7 @@ export default function SimulationGraph({
       })),
       links: links.map((l) => ({
         ...l,
-        color: "#cbd5e1",
+        color: "#94a3b8",
       })),
     };
   }, [nodes, links]);
@@ -144,20 +144,22 @@ export default function SimulationGraph({
         nodeLabel={nodeLabel as (node: object) => string}
         nodeColor={nodeColor as (node: object) => string}
         nodeVal={(node: object) => (node as Record<string, unknown>).val as number}
-        nodeOpacity={0.95}
+        nodeOpacity={0.9}
         linkColor={linkColor as (link: object) => string}
         linkWidth={linkWidth as (link: object) => number}
-        linkOpacity={0.5}
+        linkOpacity={0.4}
         onNodeClick={handleNodeClick as (node: object) => void}
         backgroundColor="#ffffff"
         showNavInfo={false}
         enableNodeDrag={true}
-        nodeRelSize={1}
-        linkDirectionalParticles={2}
-        linkDirectionalParticleWidth={1}
-        linkDirectionalParticleSpeed={0.005}
+        nodeRelSize={4}
+        linkDirectionalParticles={0}
+        linkDirectionalParticleWidth={0}
+        linkDirectionalParticleSpeed={0}
         warmupTicks={50}
         cooldownTicks={100}
+        d3AlphaDecay={0.02}
+        d3VelocityDecay={0.3}
       />
     </div>
   );

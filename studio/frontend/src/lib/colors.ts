@@ -1,18 +1,18 @@
 const EMOTION_COLORS: Record<string, string> = {
-  calm: "#3B82F6",
-  happy: "#22C55E",
-  frustrated: "#EF4444",
-  excited: "#F59E0B",
-  neutral: "#6B7280",
-  angry: "#EF4444",
-  sad: "#3B82F6",
-  anxious: "#F59E0B",
-  curious: "#8B5CF6",
-  content: "#22C55E",
-  bored: "#6B7280",
+  calm: "#94a3b8",
+  happy: "#94a3b8",
+  frustrated: "#94a3b8",
+  excited: "#94a3b8",
+  neutral: "#94a3b8",
+  angry: "#94a3b8",
+  sad: "#94a3b8",
+  anxious: "#94a3b8",
+  curious: "#94a3b8",
+  content: "#94a3b8",
+  bored: "#94a3b8",
 };
 
-const DEFAULT_COLOR = "#8B5CF6";
+const DEFAULT_COLOR = "#64748b";
 
 export function emotionToColor(emotions: string | undefined | null): string {
   if (!emotions) return DEFAULT_COLOR;
@@ -36,5 +36,5 @@ export function actionTypeStyle(type: string): { bg: string; text: string } {
 }
 
 export function nodeSize(actionsCount: number): number {
-  return Math.min(8 + actionsCount * 0.5, 20);
+  return Math.min(20 + actionsCount * 2, 50);
 }
