@@ -330,3 +330,4 @@ Or edit `config.ini` for persistent settings.
 ## Legal
 
 This tool generates synthetic consumer reactions using AI. Outputs are simulations, not guarantees of real market behavior. Always validate critical marketing decisions against real audience testing. Do not use to deceive consumers or simulate sensitive scenarios. MIT Licensed.
+
