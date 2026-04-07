@@ -384,3 +384,4 @@ def set_include_thread_info(include_thread_info: bool):
     with _logging_lock:
         _include_thread_info = bool(include_thread_info)
         _refresh_handler_formatters_locked()
+
