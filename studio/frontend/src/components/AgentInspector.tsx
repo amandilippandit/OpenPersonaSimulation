@@ -245,3 +245,4 @@ export default function AgentInspector({ agent, onSendMessage, onClose }: AgentI
 }
 
 
+
