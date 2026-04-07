@@ -109,3 +109,4 @@ class RichTextStyle:
 
         elif kind == "intervention":
             return cls.INTERVENTION_DEFAULT_STYLE
+
