@@ -90,3 +90,4 @@ export default function CreateSimulation({ onSubmit, onClose }: CreateSimulation
     </div>
   );
 }
+
