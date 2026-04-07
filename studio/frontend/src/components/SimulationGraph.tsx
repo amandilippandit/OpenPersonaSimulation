@@ -164,3 +164,4 @@ export default function SimulationGraph({
     </div>
   );
 }
+
