@@ -344,3 +344,4 @@ class SimulationManager:
 # Module-level singleton
 manager = SimulationManager()
 
+
