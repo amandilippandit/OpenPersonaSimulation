@@ -38,3 +38,4 @@ export function actionTypeStyle(type: string): { bg: string; text: string } {
 export function nodeSize(actionsCount: number): number {
   return Math.min(20 + actionsCount * 2, 50);
 }
+
