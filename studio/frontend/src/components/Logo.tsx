@@ -34,3 +34,4 @@ export default function Logo({ className = "", size = 24, color = "#0f172a" }: L
     </svg>
   );
 }
+
