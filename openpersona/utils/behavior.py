@@ -70,3 +70,4 @@ def next_action_jaccard_similarity(agent, proposed_next_action):
 
     # Single action case
     return _compute_single_action_jaccard_similarity(current_action, proposed_next_action)
+
