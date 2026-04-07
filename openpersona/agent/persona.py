@@ -2450,3 +2450,4 @@ class Persona(JsonSerializableRegistry):
             print(f"  Cached calls:     {pa['cached_calls']:,.1f}")
 
         print("=" * 70 + "\n")
+
