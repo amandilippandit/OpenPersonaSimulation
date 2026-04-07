@@ -446,3 +446,4 @@ async def ws_simulation(websocket: WebSocket, sim_id: str):
         _ws_connections.get(sim_id, set()).discard(websocket)
 
 
+
