@@ -1406,3 +1406,4 @@ def truncate_actions_or_stimuli(
         # if no condition was met, we just ignore it. It is not an action or a stimulus.
 
     return cloned_list
+
