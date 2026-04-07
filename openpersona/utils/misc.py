@@ -80,3 +80,4 @@ def reset_fresh_id(scope=None):
     elif scope in _fresh_id_counters:
         # Reset only the specified scope
         _fresh_id_counters[scope] = 0
+
