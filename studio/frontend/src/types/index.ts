@@ -99,3 +99,4 @@ export interface CreateAgentPayload {
     interests: string[];
   };
 }
+
