@@ -65,3 +65,4 @@ def to_pydantic_or_sanitized_dict(value: dict, model: BaseModel=None) -> dict:
             return sanitize_dict(value)
     else:
         return sanitize_dict(value)  # If no model, just sanitize the dict
+
