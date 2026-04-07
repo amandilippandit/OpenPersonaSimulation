@@ -129,3 +129,4 @@ class EventRecord(BaseModel):
 class HealthResponse(BaseModel):
     status: str = "ok"
     openai_key_set: bool = False
+
