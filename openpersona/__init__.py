@@ -453,3 +453,4 @@ Settings.embed_model = llamaindex_openai_embed_model
 rich.jupyter.JUPYTER_HTML_FORMAT = utils.inject_html_css_style_prefix(
     rich.jupyter.JUPYTER_HTML_FORMAT, "margin:0px;"
 )
+
