@@ -82,3 +82,4 @@ export default function EventFeed({ events }: EventFeedProps) {
     </div>
   );
 }
+
